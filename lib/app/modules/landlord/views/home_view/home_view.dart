@@ -3,6 +3,8 @@ import 'package:get/get.dart';
 import '../../../../routes/app_pages.dart';
 import '../../controllers/landlord_controller.dart';
 import '../../controllers/rooms_controller.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:intl/intl.dart';
 
 class HomeView extends GetView<LandlordController> {
   HomeView({super.key});
@@ -186,11 +188,11 @@ class HomeView extends GetView<LandlordController> {
                         const SizedBox(width: 16),
                         Expanded(
                           child: _buildActionCard(
-                            icon: Icons.person_add,
-                            label: 'Thêm người thuê',
+                            icon: Icons.home_repair_service_rounded,
+                            label: 'Dịch vụ',
                             color: Colors.green,
                             onTap: () {
-                              // TODO: Navigate to add tenant
+                              Get.toNamed(Routes.SERVICES);
                             },
                           ),
                         ),
@@ -218,6 +220,19 @@ class HomeView extends GetView<LandlordController> {
                             onTap: () {
                               // TODO: Navigate to statistics
                             },
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 12),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: _buildActionCard(
+                            icon: Icons.request_page,
+                            label: 'Yêu cầu thuê',
+                            color: Colors.purple,
+                            onTap: () => Get.toNamed(Routes.LANDLORD_ROOM_REQUESTS),
                           ),
                         ),
                       ],
@@ -289,19 +304,19 @@ class HomeView extends GetView<LandlordController> {
                                 padding: const EdgeInsets.all(8),
                                 decoration: BoxDecoration(
                                   color: controller
-                                      .getActivityColor(activity['loai'])
+                                      .getActivityColor(activity['loai'] ?? '')
                                       .withOpacity(0.1),
                                   shape: BoxShape.circle,
                                 ),
                                 child: Icon(
-                                  controller.getActivityIcon(activity['loai']),
+                                  controller.getActivityIcon(activity['loai'] ?? ''),
                                   color: controller
-                                      .getActivityColor(activity['loai']),
+                                      .getActivityColor(activity['loai'] ?? ''),
                                   size: 24,
                                 ),
                               ),
                               title: Text(
-                                controller.getActivityTitle(activity),
+                                controller.getActivityTitle(activity['loai'] ?? ''),
                                 style: const TextStyle(
                                   fontWeight: FontWeight.w500,
                                 ),
@@ -318,7 +333,9 @@ class HomeView extends GetView<LandlordController> {
                                   ),
                                   const SizedBox(height: 4),
                                   Text(
-                                    controller.getTimeAgo(activity['ngayTao']),
+                                    activity['ngayTao'] != null 
+                                        ? DateFormat('dd/MM/yyyy HH:mm').format((activity['ngayTao'] as Timestamp).toDate())
+                                        : 'Vừa xong',
                                     style: TextStyle(
                                       fontSize: 12,
                                       color: Colors.grey.shade500,

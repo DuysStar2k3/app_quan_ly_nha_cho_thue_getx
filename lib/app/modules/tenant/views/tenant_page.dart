@@ -19,7 +19,6 @@ class TenantPage extends GetView<TenantController> {
             child: CircularProgressIndicator(),
           );
         }
-
         switch (controller.selectedIndex.value) {
           case 0:
             return const HomeView();
@@ -33,34 +32,97 @@ class TenantPage extends GetView<TenantController> {
             return const HomeView();
         }
       }),
-      bottomNavigationBar: Obx(() => NavigationBar(
-        selectedIndex: controller.selectedIndex.value,
-        onDestinationSelected: controller.changeTab,
-        backgroundColor: AppColors.surface,
-        elevation: 0,
-        destinations: const [
-          NavigationDestination(
-            icon: Icon(Icons.dashboard_outlined),
-            selectedIcon: Icon(Icons.dashboard),
-            label: 'Tổng quan',
-          ),
-          NavigationDestination(
-            icon: Icon(Icons.receipt_long_outlined),
-            selectedIcon: Icon(Icons.receipt_long),
-            label: 'Hóa đơn',
-          ),
-          NavigationDestination(
-            icon: Icon(Icons.home_repair_service_outlined),
-            selectedIcon: Icon(Icons.home_repair_service),
-            label: 'Dịch vụ',
-          ),
-          NavigationDestination(
-            icon: Icon(Icons.settings_outlined),
-            selectedIcon: Icon(Icons.settings),
-            label: 'Cài đặt',
-          ),
-        ],
-      )),
+      bottomNavigationBar: Obx(() => Container(
+            decoration: BoxDecoration(
+              color: Colors.white,
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.05),
+                  blurRadius: 20,
+                  offset: const Offset(0, -5),
+                ),
+              ],
+            ),
+            child: SafeArea(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 8,
+                  vertical: 8,
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    _buildNavItem(
+                      index: 0,
+                      icon: Icons.home_outlined,
+                      selectedIcon: Icons.home_rounded,
+                      label: 'Trang chủ',
+                    ),
+                    _buildNavItem(
+                      index: 1,
+                      icon: Icons.receipt_long_outlined,
+                      selectedIcon: Icons.receipt_long_rounded,
+                      label: 'Hóa đơn',
+                    ),
+                    _buildNavItem(
+                      index: 2,
+                      icon: Icons.home_repair_service_outlined,
+                      selectedIcon: Icons.home_repair_service_rounded,
+                      label: 'Dịch vụ',
+                    ),
+                    _buildNavItem(
+                      index: 3,
+                      icon: Icons.settings_outlined,
+                      selectedIcon: Icons.settings_rounded,
+                      label: 'Cài đặt',
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          )),
     );
   }
-} 
+
+  Widget _buildNavItem({
+    required int index,
+    required IconData icon,
+    required IconData selectedIcon,
+    required String label,
+  }) {
+    final isSelected = controller.selectedIndex.value == index;
+    return InkWell(
+      onTap: () => controller.changeTab(index),
+      borderRadius: BorderRadius.circular(16),
+      child: Container(
+        padding: const EdgeInsets.symmetric(
+          horizontal: 16,
+          vertical: 8,
+        ),
+        decoration: BoxDecoration(
+          color: isSelected ? AppColors.primary.withOpacity(0.1) : Colors.transparent,
+          borderRadius: BorderRadius.circular(16),
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(
+              isSelected ? selectedIcon : icon,
+              color: isSelected ? AppColors.primary : Colors.grey,
+              size: 24,
+            ),
+            const SizedBox(height: 4),
+            Text(
+              label,
+              style: TextStyle(
+                color: isSelected ? AppColors.primary : Colors.grey,
+                fontSize: 12,
+                fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}

@@ -4,6 +4,7 @@ import '../../../data/models/phong_model.dart';
 import '../../../data/models/hop_dong_model.dart';
 import '../../../data/repositories/auth_repository.dart';
 import '../../../data/models/user_model.dart';
+import '../../../data/models/yeu_cau_thue_model.dart';
 
 class HomeController extends GetxController {
   final AuthRepository _authRepository;
@@ -17,6 +18,8 @@ class HomeController extends GetxController {
   final currentRoom = Rxn<PhongModel>();
   final currentContract = Rxn<HopDongModel>();
   final recentActivities = <Map<String, dynamic>>[].obs;
+  final pendingRequests = <YeuCauThueModel>[].obs;
+  final rooms = <String, PhongModel>{}.obs;
 
   @override
   void onInit() {
@@ -32,6 +35,7 @@ class HomeController extends GetxController {
         await Future.wait([
           _loadCurrentRoom(user.uid),
           _loadRecentActivities(user.uid),
+          loadPendingRequests(),
         ]);
       }
     } catch (e) {
@@ -91,9 +95,88 @@ class HomeController extends GetxController {
         .toList();
   }
 
-  Future<void> refreshData() async {
-    await _loadData();
+  Future<void> loadPendingRequests() async {
+    try {
+      final user = currentUser;
+      if (user == null) return;
+
+      // Lấy yêu cầu đang chờ xác nhận
+      final requestsSnapshot = await _firestore
+          .collection('yeuCauThue')
+          .where('nguoiThueId', isEqualTo: user.uid)
+          .where('trangThai', isEqualTo: 'daChapNhan')
+          .orderBy('ngayTao', descending: true)
+          .get();
+
+      // Lấy thông tin phòng
+      final roomIds = requestsSnapshot.docs
+          .map((doc) => doc.data()['phongId'] as String)
+          .toSet();
+
+      for (var roomId in roomIds) {
+        final roomDoc = await _firestore.collection('phong').doc(roomId).get();
+        if (roomDoc.exists) {
+          rooms[roomId] = PhongModel.fromJson({
+            'id': roomDoc.id,
+            ...roomDoc.data()!,
+          });
+        }
+      }
+
+      pendingRequests.value = requestsSnapshot.docs
+          .map((doc) => YeuCauThueModel.fromJson({
+                'id': doc.id,
+                ...doc.data(),
+              }))
+          .toList();
+    } catch (e) {
+      print('Error loading pending requests: $e');
+    }
   }
+
+  Future<void> confirmJoinRoom(YeuCauThueModel request) async {
+    try {
+      // Cập nhật trạng thái yêu cầu
+      await _firestore.collection('yeuCauThue').doc(request.id).update({
+        'trangThai': 'daXacNhan',
+        'ngayCapNhat': FieldValue.serverTimestamp(),
+      });
+
+      // Thêm người thuê vào phòng
+      await _firestore.collection('phong').doc(request.phongId).update({
+        'nguoiThueHienTai': FieldValue.arrayUnion([request.nguoiThueId]),
+        'trangThai': 'daThue',
+        'ngayCapNhat': FieldValue.serverTimestamp(),
+      });
+
+      // Thêm hoạt động
+      await _firestore.collection('hoatDong').add({
+        'nguoiThueId': currentUser?.uid,
+        'loai': 'xacNhanThamGia',
+        'phongId': request.phongId,
+        'soPhong': rooms[request.phongId]?.soPhong,
+        'ngayTao': FieldValue.serverTimestamp(),
+      });
+
+      Get.snackbar(
+        'Thành công',
+        'Đã xác nhận tham gia phòng',
+        snackPosition: SnackPosition.BOTTOM,
+      );
+
+      await _loadData();
+    } catch (e) {
+      Get.snackbar(
+        'Lỗi',
+        'Không thể xác nhận: $e',
+        snackPosition: SnackPosition.BOTTOM,
+      );
+    }
+  }
+
+  PhongModel? getRoomInfo(String roomId) => rooms[roomId];
+
+  Future<void> refreshData() => _loadData();
 
   // Helper methods for activities
   String getActivityTitle(Map<String, dynamic> activity) {
@@ -116,24 +199,9 @@ class HomeController extends GetxController {
       case 'suaChua':
         return activity['noiDung'] ?? 'Yêu cầu sửa chữa mới';
       case 'thongBao':
-        return activity['noiDung'] ?? 'Có thông báo mới';
+        return activity['noiDung'] ?? 'Thông báo mới';
       default:
-        return activity['noiDung'] ?? 'Chi tiết hoạt động';
-    }
-  }
-
-  String getTimeAgo(Timestamp timestamp) {
-    final now = DateTime.now();
-    final difference = now.difference(timestamp.toDate());
-
-    if (difference.inDays > 0) {
-      return '${difference.inDays} ngày trước';
-    } else if (difference.inHours > 0) {
-      return '${difference.inHours} giờ trước';
-    } else if (difference.inMinutes > 0) {
-      return '${difference.inMinutes} phút trước';
-    } else {
-      return 'Vừa xong';
+        return activity['noiDung'] ?? 'Không có mô tả';
     }
   }
 } 

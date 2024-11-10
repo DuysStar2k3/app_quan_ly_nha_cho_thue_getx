@@ -4,12 +4,15 @@ import '../modules/auth/views/login_page.dart';
 import '../modules/auth/views/register_page.dart';
 import '../modules/landlord/bindings/landlord_binding_page.dart';
 import '../modules/landlord/views/rooms_view/add_room_view.dart';
+import '../modules/landlord/views/services_view/services_view.dart';
 import '../modules/splash/splash_page.dart';
 import '../modules/landlord/views/landlord_page.dart';
 import '../modules/tenant/bindings/tenant_binding_page.dart';
 import '../modules/tenant/views/tenant_page.dart';
 import '../modules/tenant/views/room_search/room_search_view.dart';
 import '../modules/tenant/views/room_details/room_details_view.dart';
+import '../modules/landlord/views/room_requests/room_requests_view.dart';
+import '../modules/tenant/views/requests/tenant_requests_view.dart';
 
 // Định nghĩa các routes
 abstract class Routes {
@@ -21,6 +24,9 @@ abstract class Routes {
   static const ADD_ROOM = '/add-room';
   static const TENANT_ROOM_SEARCH = '/tenant/room-search';
   static const TENANT_ROOM_DETAILS = '/tenant/room-details';
+  static const LANDLORD_ROOM_REQUESTS = '/landlord/room-requests';
+  static const TENANT_REQUESTS = '/tenant/requests';
+  static const SERVICES = '/services';
 }
 
 // Định nghĩa các pages
@@ -54,7 +60,7 @@ class AppPages {
     ),
     GetPage(
       name: Routes.ADD_ROOM,
-      page: () =>  AddRoomView(),
+      page: () => AddRoomView(),
     ),
     GetPage(
       name: Routes.TENANT_ROOM_SEARCH,
@@ -65,6 +71,21 @@ class AppPages {
       name: Routes.TENANT_ROOM_DETAILS,
       page: () => const RoomDetailsView(),
       binding: TenantBindingPage(),
+    ),
+    GetPage(
+      name: Routes.LANDLORD_ROOM_REQUESTS,
+      page: () => const RoomRequestsView(),
+      binding: LandlordBindingPage(),
+    ),
+    GetPage(
+      name: Routes.TENANT_REQUESTS,
+      page: () => const TenantRequestsView(),
+      binding: TenantBindingPage(),
+    ),
+    GetPage(
+      name: Routes.SERVICES,
+      page: () => const ServicesView(),
+      binding: LandlordBindingPage(),
     ),
   ];
 }

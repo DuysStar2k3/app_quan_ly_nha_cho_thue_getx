@@ -135,20 +135,48 @@ class RoomSearchController extends GetxController {
   Future<void> requestRoom(PhongModel room) async {
     try {
       final user = _authRepository.currentUser.value;
-      if (user == null) {
+      if (user == null) return;
+
+      // Kiểm tra xem người thuê đã có phòng chưa
+      final currentRoomSnapshot = await _firestore
+          .collection('phong')
+          .where('nguoiThueHienTai', arrayContains: user.uid)
+          .get();
+
+      if (currentRoomSnapshot.docs.isNotEmpty) {
         Get.snackbar(
-          'Lỗi',
-          'Vui lòng đăng nhập để đăng ký thuê phòng',
+          'Thông báo',
+          'Bạn đã có phòng rồi, không thể thuê thêm phòng khác',
           snackPosition: SnackPosition.BOTTOM,
         );
         return;
       }
 
-      // Tạo yêu cầu thuê phòng
+      // Kiểm tra xem đã có yêu cầu chưa
+      final existingRequest = await _firestore
+          .collection('yeuCauThue')
+          .where('nguoiThueId', isEqualTo: user.uid)
+          .where('phongId', isEqualTo: room.id)
+          .where('trangThai', isEqualTo: 'choXacNhan')
+          .get();
+
+      if (existingRequest.docs.isNotEmpty) {
+        Get.snackbar(
+          'Thông báo',
+          'Bạn đã gửi yêu cầu thuê phòng này rồi',
+          snackPosition: SnackPosition.BOTTOM,
+        );
+        return;
+      }
+
+      // Tạo yêu cầu mới
       await _firestore.collection('yeuCauThue').add({
         'nguoiThueId': user.uid,
         'phongId': room.id,
-        'trangThai': 'choXacNhan',
+        'trangThai': 'choXacNhan', // Người thuê gửi nên cần chờ chủ trọ xác nhận
+        'loaiYeuCau': 'thuePhong',
+        'nguoiTaoId': user.uid, // ID của người thuê
+        'loaiNguoiTao': 'nguoiThue', // Người tạo là người thuê
         'ngayTao': FieldValue.serverTimestamp(),
       });
 

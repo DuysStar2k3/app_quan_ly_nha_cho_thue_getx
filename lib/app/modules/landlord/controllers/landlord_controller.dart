@@ -77,14 +77,22 @@ class LandlordController extends GetxController {
   }
 
   // Activity helpers
-  String getActivityTitle(Map<String, dynamic> activity) {
-    switch (activity['loai']) {
+  String getActivityTitle(String type) {
+    switch (type) {
       case 'thanhToan':
         return 'Thanh toán tiền phòng';
-      case 'nguoiThue':
-        return 'Người thuê mới';
       case 'suaChua':
         return 'Yêu cầu sửa chữa';
+      case 'thongBao':
+        return 'Thông báo mới';
+      case 'guiYeuCauThamGia':
+        return 'Gửi yêu cầu tham gia';
+      case 'chapNhanYeuCau':
+        return 'Chấp nhận yêu cầu thuê';
+      case 'tuChoiYeuCau':
+        return 'Từ chối yêu cầu thuê';
+      case 'xacNhanThamGia':
+        return 'Xác nhận tham gia';
       case 'traPhong':
         return 'Trả phòng';
       default:
@@ -93,17 +101,28 @@ class LandlordController extends GetxController {
   }
 
   String getActivityDescription(Map<String, dynamic> activity) {
-    switch (activity['loai']) {
+    final type = activity['loai'] ?? '';
+    final soPhong = activity['soPhong']?.toString() ?? '';
+    
+    switch (type) {
       case 'thanhToan':
-        return 'Phòng ${activity['soPhong']} đã thanh toán ${activity['soTien']}đ';
-      case 'nguoiThue':
-        return '${activity['tenNguoiThue']} đã thuê phòng ${activity['soPhong']}';
+        return 'Đã thanh toán ${activity['soTien']}đ cho tháng ${activity['thang']}';
       case 'suaChua':
-        return 'Phòng ${activity['soPhong']} ${activity['noiDung']}';
+        return activity['noiDung'] ?? 'Yêu cầu sửa chữa mới';
+      case 'thongBao':
+        return activity['noiDung'] ?? 'Thông báo mới';
+      case 'guiYeuCauThamGia':
+        return 'Đã gửi yêu cầu tham gia phòng $soPhong';
+      case 'chapNhanYeuCau':
+        return 'Đã chấp nhận yêu cầu thuê phòng $soPhong';
+      case 'tuChoiYeuCau':
+        return 'Đã từ chối yêu cầu thuê phòng $soPhong';
+      case 'xacNhanThamGia':
+        return 'Đã xác nhận tham gia phòng $soPhong';
       case 'traPhong':
-        return 'Phòng ${activity['soPhong']} đã trả phòng';
+        return 'Người thuê đã trả phòng $soPhong';
       default:
-        return activity['noiDung'] ?? 'Chi tiết hoạt động';
+        return activity['noiDung'] ?? 'Không có mô tả';
     }
   }
 
@@ -111,14 +130,22 @@ class LandlordController extends GetxController {
     switch (type) {
       case 'thanhToan':
         return Icons.payment;
-      case 'nguoiThue':
-        return Icons.person_add;
       case 'suaChua':
         return Icons.build;
-      case 'traPhong':
-        return Icons.key;
-      default:
+      case 'thongBao':
         return Icons.notifications;
+      case 'guiYeuCauThamGia':
+        return Icons.person_add;
+      case 'chapNhanYeuCau':
+        return Icons.check_circle;
+      case 'tuChoiYeuCau':
+        return Icons.cancel;
+      case 'xacNhanThamGia':
+        return Icons.how_to_reg;
+      case 'traPhong':
+        return Icons.logout;
+      default:
+        return Icons.circle_notifications;
     }
   }
 
@@ -126,12 +153,20 @@ class LandlordController extends GetxController {
     switch (type) {
       case 'thanhToan':
         return Colors.green;
-      case 'nguoiThue':
-        return Colors.blue;
       case 'suaChua':
         return Colors.orange;
-      case 'traPhong':
+      case 'thongBao':
+        return Colors.blue;
+      case 'guiYeuCauThamGia':
         return Colors.purple;
+      case 'chapNhanYeuCau':
+        return Colors.green;
+      case 'tuChoiYeuCau':
+        return Colors.red;
+      case 'xacNhanThamGia':
+        return Colors.green;
+      case 'traPhong':
+        return Colors.red;
       default:
         return Colors.grey;
     }

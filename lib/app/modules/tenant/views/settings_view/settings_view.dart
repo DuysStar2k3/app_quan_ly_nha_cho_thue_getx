@@ -73,7 +73,7 @@ class SettingsView extends GetView<TenantController> {
                                 borderRadius: BorderRadius.circular(12),
                               ),
                               child: Text(
-                                'Chủ trọ',
+                                'Khách Thuê',
                                 style: TextStyle(
                                   color: Colors.blue.shade700,
                                   fontWeight: FontWeight.w500,

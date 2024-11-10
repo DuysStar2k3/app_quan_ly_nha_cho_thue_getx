@@ -32,7 +32,7 @@ class AddRoomView extends GetView<RoomsController> {
     {
       'value': 'may_giat',
       'label': 'Máy giặt',
-      'icon': Icons.local_laundry_service
+      'icon': Icons.local_laundry_service_sharp
     },
     {'value': 'giuong', 'label': 'Giường', 'icon': Icons.bed},
     {'value': 'tu_quan_ao', 'label': 'Tủ quần áo', 'icon': Icons.door_sliding},

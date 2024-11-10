@@ -6,7 +6,6 @@ class RoomServiceBinding extends Bindings {
   final PhongModel room;
 
   RoomServiceBinding(this.room);
-
   @override
   void dependencies() {
     Get.lazyPut(() => RoomServiceController(room));
