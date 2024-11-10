@@ -4,6 +4,7 @@ import '../../controllers/home_controller.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../routes/app_pages.dart';
 import 'package:intl/intl.dart';
+import '../notifications/notifications_view.dart';
 
 class HomeView extends GetView<HomeController> {
   const HomeView({super.key});
@@ -19,10 +20,10 @@ class HomeView extends GetView<HomeController> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               _buildHeader(),
-              const SizedBox(height: 24),
+              const SizedBox(height: 15),
               _buildQuickActions(),
-              const SizedBox(height: 16),
-              _buildRecentActivities(),
+              const SizedBox(height: 15),
+              _buildCurrentRoom(),
             ],
           ),
         ),
@@ -38,8 +39,8 @@ class HomeView extends GetView<HomeController> {
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
           colors: [
-            AppColors.primary.withOpacity(0.8),
-            AppColors.primary,
+            Colors.blue.shade400,
+            Colors.blue.shade800,
           ],
         ),
       ),
@@ -96,119 +97,259 @@ class HomeView extends GetView<HomeController> {
                     ],
                   ),
                 ),
-                IconButton(
-                  onPressed: () {
-                    // TODO: Show notifications
-                  },
-                  icon: const Icon(
-                    Icons.notifications_outlined,
-                    color: Colors.white,
-                    size: 28,
-                  ),
+                Stack(
+                  children: [
+                    IconButton(
+                      onPressed: () => Get.to(() => const NotificationsView()),
+                      icon: const Icon(
+                        Icons.notifications_outlined,
+                        color: Colors.white,
+                        size: 40,
+                      ),
+                    ),
+                    Obx(() {
+                      if (controller.recentActivities.isEmpty) {
+                        return const SizedBox.shrink();
+                      }
+                      return Positioned(
+                        right: 8,
+                        top: 8,
+                        child: Container(
+                          padding: const EdgeInsets.all(4),
+                          decoration: const BoxDecoration(
+                            color: Colors.red,
+                            shape: BoxShape.circle,
+                          ),
+                          child: Text(
+                            '${controller.recentActivities.length}',
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 12,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      );
+                    }),
+                  ],
                 ),
               ],
             ),
-            const SizedBox(height: 24),
-            Obx(() {
-              final room = controller.currentRoom.value;
-              if (room == null) {
-                return Container(
-                  padding: const EdgeInsets.all(16),
-                  decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.15),
-                    borderRadius: BorderRadius.circular(16),
-                  ),
-                  child: Row(
-                    children: [
-                      Icon(
-                        Icons.home_outlined,
-                        color: Colors.white.withOpacity(0.8),
-                      ),
-                      const SizedBox(width: 12),
-                      Text(
-                        'Bạn chưa thuê phòng nào',
-                        style: TextStyle(
-                          color: Colors.white.withOpacity(0.8),
-                        ),
-                      ),
-                    ],
-                  ),
-                );
-              }
+          ],
+        ),
+      ),
+    );
+  }
 
+  Widget _buildCurrentRoom() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text(
+            'Phòng của bạn',
+            style: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          const SizedBox(height: 16),
+          Obx(() {
+            final room = controller.currentRoom.value;
+            if (room == null) {
               return Container(
-                padding: const EdgeInsets.all(16),
+                padding: const EdgeInsets.all(24),
                 decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.15),
+                  color: Colors.grey.shade100,
                   borderRadius: BorderRadius.circular(16),
+                  border: Border.all(color: Colors.grey.shade300),
                 ),
                 child: Column(
                   children: [
-                    Row(
+                    Icon(
+                      Icons.home_outlined,
+                      size: 48,
+                      color: Colors.grey.shade400,
+                    ),
+                    const SizedBox(height: 16),
+                    Text(
+                      'Bạn chưa thuê phòng nào',
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: Colors.grey.shade600,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    ElevatedButton(
+                      onPressed: () => Get.toNamed(Routes.TENANT_ROOM_SEARCH),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: AppColors.primary,
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 20,
+                          vertical: 11,
+                        ),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                      ),
+                      child: const Text('Tìm phòng ngay'),
+                    ),
+                  ],
+                ),
+              );
+            }
+
+            return Container(
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  colors: [
+                    AppColors.primary.withOpacity(0.8),
+                    AppColors.primary,
+                  ],
+                ),
+                borderRadius: BorderRadius.circular(16),
+                boxShadow: [
+                  BoxShadow(
+                    color: AppColors.primary.withOpacity(0.3),
+                    blurRadius: 8,
+                    offset: const Offset(0, 4),
+                  ),
+                ],
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.all(12),
+                        decoration: BoxDecoration(
+                          color: Colors.white.withOpacity(0.2),
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: const Icon(
+                          Icons.home,
+                          color: Colors.white,
+                          size: 28,
+                        ),
+                      ),
+                      const SizedBox(width: 16),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Phòng ${room.soPhong}',
+                            style: const TextStyle(
+                              fontSize: 24,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                            ),
+                          ),
+                          Text(
+                            NumberFormat.currency(
+                              locale: 'vi_VN',
+                              symbol: 'đ',
+                            ).format(room.giaThue),
+                            style: TextStyle(
+                              fontSize: 16,
+                              color: Colors.white.withOpacity(0.9),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 10),
+                  Container(
+                    padding: const EdgeInsets.all(12),
+                    decoration: BoxDecoration(
+                      color: Colors.white.withOpacity(0.1),
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: Row(
                       children: [
                         Container(
                           padding: const EdgeInsets.all(8),
                           decoration: BoxDecoration(
                             color: Colors.white.withOpacity(0.2),
-                            borderRadius: BorderRadius.circular(12),
+                            shape: BoxShape.circle,
                           ),
                           child: const Icon(
-                            Icons.home,
+                            Icons.person,
                             color: Colors.white,
+                            size: 20,
                           ),
                         ),
                         const SizedBox(width: 12),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Phòng ${room.soPhong}',
-                              style: const TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white,
-                              ),
-                            ),
-                            Text(
-                              NumberFormat.currency(
-                                locale: 'vi_VN',
-                                symbol: 'đ',
-                              ).format(room.giaThue),
-                              style: TextStyle(
-                                color: Colors.white.withOpacity(0.8),
-                              ),
-                            ),
-                          ],
+                        Expanded(
+                          child: Obx(() {
+                            final landlord =
+                                controller.getLandlordInfo(room.chuTroId);
+                            return Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'Chủ trọ',
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    color: Colors.white.withOpacity(0.8),
+                                  ),
+                                ),
+                                const SizedBox(height: 4),
+                                Text(
+                                  landlord?.ten ?? 'Đang tải...',
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                              ],
+                            );
+                          }),
+                        ),
+                        IconButton(
+                          onPressed: () =>
+                              controller.callLandlord(room.chuTroId),
+                          icon: const Icon(
+                            Icons.phone,
+                            color: Colors.white,
+                            size: 20,
+                          ),
                         ),
                       ],
                     ),
-                    const SizedBox(height: 16),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        _buildRoomStat(
-                          icon: Icons.square_foot,
-                          label: 'Diện tích',
-                          value: '${room.dienTich}m²',
-                        ),
-                        _buildRoomStat(
-                          icon: Icons.people,
-                          label: 'Số người',
-                          value: '${room.nguoiThueHienTai.length}',
-                        ),
-                        _buildRoomStat(
-                          icon: Icons.calendar_today,
-                          label: 'Ngày thuê',
-                          value: '15/03',
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              );
-            }),
-          ],
-        ),
+                  ),
+                  const SizedBox(height: 16),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      _buildRoomStat(
+                        icon: Icons.square_foot,
+                        label: 'Diện tích',
+                        value: '${room.dienTich}m²',
+                      ),
+                      _buildRoomStat(
+                        icon: Icons.people,
+                        label: 'Số người',
+                        value: '${room.nguoiThueHienTai.length}',
+                      ),
+                      _buildRoomStat(
+                        icon: Icons.calendar_today,
+                        label: 'Ngày thuê',
+                        value: '15/03',
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            );
+          }),
+        ],
       ),
     );
   }
@@ -220,12 +361,19 @@ class HomeView extends GetView<HomeController> {
   }) {
     return Column(
       children: [
-        Icon(
-          icon,
-          color: Colors.white,
-          size: 20,
+        Container(
+          padding: const EdgeInsets.all(8),
+          decoration: BoxDecoration(
+            color: Colors.white.withOpacity(0.2),
+            borderRadius: BorderRadius.circular(8),
+          ),
+          child: Icon(
+            icon,
+            color: Colors.white,
+            size: 20,
+          ),
         ),
-        const SizedBox(height: 4),
+        const SizedBox(height: 8),
         Text(
           label,
           style: TextStyle(
@@ -233,7 +381,7 @@ class HomeView extends GetView<HomeController> {
             color: Colors.white.withOpacity(0.8),
           ),
         ),
-        const SizedBox(height: 2),
+        const SizedBox(height: 4),
         Text(
           value,
           style: const TextStyle(
@@ -254,18 +402,18 @@ class HomeView extends GetView<HomeController> {
           const Text(
             'Thao tác nhanh',
             style: TextStyle(
-              fontSize: 18,
+              fontSize: 20,
               fontWeight: FontWeight.bold,
             ),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: 13),
           Row(
             children: [
               Expanded(
                 child: _buildActionCard(
                   icon: Icons.search,
                   label: 'Tìm phòng',
-                  color: AppColors.info,
+                  color: Colors.blue,
                   onTap: () => Get.toNamed(Routes.TENANT_ROOM_SEARCH),
                 ),
               ),
@@ -274,20 +422,20 @@ class HomeView extends GetView<HomeController> {
                 child: _buildActionCard(
                   icon: Icons.receipt_long,
                   label: 'Hóa đơn',
-                  color: AppColors.primary,
+                  color: Colors.green,
                   onTap: () => Get.toNamed('/tenant/bills'),
                 ),
               ),
             ],
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: 13),
           Row(
             children: [
               Expanded(
                 child: _buildActionCard(
                   icon: Icons.home_repair_service,
                   label: 'Dịch vụ',
-                  color: AppColors.secondary,
+                  color: Colors.orange,
                   onTap: () => Get.toNamed('/tenant/services'),
                 ),
               ),
@@ -304,79 +452,6 @@ class HomeView extends GetView<HomeController> {
           ),
         ],
       ),
-    );
-  }
-
-  Widget _buildRecentActivities() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              const Text(
-                'Hoạt động gần đây',
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              TextButton(
-                onPressed: () {
-                  // TODO: View all activities
-                },
-                child: const Text('Xem tất cả'),
-              ),
-            ],
-          ),
-          const SizedBox(height: 8),
-          ListView.builder(
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            itemCount: controller.recentActivities.length,
-            itemBuilder: (context, index) {
-              final activity = controller.recentActivities[index];
-              return _buildActivityItem(activity);
-            },
-          ),
-        ],
-      ),
-    );
-  }
-
-  // Helper Widgets
-  Widget _buildQuickStat({
-    required String label,
-    required String value,
-    required Color color,
-  }) {
-    return Column(
-      children: [
-        Text(
-          value,
-          style: TextStyle(
-            fontSize: 24,
-            fontWeight: FontWeight.bold,
-            color: color,
-          ),
-        ),
-        Text(
-          label,
-          style: TextStyle(
-            color: color.withOpacity(0.8),
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildDivider() {
-    return Container(
-      height: 30,
-      width: 1,
-      color: Colors.white.withOpacity(0.3),
     );
   }
 
@@ -418,42 +493,6 @@ class HomeView extends GetView<HomeController> {
                 ),
               ),
             ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildActivityItem(Map<String, dynamic> activity) {
-    return Card(
-      margin: const EdgeInsets.only(bottom: 12),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12),
-      ),
-      child: ListTile(
-        contentPadding: const EdgeInsets.all(12),
-        leading: Container(
-          padding: const EdgeInsets.all(8),
-          decoration: BoxDecoration(
-            color: AppColors.primary.withOpacity(0.1),
-            shape: BoxShape.circle,
-          ),
-          child: Icon(
-            Icons.notifications,
-            color: AppColors.primary,
-            size: 24,
-          ),
-        ),
-        title: Text(
-          activity['title'] ?? 'Thông báo mới',
-          style: const TextStyle(
-            fontWeight: FontWeight.w500,
-          ),
-        ),
-        subtitle: Text(
-          activity['description'] ?? 'Không có mô tả',
-          style: TextStyle(
-            color: AppColors.textLight,
           ),
         ),
       ),

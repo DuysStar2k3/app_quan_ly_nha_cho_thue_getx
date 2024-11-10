@@ -3,8 +3,7 @@ import 'package:get/get.dart';
 import '../../../../routes/app_pages.dart';
 import '../../controllers/landlord_controller.dart';
 import '../../controllers/rooms_controller.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:intl/intl.dart';
+import '../notifications/notifications_view.dart';
 
 class HomeView extends GetView<LandlordController> {
   HomeView({super.key});
@@ -90,34 +89,38 @@ class HomeView extends GetView<LandlordController> {
                           Stack(
                             children: [
                               IconButton(
-                                onPressed: () {
-                                  // TODO: Show notifications
-                                },
+                                onPressed: () =>
+                                    Get.to(() => const NotificationsView()),
                                 icon: const Icon(
                                   Icons.notifications_outlined,
                                   color: Colors.white,
-                                  size: 28,
+                                  size: 40,
                                 ),
                               ),
-                              Positioned(
-                                right: 8,
-                                top: 8,
-                                child: Container(
-                                  padding: const EdgeInsets.all(4),
-                                  decoration: const BoxDecoration(
-                                    color: Colors.red,
-                                    shape: BoxShape.circle,
-                                  ),
-                                  child: const Text(
-                                    '3',
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.bold,
+                              Obx(() {
+                                if (controller.recentActivities.isEmpty) {
+                                  return const SizedBox.shrink();
+                                }
+                                return Positioned(
+                                  right: 8,
+                                  top: 8,
+                                  child: Container(
+                                    padding: const EdgeInsets.all(4),
+                                    decoration: const BoxDecoration(
+                                      color: Colors.red,
+                                      shape: BoxShape.circle,
+                                    ),
+                                    child: Text(
+                                      '${controller.recentActivities.length}',
+                                      style: const TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.bold,
+                                      ),
                                     ),
                                   ),
-                                ),
-                              ),
+                                );
+                              }),
                             ],
                           ),
                         ],
@@ -232,7 +235,8 @@ class HomeView extends GetView<LandlordController> {
                             icon: Icons.request_page,
                             label: 'Yêu cầu thuê',
                             color: Colors.purple,
-                            onTap: () => Get.toNamed(Routes.LANDLORD_ROOM_REQUESTS),
+                            onTap: () =>
+                                Get.toNamed(Routes.LANDLORD_ROOM_REQUESTS),
                           ),
                         ),
                       ],
@@ -240,118 +244,6 @@ class HomeView extends GetView<LandlordController> {
                   ],
                 ),
               ),
-
-              // Recent Activities
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        const Text(
-                          'Hoạt động gần đây',
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        TextButton(
-                          onPressed: () {
-                            // TODO: View all activities
-                          },
-                          child: const Text('Xem tất cả'),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 8),
-                    Obx(() {
-                      final activities = controller.recentActivities;
-                      if (activities.isEmpty) {
-                        return Center(
-                          child: Padding(
-                            padding: const EdgeInsets.all(32),
-                            child: Text(
-                              'Chưa có hoạt động nào',
-                              style: TextStyle(
-                                color: Colors.grey.shade600,
-                              ),
-                            ),
-                          ),
-                        );
-                      }
-
-                      return ListView.builder(
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        itemCount: activities.length,
-                        itemBuilder: (context, index) {
-                          final activity = activities[index];
-                          return Card(
-                            elevation: 0,
-                            color: Colors.grey.shade50,
-                            margin: const EdgeInsets.only(bottom: 12),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            child: ListTile(
-                              contentPadding: const EdgeInsets.symmetric(
-                                horizontal: 16,
-                                vertical: 8,
-                              ),
-                              leading: Container(
-                                padding: const EdgeInsets.all(8),
-                                decoration: BoxDecoration(
-                                  color: controller
-                                      .getActivityColor(activity['loai'] ?? '')
-                                      .withOpacity(0.1),
-                                  shape: BoxShape.circle,
-                                ),
-                                child: Icon(
-                                  controller.getActivityIcon(activity['loai'] ?? ''),
-                                  color: controller
-                                      .getActivityColor(activity['loai'] ?? ''),
-                                  size: 24,
-                                ),
-                              ),
-                              title: Text(
-                                controller.getActivityTitle(activity['loai'] ?? ''),
-                                style: const TextStyle(
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ),
-                              subtitle: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  const SizedBox(height: 4),
-                                  Text(
-                                    controller.getActivityDescription(activity),
-                                    style: TextStyle(
-                                      color: Colors.grey.shade600,
-                                    ),
-                                  ),
-                                  const SizedBox(height: 4),
-                                  Text(
-                                    activity['ngayTao'] != null 
-                                        ? DateFormat('dd/MM/yyyy HH:mm').format((activity['ngayTao'] as Timestamp).toDate())
-                                        : 'Vừa xong',
-                                    style: TextStyle(
-                                      fontSize: 12,
-                                      color: Colors.grey.shade500,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          );
-                        },
-                      );
-                    }),
-                  ],
-                ),
-              ),
-              const SizedBox(height: 16),
             ],
           ),
         ),

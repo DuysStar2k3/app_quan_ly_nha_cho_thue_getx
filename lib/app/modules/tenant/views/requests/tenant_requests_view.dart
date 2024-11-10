@@ -4,7 +4,6 @@ import '../../../../data/models/phong_model.dart';
 import '../../../../data/models/yeu_cau_thue_model.dart';
 import '../../controllers/tenant_requests_controller.dart';
 import '../../../../core/theme/app_colors.dart';
-import 'package:timeago/timeago.dart' as timeago;
 import 'package:intl/intl.dart';
 
 class TenantRequestsView extends GetView<TenantRequestsController> {

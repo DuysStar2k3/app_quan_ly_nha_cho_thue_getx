@@ -5,6 +5,7 @@ import '../../../data/models/hop_dong_model.dart';
 import '../../../data/repositories/auth_repository.dart';
 import '../../../data/models/user_model.dart';
 import '../../../data/models/yeu_cau_thue_model.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class HomeController extends GetxController {
   final AuthRepository _authRepository;
@@ -20,6 +21,7 @@ class HomeController extends GetxController {
   final recentActivities = <Map<String, dynamic>>[].obs;
   final pendingRequests = <YeuCauThueModel>[].obs;
   final rooms = <String, PhongModel>{}.obs;
+  final landlords = <String, UserModel>{}.obs;
 
   @override
   void onInit() {
@@ -202,6 +204,37 @@ class HomeController extends GetxController {
         return activity['noiDung'] ?? 'Thông báo mới';
       default:
         return activity['noiDung'] ?? 'Không có mô tả';
+    }
+  }
+
+  Future<void> _loadLandlordInfo(String landlordId) async {
+    try {
+      if (!landlords.containsKey(landlordId)) {
+        final doc = await _firestore.collection('nguoiDung').doc(landlordId).get();
+        if (doc.exists) {
+          landlords[landlordId] = UserModel.fromJson({
+            'uid': doc.id,
+            ...doc.data()!,
+          });
+        }
+      }
+    } catch (e) {
+      print('Error loading landlord info: $e');
+    }
+  }
+
+  UserModel? getLandlordInfo(String landlordId) {
+    if (!landlords.containsKey(landlordId)) {
+      _loadLandlordInfo(landlordId);
+    }
+    return landlords[landlordId];
+  }
+
+  void callLandlord(String landlordId) {
+    final landlord = landlords[landlordId];
+    if (landlord != null) {
+      final phone = landlord.soDienThoai;
+      launchUrl(Uri.parse('tel:$phone'));
     }
   }
 } 
