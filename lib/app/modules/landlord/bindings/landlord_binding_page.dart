@@ -4,7 +4,7 @@ import '../controllers/rooms_controller.dart';
 import '../controllers/services_controller.dart';
 import '../../../data/repositories/auth_repository.dart';
 
-class LandlordBinding extends Bindings {
+class LandlordBindingPage extends Bindings {
   @override
   void dependencies() {
     // Đăng ký LandlordController

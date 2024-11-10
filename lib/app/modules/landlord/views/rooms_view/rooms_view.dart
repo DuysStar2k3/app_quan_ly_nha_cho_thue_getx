@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../controllers/rooms_controller.dart';
 import '../../bindings/room_service_binding.dart';
-import '../../bindings/tenant_binding.dart';
+import '../../bindings/tenant_binding_view.dart';
 import 'add_room_view.dart';
 import 'room_service_view.dart';
-import 'tenant_view.dart';
+import 'room_tenant_view.dart';
 
 class RoomsView extends GetView<RoomsController> {
   const RoomsView({super.key});
@@ -330,8 +330,8 @@ class RoomsView extends GetView<RoomsController> {
                             Expanded(
                               child: ElevatedButton.icon(
                                 onPressed: () => Get.to(
-                                  () => const TenantView(),
-                                  binding: TenantBinding(room),
+                                  () => const RoomTenantView(),
+                                  binding: TenantBindingView(room),
                                 ),
                                 icon: const Icon(Icons.people),
                                 label: const Text('Người thuê'),

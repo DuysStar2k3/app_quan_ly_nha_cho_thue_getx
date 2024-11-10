@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'app/routes/app_pages.dart';
-import 'app/modules/splash/bindings/splash_binding.dart';
+import 'app/core/theme/app_theme.dart';
+import 'app/modules/auth/bindings/auth_binding.dart';
 import 'firebase_options.dart';
 
 void main() async {
@@ -22,26 +23,8 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       title: 'Quản Lý Nhà Trọ',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        scaffoldBackgroundColor: Colors.white,
-        appBarTheme: const AppBarTheme(
-          elevation: 0,
-          centerTitle: true,
-          backgroundColor: Colors.white,
-          foregroundColor: Colors.black87,
-        ),
-        elevatedButtonTheme: ElevatedButtonThemeData(
-          style: ElevatedButton.styleFrom(
-            elevation: 0,
-            padding: const EdgeInsets.symmetric(vertical: 16),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(12),
-            ),
-          ),
-        ),
-      ),
-      initialBinding: SplashBinding(),
+      theme: AppTheme.light,
+      initialBinding: AuthBinding(),
       initialRoute: Routes.SPLASH,
       getPages: AppPages.routes,
     );

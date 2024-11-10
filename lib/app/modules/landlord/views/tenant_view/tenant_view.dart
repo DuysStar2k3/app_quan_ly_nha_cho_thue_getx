@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../controllers/landlord_controller.dart';
 
-class TenantsView extends GetView<LandlordController> {
-  const TenantsView({super.key});
+class TenantView extends GetView<LandlordController> {
+  const TenantView({super.key});
 
   @override
   Widget build(BuildContext context) {

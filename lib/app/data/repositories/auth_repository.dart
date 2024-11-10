@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../models/user_model.dart';
 import '../../routes/app_pages.dart';
+import '../../core/theme/app_colors.dart';
 
 class AuthRepository extends GetxController {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -33,11 +34,22 @@ class AuthRepository extends GetxController {
             });
             
             if (!_pauseRedirect) {
-              Get.offAllNamed(
-                currentUser.value!.vaiTro == 'chuTro' 
-                    ? Routes.LANDLORD 
-                    : Routes.TENANT
-              );
+              if (currentUser.value!.vaiTro == 'chuTro') {
+                Get.offAllNamed(Routes.LANDLORD);
+              } else if (currentUser.value!.vaiTro == 'nguoiThue') {
+                Get.offAllNamed(Routes.TENANT);
+              } else {
+                await signOut();
+                Get.snackbar(
+                  'Lỗi Đăng Nhập',
+                  'Tài khoản này không có quyền truy cập',
+                  snackPosition: SnackPosition.BOTTOM,
+                  backgroundColor: AppColors.error.withOpacity(0.1),
+                  colorText: AppColors.error,
+                  duration: const Duration(seconds: 3),
+                );
+                Get.offAllNamed(Routes.LOGIN);
+              }
             }
           }
         } catch (e) {

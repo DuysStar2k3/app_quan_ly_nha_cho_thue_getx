@@ -5,7 +5,7 @@ import './rooms_view/rooms_view.dart';
 import './home_view/home_view.dart';
 import './settings_view/settings_view.dart';
 import './services_view/services_view.dart';
-import 'tenant_view/tenants_view.dart';
+import 'tenant_view/tenant_view.dart';
 
 class LandlordPage extends GetView<LandlordController> {
   const LandlordPage({super.key});
@@ -28,7 +28,7 @@ class LandlordPage extends GetView<LandlordController> {
           case 2:
             return const ServicesView();
           case 3:
-            return const TenantsView();
+            return const TenantView();
           case 4:
             return const SettingsView();
           default:
