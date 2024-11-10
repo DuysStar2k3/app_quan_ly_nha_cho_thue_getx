@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "874170835924",
+    "project_id": "sqlquanlynha",
+    "storage_bucket": "sqlquanlynha.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:874170835924:android:7e5028037cd12f0ac92c41",
+        "android_client_info": {
+          "package_name": "com.example.quan_ly_nha_thue"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCct9Ko0xRxzyGJjET9WB82yX4vXSEfgL4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
