@@ -8,6 +8,8 @@ import '../modules/splash/splash_page.dart';
 import '../modules/landlord/views/landlord_page.dart';
 import '../modules/tenant/bindings/tenant_binding_page.dart';
 import '../modules/tenant/views/tenant_page.dart';
+import '../modules/tenant/views/room_search/room_search_view.dart';
+import '../modules/tenant/views/room_details/room_details_view.dart';
 
 // Định nghĩa các routes
 abstract class Routes {
@@ -17,6 +19,8 @@ abstract class Routes {
   static const LANDLORD = '/landlord';
   static const TENANT = '/tenant';
   static const ADD_ROOM = '/add-room';
+  static const TENANT_ROOM_SEARCH = '/tenant/room-search';
+  static const TENANT_ROOM_DETAILS = '/tenant/room-details';
 }
 
 // Định nghĩa các pages
@@ -51,6 +55,16 @@ class AppPages {
     GetPage(
       name: Routes.ADD_ROOM,
       page: () =>  AddRoomView(),
+    ),
+    GetPage(
+      name: Routes.TENANT_ROOM_SEARCH,
+      page: () => const RoomSearchView(),
+      binding: TenantBindingPage(),
+    ),
+    GetPage(
+      name: Routes.TENANT_ROOM_DETAILS,
+      page: () => const RoomDetailsView(),
+      binding: TenantBindingPage(),
     ),
   ];
 }

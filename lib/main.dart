@@ -4,29 +4,20 @@ import 'package:firebase_core/firebase_core.dart';
 import 'app/routes/app_pages.dart';
 import 'app/core/theme/app_theme.dart';
 import 'app/modules/auth/bindings/auth_binding.dart';
-import 'firebase_options.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
+  await Firebase.initializeApp();
 
-  runApp(const MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return GetMaterialApp(
+  runApp(
+    GetMaterialApp(
       title: 'Quản Lý Nhà Trọ',
-      debugShowCheckedModeBanner: false,
       theme: AppTheme.light,
+      debugShowCheckedModeBanner: false,
       initialBinding: AuthBinding(),
-      initialRoute: Routes.SPLASH,
+      initialRoute: AppPages.INITIAL,
       getPages: AppPages.routes,
-    );
-  }
+      defaultTransition: Transition.fade,
+    ),
+  );
 }
