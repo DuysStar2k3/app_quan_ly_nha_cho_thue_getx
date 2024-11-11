@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../controllers/tenant_controller.dart';
+import '../controllers/tenant_page_controller.dart';
 import 'home_view/home_view.dart';
 import 'services_view/services_view.dart';
 import 'settings_view/settings_view.dart';
 import '../../../core/theme/app_colors.dart';
 import 'bill/bill_view.dart';
 
-class TenantPage extends GetView<TenantController> {
+class TenantPage extends GetView<TenantPageController> {
   const TenantPage({super.key});
 
   @override

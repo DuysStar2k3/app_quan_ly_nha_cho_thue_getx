@@ -4,8 +4,8 @@ import '../../../../core/theme/app_colors.dart';
 import 'package:intl/intl.dart';
 import '../../../../data/models/phong_model.dart';
 import 'package:carousel_slider/carousel_slider.dart';
-import '../../controllers/room_details_controller.dart';
-import '../../controllers/room_search_controller.dart';
+import '../../controllers/room_details_tenant_controller.dart';
+import '../../controllers/room_search_tenant_controller.dart';
 
 class RoomDetailsView extends StatelessWidget {
   const RoomDetailsView({super.key});
@@ -160,14 +160,14 @@ class RoomDetailsView extends StatelessWidget {
                     title: 'Dịch vụ có sẵn',
                     children: [
                       Obx(() {
-                        if (Get.find<RoomDetailsController>().isLoading.value) {
+                        if (Get.find<RoomDetailsTenantController>().isLoading.value) {
                           return const Center(
                             child: CircularProgressIndicator(),
                           );
                         }
 
                         final services =
-                            Get.find<RoomDetailsController>().services;
+                            Get.find<RoomDetailsTenantController>().services;
 
                         if (services.isEmpty) {
                           return const Center(
@@ -213,7 +213,7 @@ class RoomDetailsView extends StatelessWidget {
                     title: 'Thông tin chủ trọ',
                     children: [
                       Obx(() {
-                        final landlord = Get.find<RoomDetailsController>().landlordInfo.value;
+                        final landlord = Get.find<RoomDetailsTenantController>().landlordInfo.value;
                         
                         if (landlord == null) {
                           return const Center(
@@ -291,7 +291,7 @@ class RoomDetailsView extends StatelessWidget {
                                 Expanded(
                                   child: OutlinedButton.icon(
                                     onPressed: () =>
-                                        Get.find<RoomDetailsController>().callLandlord(),
+                                        Get.find<RoomDetailsTenantController>().callLandlord(),
                                     icon: const Icon(Icons.phone),
                                     label: const Text('Gọi điện'),
                                     style: OutlinedButton.styleFrom(
@@ -303,7 +303,7 @@ class RoomDetailsView extends StatelessWidget {
                                 Expanded(
                                   child: OutlinedButton.icon(
                                     onPressed: () =>
-                                        Get.find<RoomDetailsController>().messageLandlord(),
+                                        Get.find<RoomDetailsTenantController>().messageLandlord(),
                                     icon: const Icon(Icons.message),
                                     label: const Text('Nhắn tin'),
                                     style: OutlinedButton.styleFrom(
@@ -338,7 +338,7 @@ class RoomDetailsView extends StatelessWidget {
               ),
               child: ElevatedButton(
                 onPressed: () {
-                  Get.find<RoomSearchController>().requestRoom(room);
+                  Get.find<RoomSearchTenantController>().requestRoom(room);
                 },
                 style: ElevatedButton.styleFrom(
                   padding: const EdgeInsets.symmetric(vertical: 16),

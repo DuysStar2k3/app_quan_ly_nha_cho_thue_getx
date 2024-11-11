@@ -3,13 +3,13 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import '../../../data/models/hoa_don_model.dart';
 import '../../../data/models/phong_model.dart';
 import '../../../data/models/dich_vu_model.dart';
-import '../../../data/repositories/auth_repository.dart';
+import 'package:quan_ly_nha_thue/app/modules/tenant/controllers/tenant_page_controller.dart';
 
-class BillController extends GetxController {
-  final AuthRepository _authRepository;
+class BillTenantController extends GetxController {
   final _firestore = FirebaseFirestore.instance;
+  final TenantPageController tenantPageController;
 
-  BillController(this._authRepository);
+  BillTenantController(this.tenantPageController);
 
   final isLoading = true.obs;
   final bills = <HoaDonModel>[].obs;
@@ -25,7 +25,7 @@ class BillController extends GetxController {
   Future<void> loadData() async {
     try {
       isLoading.value = true;
-      final user = _authRepository.currentUser.value;
+      final user = tenantPageController.currentUser;
       if (user == null) return;
 
       // Lấy phòng hiện tại của người thuê
@@ -78,7 +78,7 @@ class BillController extends GetxController {
   Future<void> payBill(
       String billId, String phuongThuc, bool autoConfirm) async {
     try {
-      final user = _authRepository.currentUser.value;
+      final user = tenantPageController.currentUser;
       if (user == null) return;
 
       final bill = bills.firstWhere((b) => b.id == billId);

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../controllers/service_controller.dart';
+import '../../controllers/service_tenant_controller.dart';
 import '../../../../core/theme/app_colors.dart';
 import 'package:intl/intl.dart';
 
-class ServicesView extends GetView<ServiceController> {
+class ServicesView extends GetView<ServiceTenantController> {
   const ServicesView({super.key});
 
   @override

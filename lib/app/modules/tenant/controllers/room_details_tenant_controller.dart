@@ -4,7 +4,7 @@ import '../../../data/models/phong_model.dart';
 import '../../../data/models/dich_vu_model.dart';
 import '../../../data/models/user_model.dart';
 
-class RoomDetailsController extends GetxController {
+class RoomDetailsTenantController extends GetxController {
   final _firestore = FirebaseFirestore.instance;
   final services = <DichVuModel>[].obs;
   final isLoading = true.obs;

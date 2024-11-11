@@ -1,14 +1,14 @@
 import 'package:get/get.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:quan_ly_nha_thue/app/modules/tenant/controllers/tenant_page_controller.dart';
 import '../../../data/models/thanh_toan_model.dart';
 import '../../../data/models/hoa_don_model.dart';
-import '../../../data/repositories/auth_repository.dart';
 
-class PaymentController extends GetxController {
-  final AuthRepository _authRepository;
+class PaymentTenantController extends GetxController {
+  final TenantPageController tenantPageController;
   final _firestore = FirebaseFirestore.instance;
 
-  PaymentController(this._authRepository);
+  PaymentTenantController(this.tenantPageController);
 
   final isLoading = true.obs;
   final payments = <ThanhToanModel>[].obs;
@@ -23,7 +23,7 @@ class PaymentController extends GetxController {
   Future<void> loadData() async {
     try {
       isLoading.value = true;
-      final user = _authRepository.currentUser.value;
+      final user = tenantPageController.currentUser;
       if (user == null) return;
 
       // Lấy danh sách hóa đơn chưa thanh toán
@@ -68,7 +68,7 @@ class PaymentController extends GetxController {
     String? ghiChu,
   }) async {
     try {
-      final user = _authRepository.currentUser.value;
+      final user = tenantPageController.currentUser;
       if (user == null) return;
 
       // Lấy thông tin hóa đơn

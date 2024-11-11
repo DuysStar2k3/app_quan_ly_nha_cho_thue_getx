@@ -1,20 +1,20 @@
 import 'package:get/get.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:quan_ly_nha_thue/app/modules/tenant/controllers/tenant_page_controller.dart';
 import '../../../data/models/phong_model.dart';
 import '../../../data/models/hop_dong_model.dart';
-import '../../../data/repositories/auth_repository.dart';
 import '../../../data/models/user_model.dart';
 import '../../../data/models/yeu_cau_thue_model.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter/material.dart';
 
-class HomeController extends GetxController {
-  final AuthRepository _authRepository;
+class HomeTenantController extends GetxController {
+  final TenantPageController tenantPageController;
   final _firestore = FirebaseFirestore.instance;
 
-  HomeController(this._authRepository);
+  HomeTenantController(this.tenantPageController);
 
-  UserModel? get currentUser => _authRepository.currentUser.value;
+  UserModel? get currentUser => tenantPageController.currentUser;
 
   final isLoading = true.obs;
   final currentRoom = Rxn<PhongModel>();

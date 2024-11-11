@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../controllers/bill_controller.dart';
+import '../../controllers/bill_tenant_controller.dart';
 import '../../../../core/theme/app_colors.dart';
 import 'package:intl/intl.dart';
 import './bill_details_view.dart';
 
-class BillView extends GetView<BillController> {
+class BillView extends GetView<BillTenantController> {
   const BillView({super.key});
 
   @override

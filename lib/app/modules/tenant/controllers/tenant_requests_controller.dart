@@ -3,13 +3,13 @@ import 'package:get/get.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../../../data/models/yeu_cau_thue_model.dart';
 import '../../../data/models/phong_model.dart';
-import '../../../data/repositories/auth_repository.dart';
+import 'package:quan_ly_nha_thue/app/modules/tenant/controllers/tenant_page_controller.dart';
 
 class TenantRequestsController extends GetxController {
-  final AuthRepository _authRepository;
   final _firestore = FirebaseFirestore.instance;
+  final TenantPageController tenantPageController;
 
-  TenantRequestsController(this._authRepository);
+  TenantRequestsController(this.tenantPageController);
 
   final isLoading = true.obs;
   final requests = <YeuCauThueModel>[].obs;
@@ -18,14 +18,14 @@ class TenantRequestsController extends GetxController {
   // Thêm getters để phân loại yêu cầu
   List<YeuCauThueModel> get myRequests => requests.where((req) {
         // Yêu cầu do tôi gửi đi (chờ chủ trọ xác nhận)
-        return req.nguoiThueId == _authRepository.currentUser.value?.uid && 
-               req.trangThai == 'choXacNhan';
+        return req.nguoiThueId == tenantPageController.currentUser?.uid &&
+            req.trangThai == 'choXacNhan';
       }).toList();
 
   List<YeuCauThueModel> get receivedRequests => requests.where((req) {
         // Yêu cầu được chủ trọ gửi đến (đã chấp nhận, chờ tôi xác nhận)
-        return req.nguoiThueId == _authRepository.currentUser.value?.uid && 
-               req.trangThai == 'daChapNhan';
+        return req.nguoiThueId == tenantPageController.currentUser?.uid &&
+            req.trangThai == 'daChapNhan';
       }).toList();
 
   @override
@@ -37,7 +37,7 @@ class TenantRequestsController extends GetxController {
   Future<void> loadRequests() async {
     try {
       isLoading.value = true;
-      final user = _authRepository.currentUser.value;
+      final user = tenantPageController.currentUser;
       if (user == null) return;
 
       // Lấy tất cả yêu cầu của người thuê
@@ -78,7 +78,7 @@ class TenantRequestsController extends GetxController {
 
   Future<void> acceptRequest(YeuCauThueModel request) async {
     try {
-      final user = _authRepository.currentUser.value;
+      final user = tenantPageController.currentUser;
       if (user == null) return;
 
       // Kiểm tra xem người thuê đã có phòng chưa
@@ -97,7 +97,8 @@ class TenantRequestsController extends GetxController {
       }
 
       // Kiểm tra số lượng người trong phòng
-      final roomDoc = await _firestore.collection('phong').doc(request.phongId).get();
+      final roomDoc =
+          await _firestore.collection('phong').doc(request.phongId).get();
       if (!roomDoc.exists) {
         throw 'Không tìm thấy thông tin phòng';
       }
@@ -132,7 +133,7 @@ class TenantRequestsController extends GetxController {
 
       // Thêm hoạt động
       await _firestore.collection('hoatDong').add({
-        'nguoiThueId': _authRepository.currentUser.value?.uid,
+        'nguoiThueId': tenantPageController.currentUser?.uid,
         'loai': 'xacNhanThamGia',
         'phongId': request.phongId,
         'soPhong': rooms[request.phongId]?.soPhong,
@@ -236,4 +237,4 @@ class TenantRequestsController extends GetxController {
   }
 
   PhongModel? getRoomInfo(String roomId) => rooms[roomId];
-} 
+}

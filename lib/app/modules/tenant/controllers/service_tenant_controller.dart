@@ -2,13 +2,13 @@ import 'package:get/get.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../../../data/models/dich_vu_model.dart';
 import '../../../data/models/phong_model.dart';
-import '../../../data/repositories/auth_repository.dart';
+import 'package:quan_ly_nha_thue/app/modules/tenant/controllers/tenant_page_controller.dart';
 
-class ServiceController extends GetxController {
-  final AuthRepository _authRepository;
+class ServiceTenantController extends GetxController {
   final _firestore = FirebaseFirestore.instance;
+  final TenantPageController tenantPageController;
 
-  ServiceController(this._authRepository);
+  ServiceTenantController(this.tenantPageController);
 
   final isLoading = true.obs;
   final currentRoom = Rxn<PhongModel>();
@@ -24,7 +24,7 @@ class ServiceController extends GetxController {
   Future<void> loadData() async {
     try {
       isLoading.value = true;
-      final user = _authRepository.currentUser.value;
+      final user = tenantPageController.currentUser;
       if (user == null) return;
 
       // Lấy phòng hiện tại của người thuê
@@ -68,7 +68,7 @@ class ServiceController extends GetxController {
 
   Future<void> requestService(String serviceType, String description) async {
     try {
-      final user = _authRepository.currentUser.value;
+      final user = tenantPageController.currentUser;
       if (user == null || currentRoom.value == null) return;
 
       // Tạo yêu cầu dịch vụ mới

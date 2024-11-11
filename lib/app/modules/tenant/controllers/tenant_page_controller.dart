@@ -2,10 +2,10 @@ import 'package:get/get.dart';
 import '../../../data/repositories/auth_repository.dart';
 import '../../../data/models/user_model.dart';
 
-class TenantController extends GetxController {
+class TenantPageController extends GetxController {
   final AuthRepository _authRepository;
 
-  TenantController(this._authRepository);
+  TenantPageController(this._authRepository);
 
   final selectedIndex = 0.obs;
   final isLoading = false.obs;

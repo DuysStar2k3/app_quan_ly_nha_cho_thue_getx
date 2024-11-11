@@ -1,6 +1,8 @@
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+
 import '../../../data/repositories/auth_repository.dart';
 import '../../../data/models/user_model.dart';
-import 'index.dart';
 
 class EditProfileController extends GetxController {
   final AuthRepository _authRepository;
@@ -51,4 +53,4 @@ class EditProfileController extends GetxController {
       isLoading.value = false;
     }
   }
-} 
+}

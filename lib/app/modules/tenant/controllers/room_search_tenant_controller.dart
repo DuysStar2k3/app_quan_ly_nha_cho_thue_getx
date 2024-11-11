@@ -1,21 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:quan_ly_nha_thue/app/modules/tenant/controllers/tenant_page_controller.dart';
 import '../../../data/models/phong_model.dart';
 import '../../../data/models/user_model.dart';
-import '../../../data/repositories/auth_repository.dart';
 
-class RoomSearchController extends GetxController {
-  final AuthRepository _authRepository;
+class RoomSearchTenantController extends GetxController {
   final _firestore = FirebaseFirestore.instance;
-
-  RoomSearchController(this._authRepository);
+  final TenantPageController tenantPageController;
+  RoomSearchTenantController(this.tenantPageController);
 
   final isLoading = true.obs;
   final rooms = <PhongModel>[].obs;
   final landlords = <String, UserModel>{}.obs; // Map để lưu thông tin chủ trọ
   final searchQuery = ''.obs;
-  
+
   // Filters
   final sortByPrice = false.obs;
   final showOnlyAvailable = false.obs;
@@ -31,15 +30,15 @@ class RoomSearchController extends GetxController {
   Future<void> loadRooms() async {
     try {
       isLoading.value = true;
-      
+
       Query query = _firestore.collection('phong');
-      
+
       if (showOnlyAvailable.value) {
         query = query.where('trangThai', isEqualTo: 'trong');
       }
 
       final snapshot = await query.get();
-      
+
       var roomsList = snapshot.docs.map((doc) {
         return PhongModel.fromJson({
           'id': doc.id,
@@ -49,14 +48,17 @@ class RoomSearchController extends GetxController {
 
       // Apply filters
       roomsList = roomsList.where((room) {
-        return room.giaThue >= minPrice.value && 
-               room.giaThue <= maxPrice.value;
+        return room.giaThue >= minPrice.value && room.giaThue <= maxPrice.value;
       }).toList();
 
       if (searchQuery.value.isNotEmpty) {
         roomsList = roomsList.where((room) {
-          return room.soPhong.toLowerCase().contains(searchQuery.value.toLowerCase()) ||
-                 room.loaiPhong.toLowerCase().contains(searchQuery.value.toLowerCase());
+          return room.soPhong
+                  .toLowerCase()
+                  .contains(searchQuery.value.toLowerCase()) ||
+              room.loaiPhong
+                  .toLowerCase()
+                  .contains(searchQuery.value.toLowerCase());
         }).toList();
       }
 
@@ -79,7 +81,7 @@ class RoomSearchController extends GetxController {
     try {
       // Lấy danh sách unique ID của chủ trọ
       final landlordIds = rooms.map((room) => room.chuTroId).toSet();
-      
+
       // Load thông tin từng chủ trọ
       for (String id in landlordIds) {
         final doc = await _firestore.collection('nguoiDung').doc(id).get();
@@ -134,7 +136,7 @@ class RoomSearchController extends GetxController {
 
   Future<void> requestRoom(PhongModel room) async {
     try {
-      final user = _authRepository.currentUser.value;
+      final user = tenantPageController.currentUser;
       if (user == null) return;
 
       // Kiểm tra xem người thuê đã có phòng chưa
@@ -173,7 +175,8 @@ class RoomSearchController extends GetxController {
       await _firestore.collection('yeuCauThue').add({
         'nguoiThueId': user.uid,
         'phongId': room.id,
-        'trangThai': 'choXacNhan', // Người thuê gửi nên cần chờ chủ trọ xác nhận
+        'trangThai':
+            'choXacNhan', // Người thuê gửi nên cần chờ chủ trọ xác nhận
         'loaiYeuCau': 'thuePhong',
         'nguoiTaoId': user.uid, // ID của người thuê
         'loaiNguoiTao': 'nguoiThue', // Người tạo là người thuê
@@ -193,4 +196,4 @@ class RoomSearchController extends GetxController {
       );
     }
   }
-} 
+}

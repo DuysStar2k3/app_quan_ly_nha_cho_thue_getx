@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../controllers/payment_controller.dart';
+import '../../controllers/payment_tenant_controller.dart';
 import 'package:intl/intl.dart';
 
-class PaymentView extends GetView<PaymentController> {
+class PaymentView extends GetView<PaymentTenantController> {
   const PaymentView({super.key});
 
   @override

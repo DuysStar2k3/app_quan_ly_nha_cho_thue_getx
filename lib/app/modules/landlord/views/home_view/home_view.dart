@@ -195,7 +195,7 @@ class HomeView extends GetView<LandlordController> {
                             label: 'Dịch vụ',
                             color: Colors.green,
                             onTap: () {
-                              Get.toNamed(Routes.SERVICES);
+                              Get.toNamed(Routes.LANDLORD_SERVICES);
                             },
                           ),
                         ),
@@ -210,7 +210,7 @@ class HomeView extends GetView<LandlordController> {
                             label: 'Tạo hóa đơn',
                             color: Colors.orange,
                             onTap: () {
-                              Get.toNamed(Routes.BILL);
+                              Get.toNamed(Routes.LANDLORD_BILL);
                             },
                           ),
                         ),

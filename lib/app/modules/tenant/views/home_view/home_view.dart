@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../controllers/home_controller.dart';
+import '../../../landlord/views/services_view/services_view.dart';
+import '../../controllers/home_tenant_controller.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../routes/app_pages.dart';
 import 'package:intl/intl.dart';
 import '../notifications/notifications_view.dart';
+import '../requests/tenant_requests_view.dart';
 
-class HomeView extends GetView<HomeController> {
+class HomeView extends GetView<HomeTenantController> {
   const HomeView({super.key});
 
   @override
@@ -436,7 +438,7 @@ class HomeView extends GetView<HomeController> {
                   icon: Icons.home_repair_service,
                   label: 'Dịch vụ',
                   color: Colors.orange,
-                  onTap: () => Get.toNamed('/tenant/services'),
+                  onTap: () => Get.to(() => const ServicesView()),
                 ),
               ),
               const SizedBox(width: 16),
@@ -445,7 +447,7 @@ class HomeView extends GetView<HomeController> {
                   icon: Icons.request_page,
                   label: 'Yêu cầu',
                   color: Colors.purple,
-                  onTap: () => Get.toNamed(Routes.TENANT_REQUESTS),
+                  onTap: () => Get.to(() => const TenantRequestsView()),
                 ),
               ),
             ],

@@ -8,7 +8,6 @@ import '../../core/theme/app_colors.dart';
 class AuthRepository extends GetxController {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  
   final Rx<UserModel?> currentUser = Rx<UserModel?>(null);
   bool _pauseRedirect = false;
 

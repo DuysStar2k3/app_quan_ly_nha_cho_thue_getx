@@ -1,10 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../controllers/home_controller.dart';
+import '../../controllers/home_tenant_controller.dart';
 import 'package:intl/intl.dart';
 
-class NotificationsView extends GetView<HomeController> {
+class NotificationsView extends GetView<HomeTenantController> {
   const NotificationsView({super.key});
 
   @override

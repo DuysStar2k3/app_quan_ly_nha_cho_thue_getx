@@ -30,13 +30,14 @@ abstract class Routes {
   static const TENANT_ROOM_DETAILS = '/tenant/room-details';
   static const LANDLORD_ROOM_REQUESTS = '/landlord/room-requests';
   static const TENANT_REQUESTS = '/tenant/requests';
-  static const SERVICES = '/services';
+  static const LANDLORD_SERVICES = '/landlord/services';
   static const TENANT_PAYMENT = '/tenant/payment';
   static const LANDLORD_CONTRACTS = '/landlord/contracts';
   static const LANDLORD_BILLS = '/landlord/bills';
-  static const BILL = '/landlord/bill';
+  static const LANDLORD_BILL = '/landlord/bill';
   static const BILL_DETAILS = '/landlord/bill-details';
   static const TENANT_BILLS = '/tenant/bills';
+  static const TENANT_SERVICES_VIEW = '/tenant/services-view';
 }
 
 // Định nghĩa các pages
@@ -93,7 +94,7 @@ class AppPages {
       binding: TenantBindingPage(),
     ),
     GetPage(
-      name: Routes.SERVICES,
+      name: Routes.LANDLORD_SERVICES,
       page: () => const ServicesView(),
       binding: LandlordBindingPage(),
     ),
@@ -113,7 +114,7 @@ class AppPages {
       binding: LandlordBindingPage(),
     ),
     GetPage(
-      name: Routes.BILL,
+      name: Routes.LANDLORD_BILL,
       page: () => const BillView(),
       binding: LandlordBindingPage(),
     ),
@@ -127,6 +128,11 @@ class AppPages {
     GetPage(
       name: Routes.TENANT_BILLS,
       page: () => const BillView(),
+      binding: TenantBindingPage(),
+    ),
+    GetPage(
+      name: Routes.TENANT_SERVICES_VIEW,
+      page: () => const ServicesView(),
       binding: TenantBindingPage(),
     ),
   ];

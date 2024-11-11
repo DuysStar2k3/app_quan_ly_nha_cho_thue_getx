@@ -8,7 +8,6 @@ import 'app/modules/auth/bindings/auth_binding.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-
   runApp(
     GetMaterialApp(
       title: 'Quản Lý Nhà Trọ',
