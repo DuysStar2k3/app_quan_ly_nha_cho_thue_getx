@@ -9,9 +9,6 @@ class BillView extends GetView<BillController> {
   const BillView({super.key});
 
   @override
-  String? get tag => 'tenant';
-
-  @override
   Widget build(BuildContext context) {
     return DefaultTabController(
       length: 2,

@@ -111,21 +111,24 @@ class PaymentView extends GetView<PaymentController> {
                             ],
                           ),
                         ),
-                        if (payment.trangThai == 'choXacNhan')
-                          ElevatedButton(
-                            onPressed: () => _showCancelConfirmDialog(payment.hoaDonId),
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.red,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 16,
-                                vertical: 8,
-                              ),
-                            ),
-                            child: const Text('Hủy yêu cầu'),
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 12,
+                            vertical: 6,
                           ),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          child: Text(
+                            _getStatusText(payment.trangThai),
+                            style: TextStyle(
+                              color: _getStatusColor(payment.trangThai),
+                              fontSize: 12,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ),
                       ],
                     ),
                   ),
@@ -249,30 +252,5 @@ class PaymentView extends GetView<PaymentController> {
       default:
         return method;
     }
-  }
-
-  void _showCancelConfirmDialog(String billId) {
-    Get.dialog(
-      AlertDialog(
-        title: const Text('Xác nhận hủy'),
-        content: const Text('Bạn có chắc muốn hủy yêu cầu thanh toán này?'),
-        actions: [
-          TextButton(
-            onPressed: () => Get.back(),
-            child: const Text('Không'),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              Get.back();
-              controller.cancelPaymentRequest(billId);
-            },
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.red,
-            ),
-            child: const Text('Hủy'),
-          ),
-        ],
-      ),
-    );
   }
 }
