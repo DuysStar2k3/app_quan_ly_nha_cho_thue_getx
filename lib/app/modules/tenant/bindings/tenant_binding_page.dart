@@ -6,6 +6,8 @@ import '../controllers/room_details_controller.dart';
 import '../controllers/tenant_requests_controller.dart';
 import '../../../data/repositories/auth_repository.dart';
 import '../controllers/service_controller.dart';
+import '../controllers/payment_controller.dart';
+import '../controllers/bill_controller.dart';
 
 class TenantBindingPage extends Bindings {
   @override
@@ -16,5 +18,7 @@ class TenantBindingPage extends Bindings {
     Get.lazyPut(() => RoomDetailsController());
     Get.lazyPut(() => TenantRequestsController(Get.find<AuthRepository>()));
     Get.lazyPut(() => ServiceController(Get.find<AuthRepository>()));
+    Get.lazyPut(() => PaymentController(Get.find<AuthRepository>()));
+    Get.lazyPut(() => BillController(Get.find<AuthRepository>()));
   }
 } 

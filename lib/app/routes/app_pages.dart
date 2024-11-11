@@ -13,6 +13,10 @@ import '../modules/tenant/views/room_search/room_search_view.dart';
 import '../modules/tenant/views/room_details/room_details_view.dart';
 import '../modules/landlord/views/room_requests/room_requests_view.dart';
 import '../modules/tenant/views/requests/tenant_requests_view.dart';
+import '../modules/tenant/views/payment_view/payment_view.dart';
+import '../modules/landlord/views/contract/contract_view.dart';
+import '../modules/landlord/views/bill/bill_view.dart';
+import '../modules/landlord/views/bill/bill_details_view.dart';
 
 // Định nghĩa các routes
 abstract class Routes {
@@ -27,6 +31,12 @@ abstract class Routes {
   static const LANDLORD_ROOM_REQUESTS = '/landlord/room-requests';
   static const TENANT_REQUESTS = '/tenant/requests';
   static const SERVICES = '/services';
+  static const TENANT_PAYMENT = '/tenant/payment';
+  static const LANDLORD_CONTRACTS = '/landlord/contracts';
+  static const LANDLORD_BILLS = '/landlord/bills';
+  static const BILL = '/landlord/bill';
+  static const BILL_DETAILS = '/landlord/bill-details';
+  static const TENANT_BILLS = '/tenant/bills';
 }
 
 // Định nghĩa các pages
@@ -86,6 +96,38 @@ class AppPages {
       name: Routes.SERVICES,
       page: () => const ServicesView(),
       binding: LandlordBindingPage(),
+    ),
+    GetPage(
+      name: Routes.TENANT_PAYMENT,
+      page: () => const PaymentView(),
+      binding: TenantBindingPage(),
+    ),
+    GetPage(
+      name: Routes.LANDLORD_CONTRACTS,
+      page: () => const ContractView(),
+      binding: LandlordBindingPage(),
+    ),
+    GetPage(
+      name: Routes.LANDLORD_BILLS,
+      page: () => const BillView(),
+      binding: LandlordBindingPage(),
+    ),
+    GetPage(
+      name: Routes.BILL,
+      page: () => const BillView(),
+      binding: LandlordBindingPage(),
+    ),
+    GetPage(
+      name: Routes.BILL_DETAILS,
+      page: () => BillDetailsView(
+        bill: Get.arguments,
+      ),
+      binding: LandlordBindingPage(),
+    ),
+    GetPage(
+      name: Routes.TENANT_BILLS,
+      page: () => const BillView(),
+      binding: TenantBindingPage(),
     ),
   ];
 }

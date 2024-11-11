@@ -43,7 +43,6 @@ class ServiceRepository {
         .doc(service.id)
         .update({
           'tenDichVu': service.tenDichVu,
-          'moTa': service.moTa,
           'gia': service.gia,
           'donVi': service.donVi,
           'ngayCapNhat': Timestamp.fromDate(service.ngayCapNhat),

@@ -8,6 +8,7 @@ class UserModel {
   final String vaiTro;
   final DiaChi diaChi;
   final String? hinhAnh;
+  final String? cmnd;
   final DateTime ngayTao;
   final DateTime ngayCapNhat;
 
@@ -19,6 +20,7 @@ class UserModel {
     required this.vaiTro,
     required this.diaChi,
     this.hinhAnh,
+    this.cmnd,
     required this.ngayTao,
     required this.ngayCapNhat,
   });
@@ -32,6 +34,7 @@ class UserModel {
       vaiTro: json['vaiTro'] ?? '',
       diaChi: DiaChi.fromJson(json['diaChi'] ?? {}),
       hinhAnh: json['hinhAnh'],
+      cmnd: json['cmnd'],
       ngayTao: (json['ngayTao'] as Timestamp).toDate(),
       ngayCapNhat: (json['ngayCapNhat'] as Timestamp).toDate(),
     );
@@ -46,6 +49,7 @@ class UserModel {
       'vaiTro': vaiTro,
       'diaChi': diaChi.toJson(),
       'hinhAnh': hinhAnh,
+      'cmnd': cmnd,
       'ngayTao': Timestamp.fromDate(ngayTao),
       'ngayCapNhat': Timestamp.fromDate(ngayCapNhat),
     };
@@ -71,7 +75,7 @@ class DiaChi {
     if (phuong.isNotEmpty) parts.add('Phường $phuong');
     if (quan.isNotEmpty) parts.add('Quận $quan');
     if (thanhPho.isNotEmpty) parts.add(thanhPho);
-    
+
     return parts.isEmpty ? '' : parts.join(', ');
   }
 

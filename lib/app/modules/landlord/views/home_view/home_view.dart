@@ -210,7 +210,7 @@ class HomeView extends GetView<LandlordController> {
                             label: 'Tạo hóa đơn',
                             color: Colors.orange,
                             onTap: () {
-                              // TODO: Navigate to create bill
+                              Get.toNamed(Routes.BILL);
                             },
                           ),
                         ),
@@ -230,6 +230,15 @@ class HomeView extends GetView<LandlordController> {
                     const SizedBox(height: 12),
                     Row(
                       children: [
+                        Expanded(
+                          child: _buildActionCard(
+                            icon: Icons.description,
+                            label: 'Hợp đồng',
+                            color: Colors.indigo,
+                            onTap: () => Get.toNamed(Routes.LANDLORD_CONTRACTS),
+                          ),
+                        ),
+                        const SizedBox(width: 16),
                         Expanded(
                           child: _buildActionCard(
                             icon: Icons.request_page,

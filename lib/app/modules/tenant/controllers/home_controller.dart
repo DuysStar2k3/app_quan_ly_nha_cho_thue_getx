@@ -6,6 +6,7 @@ import '../../../data/repositories/auth_repository.dart';
 import '../../../data/models/user_model.dart';
 import '../../../data/models/yeu_cau_thue_model.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:flutter/material.dart';
 
 class HomeController extends GetxController {
   final AuthRepository _authRepository;
@@ -189,21 +190,90 @@ class HomeController extends GetxController {
         return 'Yêu cầu sửa chữa';
       case 'thongBao':
         return 'Thông báo mới';
+      case 'guiYeuCauThamGia':
+        return 'Yêu cầu tham gia phòng';
+      case 'chapNhanYeuCau':
+        return 'Chấp nhận yêu cầu thuê';
+      case 'tuChoiYeuCau':
+        return 'Từ chối yêu cầu thuê';
+      case 'xacNhanThamGia':
+        return 'Xác nhận tham gia';
+      case 'traPhong':
+        return 'Trả phòng';
       default:
         return 'Hoạt động khác';
     }
   }
 
   String getActivityDescription(Map<String, dynamic> activity) {
-    switch (activity['loai']) {
+    final type = activity['loai'] ?? '';
+    final soPhong = activity['soPhong']?.toString() ?? '';
+    
+    switch (type) {
       case 'thanhToan':
         return 'Đã thanh toán ${activity['soTien']}đ cho tháng ${activity['thang']}';
       case 'suaChua':
         return activity['noiDung'] ?? 'Yêu cầu sửa chữa mới';
       case 'thongBao':
         return activity['noiDung'] ?? 'Thông báo mới';
+      case 'guiYeuCauThamGia':
+        return 'Chủ trọ đã gửi yêu cầu tham gia phòng $soPhong';
+      case 'chapNhanYeuCau':
+        return 'Chủ trọ đã chấp nhận yêu cầu thuê phòng $soPhong';
+      case 'tuChoiYeuCau':
+        return 'Chủ trọ đã từ chối yêu cầu thuê phòng $soPhong';
+      case 'xacNhanThamGia':
+        return 'Đã xác nhận tham gia phòng $soPhong';
+      case 'traPhong':
+        return 'Đã trả phòng $soPhong';
       default:
         return activity['noiDung'] ?? 'Không có mô tả';
+    }
+  }
+
+  IconData getActivityIcon(String type) {
+    switch (type) {
+      case 'thanhToan':
+        return Icons.payment;
+      case 'suaChua':
+        return Icons.build;
+      case 'thongBao':
+        return Icons.notifications;
+      case 'guiYeuCauThamGia':
+        return Icons.person_add;
+      case 'chapNhanYeuCau':
+        return Icons.check_circle;
+      case 'tuChoiYeuCau':
+        return Icons.cancel;
+      case 'xacNhanThamGia':
+        return Icons.how_to_reg;
+      case 'traPhong':
+        return Icons.logout;
+      default:
+        return Icons.circle_notifications;
+    }
+  }
+
+  Color getActivityColor(String type) {
+    switch (type) {
+      case 'thanhToan':
+        return Colors.green;
+      case 'suaChua':
+        return Colors.orange;
+      case 'thongBao':
+        return Colors.blue;
+      case 'guiYeuCauThamGia':
+        return Colors.purple;
+      case 'chapNhanYeuCau':
+        return Colors.green;
+      case 'tuChoiYeuCau':
+        return Colors.red;
+      case 'xacNhanThamGia':
+        return Colors.green;
+      case 'traPhong':
+        return Colors.red;
+      default:
+        return Colors.grey;
     }
   }
 

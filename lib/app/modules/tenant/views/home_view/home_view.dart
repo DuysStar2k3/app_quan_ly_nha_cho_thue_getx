@@ -423,7 +423,7 @@ class HomeView extends GetView<HomeController> {
                   icon: Icons.receipt_long,
                   label: 'Hóa đơn',
                   color: Colors.green,
-                  onTap: () => Get.toNamed('/tenant/bills'),
+                  onTap: () => Get.toNamed(Routes.TENANT_BILLS),
                 ),
               ),
             ],

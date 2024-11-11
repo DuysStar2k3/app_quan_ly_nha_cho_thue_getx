@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../controllers/tenant_controller.dart';
 import 'home_view/home_view.dart';
-import 'bills_view/bills_view.dart';
 import 'services_view/services_view.dart';
 import 'settings_view/settings_view.dart';
 import '../../../core/theme/app_colors.dart';
+import 'bill/bill_view.dart';
 
 class TenantPage extends GetView<TenantController> {
   const TenantPage({super.key});
@@ -23,7 +23,7 @@ class TenantPage extends GetView<TenantController> {
           case 0:
             return const HomeView();
           case 1:
-            return const BillsView();
+            return const BillView();
           case 2:
             return const ServicesView();
           case 3:

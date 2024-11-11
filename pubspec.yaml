@@ -44,6 +44,8 @@ dependencies:
   shimmer: ^3.0.0
   carousel_slider: ^5.0.0
   url_launcher: ^6.3.1
+  pdf: ^3.11.1
+  permission_handler: ^11.3.1
   # cupertino_icons: ^1.0.8
   # get: ^4.6.6
   # firebase_core: ^2.32.0
@@ -72,10 +74,14 @@ flutter:
   uses-material-design: true
 
   # To add assets to your application, add an assets section, like this:
-  # assets:
-  #   - images/a_dot_burr.jpeg
+  assets:
+    - assets/fonts/
   #   - images/a_dot_ham.jpeg
-
+  fonts:
+    - family: Roboto
+      fonts:
+        - asset: assets/fonts/Roboto-Light.ttf
+        - asset: assets/fonts/Roboto-Regular.ttf
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
 

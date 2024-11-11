@@ -47,7 +47,7 @@ class RoomRepository {
       'tienNghi': room.tienNghi,
       'hinhAnh': room.hinhAnh,
       'nguoiThueHienTai': room.nguoiThueHienTai,
-      'congTo': room.congTo.toJson(),
+      'congTo': room.congTo,
       'ngayCapNhat': Timestamp.fromDate(room.ngayCapNhat),
     });
   }

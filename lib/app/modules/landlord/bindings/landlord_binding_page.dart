@@ -4,7 +4,9 @@ import '../controllers/rooms_controller.dart';
 import '../controllers/services_controller.dart';
 import '../controllers/room_requests_controller.dart';
 import '../controllers/tenants_controller.dart';
+import '../controllers/contract_controller.dart';
 import '../../../data/repositories/auth_repository.dart';
+import '../controllers/bill_controller.dart';
 
 class LandlordBindingPage extends Bindings {
   @override
@@ -25,5 +27,11 @@ class LandlordBindingPage extends Bindings {
 
     // Đăng ký TenantsController
     Get.lazyPut(() => TenantsController(Get.find<LandlordController>()));
+
+    // Đăng ký ContractController
+    Get.lazyPut(() => ContractController(Get.find<LandlordController>()));
+
+    // Thêm vào dependencies
+    Get.lazyPut(() => BillController(Get.find<LandlordController>()));
   }
 }

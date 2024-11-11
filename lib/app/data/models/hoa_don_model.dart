@@ -58,18 +58,24 @@ class HoaDonModel {
 
 class ChiTietDichVu {
   final String dichVuId;
-  final double soLuong;
+  final double? chiSoCu;
+  final double? chiSoMoi;
+  final double? soLuong;
   final double thanhTien;
 
   ChiTietDichVu({
     required this.dichVuId,
-    required this.soLuong,
+    this.chiSoCu,
+    this.chiSoMoi,
+    this.soLuong,
     required this.thanhTien,
   });
 
   factory ChiTietDichVu.fromJson(Map<String, dynamic> json) {
     return ChiTietDichVu(
       dichVuId: json['dichVuId'] ?? '',
+      chiSoCu: (json['chiSoCu'] ?? 0).toDouble(),
+      chiSoMoi: (json['chiSoMoi'] ?? 0).toDouble(),
       soLuong: (json['soLuong'] ?? 0).toDouble(),
       thanhTien: (json['thanhTien'] ?? 0).toDouble(),
     );
@@ -78,6 +84,8 @@ class ChiTietDichVu {
   Map<String, dynamic> toJson() {
     return {
       'dichVuId': dichVuId,
+      'chiSoCu': chiSoCu,
+      'chiSoMoi': chiSoMoi,
       'soLuong': soLuong,
       'thanhTien': thanhTien,
     };

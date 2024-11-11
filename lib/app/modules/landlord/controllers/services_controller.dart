@@ -63,9 +63,9 @@ class ServicesController extends GetxController {
         id: '',
         chuTroId: user.uid,
         tenDichVu: tenDichVu,
-        moTa: moTa,
         gia: gia,
         donVi: donVi,
+        moTa: moTa,
         ngayTao: DateTime.now(),
         ngayCapNhat: DateTime.now(),
       );

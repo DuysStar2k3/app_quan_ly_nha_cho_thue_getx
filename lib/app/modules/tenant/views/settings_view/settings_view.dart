@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../../auth/controllers/auth_controller.dart';
-import '../../../landlord/bindings/edit_profile_binding.dart';
-import '../../../landlord/views/settings_view/edit_profile_view.dart';
+import '../../../../data/repositories/auth_repository.dart';
 import '../../controllers/tenant_controller.dart';
+import '../../../../routes/app_pages.dart';
 import '../../../../core/theme/app_colors.dart';
 
 class SettingsView extends GetView<TenantController> {
@@ -13,318 +12,386 @@ class SettingsView extends GetView<TenantController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Cài Đặt'),
+        title: const Text('Cài đặt'),
       ),
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [
           // Thông tin tài khoản
-          Card(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(16),
-            ),
-            child: Padding(
-              padding: const EdgeInsets.all(16),
-              child: Column(
-                children: [
-                  // Avatar and Name
-                  Row(
-                    children: [
-                      Container(
-                        padding: const EdgeInsets.all(3),
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          border: Border.all(
-                            color: Colors.blue.shade100,
-                            width: 2,
-                          ),
-                        ),
-                        child: CircleAvatar(
-                          radius: 35,
-                          backgroundColor: Colors.blue.shade50,
-                          child: Icon(
-                            Icons.person,
-                            size: 35,
-                            color: Colors.blue.shade700,
-                          ),
-                        ),
-                      ),
-                      const SizedBox(width: 16),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Obx(() => Text(
-                                  controller.currentUser?.ten ??
-                                      'Chưa cập nhật',
-                                  style: const TextStyle(
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                )),
-                            const SizedBox(height: 4),
-                            Container(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 8,
-                                vertical: 4,
-                              ),
-                              decoration: BoxDecoration(
-                                color: Colors.blue.shade50,
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                              child: Text(
-                                'Khách Thuê',
-                                style: TextStyle(
-                                  color: Colors.blue.shade700,
-                                  fontWeight: FontWeight.w500,
-                                  fontSize: 12,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      IconButton(
-                        onPressed: () => Get.to(
-                          () => EditProfileView(),
-                          binding: EditProfileBinding(),
-                        ),
-                        icon: const Icon(Icons.edit_outlined),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 24),
-                  // Contact Info
-                  _buildContactInfo(
-                    icon: Icons.email_outlined,
-                    label: 'Email',
-                    value: controller.currentUser?.email ?? 'Chưa cập nhật',
-                  ),
-                  const SizedBox(height: 16),
-                  _buildContactInfo(
-                    icon: Icons.phone_outlined,
-                    label: 'Số điện thoại',
-                    value:
-                        controller.currentUser?.soDienThoai ?? 'Chưa cập nhật',
-                  ),
-                  const SizedBox(height: 16),
-                  _buildContactInfo(
-                    icon: Icons.location_on_outlined,
-                    label: 'Địa chỉ',
-                    value: controller.currentUser?.diaChi.diaChiDayDu ??
-                        'Chưa cập nhật',
-                  ),
-                ],
+          _buildSection(
+            title: 'Tài khoản',
+            children: [
+              _buildMenuItem(
+                icon: Icons.person_outline,
+                title: 'Thông tin cá nhân',
+                onTap: () {
+                  // TODO: Navigate to profile page
+                },
               ),
-            ),
+              _buildMenuItem(
+                icon: Icons.payment,
+                title: 'Phương thức thanh toán',
+                onTap: () => _showPaymentMethodsDialog(),
+              ),
+              _buildMenuItem(
+                icon: Icons.history,
+                title: 'Lịch sử giao dịch',
+                onTap: () => Get.toNamed(Routes.TENANT_PAYMENT),
+              ),
+            ],
           ),
+
           const SizedBox(height: 24),
 
-          // Cài đặt chung
-          Card(
-            child: Column(
-              children: [
-                const Padding(
-                  padding: EdgeInsets.all(16),
-                  child: Row(
-                    children: [
-                      Icon(Icons.settings, size: 20),
-                      SizedBox(width: 8),
-                      Text(
-                        'Cài đặt chung',
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                const Divider(height: 0),
-                ListTile(
-                  leading: const Icon(Icons.notifications_outlined),
-                  title: const Text('Thông báo'),
-                  trailing: Switch(
-                    value: true, // TODO: Get from settings
-                    onChanged: (value) {
-                      // TODO: Toggle notifications
-                    },
-                  ),
-                ),
-                ListTile(
-                  leading: const Icon(Icons.language),
-                  title: const Text('Ngôn ngữ'),
-                  trailing: const Icon(Icons.chevron_right),
-                  onTap: () {
-                    // TODO: Change language
-                  },
-                ),
-                ListTile(
-                  leading: const Icon(Icons.dark_mode_outlined),
-                  title: const Text('Giao diện'),
-                  trailing: const Icon(Icons.chevron_right),
-                  onTap: () {
-                    // TODO: Change theme
-                  },
-                ),
-              ],
-            ),
+          // Thông báo & Bảo mật
+          _buildSection(
+            title: 'Thông báo & Bảo mật',
+            children: [
+              _buildMenuItem(
+                icon: Icons.notifications_outlined,
+                title: 'Cài đặt thông báo',
+                onTap: () {
+                  // TODO: Navigate to notification settings
+                },
+              ),
+              _buildMenuItem(
+                icon: Icons.lock_outline,
+                title: 'Đổi mật khẩu',
+                onTap: () {
+                  // TODO: Navigate to change password
+                },
+              ),
+            ],
           ),
-          const SizedBox(height: 16),
 
-          // Bảo mật
-          Card(
-            child: Column(
-              children: [
-                const Padding(
-                  padding: EdgeInsets.all(16),
-                  child: Row(
-                    children: [
-                      Icon(Icons.security, size: 20),
-                      SizedBox(width: 8),
-                      Text(
-                        'Bảo mật',
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                const Divider(height: 0),
-                ListTile(
-                  leading: const Icon(Icons.lock_outline),
-                  title: const Text('Đổi mật khẩu'),
-                  trailing: const Icon(Icons.chevron_right),
-                  onTap: () {
-                    // TODO: Change password
-                  },
-                ),
-                ListTile(
-                  leading: const Icon(Icons.fingerprint),
-                  title: const Text('Xác thực sinh trắc học'),
-                  trailing: Switch(
-                    value: false, // TODO: Get from settings
-                    onChanged: (value) {
-                      // TODO: Toggle biometric auth
-                    },
-                  ),
-                ),
-              ],
-            ),
+          const SizedBox(height: 24),
+
+          // Hỗ trợ
+          _buildSection(
+            title: 'Hỗ trợ',
+            children: [
+              _buildMenuItem(
+                icon: Icons.help_outline,
+                title: 'Trung tâm trợ giúp',
+                onTap: () {
+                  // TODO: Navigate to help center
+                },
+              ),
+              _buildMenuItem(
+                icon: Icons.info_outline,
+                title: 'Về ứng dụng',
+                onTap: () {
+                  // TODO: Show app info
+                },
+              ),
+            ],
           ),
-          const SizedBox(height: 16),
+
+          const SizedBox(height: 24),
 
           // Đăng xuất
-          Card(
-            child: ListTile(
-              leading: Icon(
-                Icons.logout,
-                color: AppColors.error,
+          _buildSection(
+            children: [
+              _buildMenuItem(
+                icon: Icons.logout,
+                title: 'Đăng xuất',
+                color: Colors.red,
+                onTap: () => Get.find<AuthRepository>().signOut(),
               ),
-              title: Text(
-                'Đăng xuất',
-                style: TextStyle(
-                  color: AppColors.error,
-                ),
-              ),
-              onTap: () {
-                _showLogoutConfirmDialog(context);
-              },
-            ),
+            ],
           ),
-          const SizedBox(height: 32),
-
-          // Phiên bản
-          Center(
-            child: Text(
-              'Phiên bản 1.0.0',
-              style: TextStyle(
-                color: AppColors.textLight,
-                fontSize: 12,
-              ),
-            ),
-          ),
-          const SizedBox(height: 16),
         ],
       ),
     );
   }
 
-  Widget _buildContactInfo({
-    required IconData icon,
-    required String label,
-    required String value,
+  Widget _buildSection({
+    String? title,
+    required List<Widget> children,
   }) {
-    return Row(
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        if (title != null) ...[
+          Text(
+            title,
+            style: const TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+              color: AppColors.primary,
+            ),
+          ),
+          const SizedBox(height: 8),
+        ],
         Container(
-          padding: const EdgeInsets.all(8),
           decoration: BoxDecoration(
-            color: Colors.blue.shade50,
-            borderRadius: BorderRadius.circular(8),
-          ),
-          child: Icon(
-            icon,
-            color: Colors.blue.shade700,
-            size: 20,
-          ),
-        ),
-        const SizedBox(width: 12),
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                label,
-                style: TextStyle(
-                  color: Colors.grey.shade600,
-                  fontSize: 12,
-                ),
-              ),
-              const SizedBox(height: 2),
-              Text(
-                value,
-                style: const TextStyle(
-                  fontWeight: FontWeight.w500,
-                ),
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(12),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.05),
+                blurRadius: 10,
+                offset: const Offset(0, 2),
               ),
             ],
+          ),
+          child: Column(
+            children: children,
           ),
         ),
       ],
     );
   }
 
-  Future<void> _showLogoutConfirmDialog(BuildContext context) async {
-    final confirmed = await showDialog<bool>(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Xác nhận đăng xuất'),
-        content: const Text('Bạn có chắc muốn đăng xuất?'),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context, false),
-            child: Text(
-              'Hủy',
-              style: TextStyle(color: AppColors.textLight),
+  Widget _buildMenuItem({
+    required IconData icon,
+    required String title,
+    Color? color,
+    required VoidCallback onTap,
+  }) {
+    return InkWell(
+      onTap: onTap,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(
+          horizontal: 16,
+          vertical: 12,
+        ),
+        child: Row(
+          children: [
+            Icon(
+              icon,
+              color: color ?? Colors.grey[600],
+              size: 24,
             ),
-          ),
-          ElevatedButton(
-            onPressed: () => Navigator.pop(context, true),
-            style: ElevatedButton.styleFrom(
-              backgroundColor: AppColors.error,
-              foregroundColor: Colors.white,
+            const SizedBox(width: 16),
+            Expanded(
+              child: Text(
+                title,
+                style: TextStyle(
+                  fontSize: 16,
+                  color: color ?? Colors.grey[800],
+                ),
+              ),
             ),
-            child: const Text('Đăng xuất'),
-          ),
-        ],
+            Icon(
+              Icons.chevron_right,
+              color: Colors.grey[400],
+            ),
+          ],
+        ),
       ),
     );
+  }
 
-    if (confirmed == true) {
-      await Get.find<AuthController>().signOut();
-    }
+  void _showPaymentMethodsDialog() {
+    Get.dialog(
+      Dialog(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text(
+                'Phương thức thanh toán',
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const SizedBox(height: 16),
+              _buildPaymentMethodItem(
+                icon: Icons.money,
+                title: 'Tiền mặt',
+                subtitle: 'Thanh toán trực tiếp cho chủ trọ',
+                onTap: () {
+                  Get.back();
+                  Get.snackbar(
+                    'Thông báo',
+                    'Đã chọn phương thức thanh toán tiền mặt',
+                    snackPosition: SnackPosition.BOTTOM,
+                  );
+                },
+              ),
+              const Divider(),
+              _buildPaymentMethodItem(
+                icon: Icons.account_balance,
+                title: 'Chuyển khoản ngân hàng',
+                subtitle: 'Chuyển khoản qua tài khoản ngân hàng',
+                onTap: () {
+                  Get.back();
+                  _showBankAccountDialog();
+                },
+              ),
+              const Divider(),
+              _buildPaymentMethodItem(
+                icon: Icons.qr_code,
+                title: 'Quét mã QR',
+                subtitle: 'Quét mã QR để thanh toán',
+                onTap: () {
+                  Get.back();
+                  _showQRCodeDialog();
+                },
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildPaymentMethodItem({
+    required IconData icon,
+    required String title,
+    required String subtitle,
+    required VoidCallback onTap,
+  }) {
+    return ListTile(
+      leading: Container(
+        padding: const EdgeInsets.all(8),
+        decoration: BoxDecoration(
+          color: AppColors.primary.withOpacity(0.1),
+          shape: BoxShape.circle,
+        ),
+        child: Icon(icon, color: AppColors.primary),
+      ),
+      title: Text(title),
+      subtitle: Text(subtitle),
+      onTap: onTap,
+    );
+  }
+
+  void _showBankAccountDialog() {
+    Get.dialog(
+      Dialog(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Text(
+                'Thông tin tài khoản',
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const SizedBox(height: 16),
+              Container(
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: Colors.grey[100],
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Column(
+                  children: [
+                    _buildBankInfo('Ngân hàng', 'Vietcombank'),
+                    const Divider(),
+                    _buildBankInfo('Số tài khoản', '1234567890'),
+                    const Divider(),
+                    _buildBankInfo('Chủ tài khoản', 'NGUYEN VAN A'),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 16),
+              ElevatedButton(
+                onPressed: () {
+                  // TODO: Copy thông tin tài khoản
+                  Get.back();
+                  Get.snackbar(
+                    'Thông báo',
+                    'Đã sao chép thông tin tài khoản',
+                    snackPosition: SnackPosition.BOTTOM,
+                  );
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: AppColors.primary,
+                  minimumSize: const Size(double.infinity, 48),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                ),
+                child: const Text('Sao chép thông tin'),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildBankInfo(String label, String value) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(
+          label,
+          style: TextStyle(
+            color: Colors.grey[600],
+          ),
+        ),
+        Text(
+          value,
+          style: const TextStyle(
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ],
+    );
+  }
+
+  void _showQRCodeDialog() {
+    Get.dialog(
+      Dialog(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Text(
+                'Quét mã QR',
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const SizedBox(height: 16),
+              Container(
+                width: 200,
+                height: 200,
+                decoration: BoxDecoration(
+                  color: Colors.grey[200],
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: const Center(
+                  child: Icon(
+                    Icons.qr_code_2,
+                    size: 150,
+                    color: Colors.grey,
+                  ),
+                ),
+              ),
+              const SizedBox(height: 16),
+              const Text(
+                'Sử dụng ứng dụng ngân hàng để quét mã',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: Colors.grey,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 }

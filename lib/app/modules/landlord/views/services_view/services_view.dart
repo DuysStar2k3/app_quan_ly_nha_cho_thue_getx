@@ -249,8 +249,8 @@ class ServicesView extends GetView<ServicesController> {
     final units = [
       'kWh',
       'm³',
-      'người/tháng',
-      'phòng/tháng',
+      'người',
+      'tháng',
     ];
 
     await Get.dialog(
