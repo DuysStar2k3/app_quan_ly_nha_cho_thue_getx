@@ -4,7 +4,6 @@ import 'package:quan_ly_nha_thue/app/modules/landlord/controllers/rooms_landlord
 import 'package:quan_ly_nha_thue/app/modules/landlord/views/notifications_landlord/notifications_landlord_view.dart';
 import '../../../../routes/app_pages.dart';
 import '../../controllers/landlord_controller.dart';
-
 class HomeLandlordView extends GetView<LandlordController> {
   HomeLandlordView({super.key});
   final roomsController = Get.find<RoomsLandlordController>();
@@ -217,13 +216,11 @@ class HomeLandlordView extends GetView<LandlordController> {
                         const SizedBox(width: 16),
                         Expanded(
                           child: _buildActionCard(
-                            icon: Icons.analytics,
-                            label: 'Thống kê',
-                            color: Colors.purple,
-                            onTap: () {
-                              // TODO: Navigate to statistics
-                            },
-                          ),
+                              icon: Icons.analytics,
+                              label: 'Thống kê',
+                              color: Colors.purple,
+                              onTap: () =>
+                                  Get.toNamed(Routes.LANDLORD_STATISTICS_VIEW)),
                         ),
                       ],
                     ),
@@ -235,8 +232,8 @@ class HomeLandlordView extends GetView<LandlordController> {
                             icon: Icons.description,
                             label: 'Hợp đồng',
                             color: Colors.indigo,
-                            onTap: () => Get.toNamed(
-                                Routes.LANDLORD_CONTRACTS_VIEW),
+                            onTap: () =>
+                                Get.toNamed(Routes.LANDLORD_CONTRACTS_VIEW),
                           ),
                         ),
                         const SizedBox(width: 16),

@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:quan_ly_nha_thue/app/modules/tenant/controllers/tenant_page_controller.dart';
 import '../../../data/models/phong_model.dart';
 import '../../../data/models/user_model.dart';
+import '../../../routes/app_pages.dart';
 
 class RoomSearchTenantController extends GetxController {
   final _firestore = FirebaseFirestore.instance;
@@ -131,7 +132,10 @@ class RoomSearchTenantController extends GetxController {
   }
 
   void viewRoomDetails(PhongModel room) {
-    Get.toNamed('/tenant/room-details', arguments: room);
+    Get.toNamed(
+      Routes.TENANT_ROOM_DETAILS_VIEW,
+      arguments: room,
+    );
   }
 
   Future<void> requestRoom(PhongModel room) async {

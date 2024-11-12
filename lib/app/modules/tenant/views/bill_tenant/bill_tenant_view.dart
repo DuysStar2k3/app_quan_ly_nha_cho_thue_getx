@@ -504,7 +504,9 @@ class BillTenantView extends GetView<BillTenantController> {
     );
   }
 
-  void _showBankTransferDialog(String billId) {
+  void _showBankTransferDialog(String billId) async {
+    final landlordBank = await controller.getLandlordBankInfo();
+    
     Get.dialog(
       Dialog(
         shape: RoundedRectangleBorder(
@@ -531,11 +533,11 @@ class BillTenantView extends GetView<BillTenantController> {
                 ),
                 child: Column(
                   children: [
-                    _buildBankInfo('Ngân hàng', 'Vietcombank'),
+                    _buildBankInfo('Ngân hàng', landlordBank.tenNganHang),
                     const Divider(),
-                    _buildBankInfo('Số tài khoản', '1234567890'),
+                    _buildBankInfo('Số tài khoản', landlordBank.soTaiKhoan),
                     const Divider(),
-                    _buildBankInfo('Chủ tài khoản', 'NGUYEN VAN A'),
+                    _buildBankInfo('Chủ tài khoản', landlordBank.tenChuTaiKhoan),
                   ],
                 ),
               ),

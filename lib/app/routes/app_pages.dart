@@ -19,6 +19,7 @@ import '../modules/auth/views/register_page.dart';
 import '../modules/landlord/bindings/landlord_binding_page.dart';
 import '../modules/landlord/views/rooms_landlord_view/add_room_landlord_view.dart';
 import '../modules/landlord/views/services_landlord_view/services_landlord_view.dart';
+import '../modules/landlord/views/statistics_landlord/statistics_landlord_view.dart';
 import '../modules/splash/splash_page.dart';
 import '../modules/landlord/views/landlord_page.dart';
 import '../modules/tenant/bindings/tenant_binding_page.dart';
@@ -32,6 +33,10 @@ import '../modules/landlord/views/contract_landlord/contract_landlord_view.dart'
 import '../modules/landlord/views/bill_landlord/bill_landlord_view.dart';
 import '../modules/landlord/views/bill_landlord/bill_details_landlord_view.dart';
 import '../modules/tenant/views/profile_tenant_view/profile_tenant_view.dart';
+import '../modules/chat/bindings/chat_binding.dart';
+import '../modules/chat/views/chat_room_view.dart';
+import '../modules/landlord/views/chat_landlord/chat_landlord_view.dart';
+import '../modules/tenant/views/chat_tenant/chat_tenant_view.dart';
 
 // Định nghĩa các routes
 abstract class Routes {
@@ -55,7 +60,9 @@ abstract class Routes {
   static const LANDLORD_SERVICE_VIEW = '/landlord/service-view';
   static const LANDLORD_EDIT_PROFILE_VIEW = '/landlord/edit-profile-view';
   static const LANDLORD_SETTINGS_VIEW = '/landlord/settings-view';
+  static const LANDLORD_STATISTICS_VIEW = '/landlord/statistics-view';
   static const LANDLORD_TENANT_VIEW = '/landlord/tenant-view';
+  static const LANDLORD_CHAT = '/landlord/chat';
 
   //đường dẫn của trang splash
   static const SPLASH = '/';
@@ -72,7 +79,11 @@ abstract class Routes {
   static const TENANT_ROOM_SEARCH = '/tenant/room-search';
   static const TENANT_EDIT_PROFILE_VIEW = '/tenant/edit-profile-view';
   static const TENANT_SETTINGS_VIEW = '/tenant/settings-view';
+  static const TENANT_STATISTICS_VIEW = '/tenant/statistics-view';
   static const TENANT_PROFILE_VIEW = '/tenant/profile-view';
+  static const ROOM_DETAILS_TENANT = '/room-details-tenant';
+  static const CHAT_ROOM = '/chat-room';
+  static const TENANT_CHAT = '/tenant/chat';
 }
 
 // Định nghĩa các pages
@@ -173,8 +184,18 @@ class AppPages {
       binding: LandlordBindingPage(),
     ),
     GetPage(
+      name: Routes.LANDLORD_STATISTICS_VIEW,
+      page: () => const StatisticsLandlordView(),
+      binding: LandlordBindingPage(),
+    ),
+    GetPage(
       name: Routes.LANDLORD_TENANT_VIEW,
       page: () => const TenantLandlordView(),
+      binding: LandlordBindingPage(),
+    ),
+    GetPage(
+      name: Routes.LANDLORD_CHAT,
+      page: () => const ChatLandlordView(),
       binding: LandlordBindingPage(),
     ),
 
@@ -247,6 +268,21 @@ class AppPages {
     GetPage(
       name: Routes.TENANT_PROFILE_VIEW,
       page: () => const ProfileTenantView(),
+    ),
+    GetPage(
+      name: Routes.ROOM_DETAILS_TENANT,
+      page: () => const RoomDetailsTenantView(),
+      binding: TenantBindingPage(),
+    ),
+    GetPage(
+      name: Routes.CHAT_ROOM,
+      page: () => const ChatRoomView(),
+      binding: ChatBinding(),
+    ),
+    GetPage(
+      name: Routes.TENANT_CHAT,
+      page: () => const ChatTenantView(),
+      binding: TenantBindingPage(),
     ),
   ];
 }

@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import '../../chat/controllers/chat_controller.dart';
 import '../controllers/tenant_page_controller.dart';
 import '../controllers/home_tenant_controller.dart';
 import '../controllers/room_search_tenant_controller.dart';
@@ -8,6 +9,7 @@ import '../../../data/repositories/auth_repository.dart';
 import '../controllers/service_tenant_controller.dart';
 import '../controllers/payment_tenant_controller.dart';
 import '../controllers/bill_tenant_controller.dart';
+import '../controllers/chat_tenant_controller.dart';
 
 class TenantBindingPage extends Bindings {
   @override
@@ -23,7 +25,9 @@ class TenantBindingPage extends Bindings {
         () => RoomSearchTenantController(Get.find<TenantPageController>()));
 
     // Đăng ký RoomDetailsTenantController
-    Get.lazyPut(() => RoomDetailsTenantController());
+    Get.lazyPut<RoomDetailsTenantController>(
+      () => RoomDetailsTenantController(),
+    );
 
     // Đăng ký TenantRequestsController
     Get.lazyPut(
@@ -39,5 +43,13 @@ class TenantBindingPage extends Bindings {
 
     // Đăng ký BillTenantController
     Get.lazyPut(() => BillTenantController(Get.find<TenantPageController>()));
+
+    // Đăng ký ChatController
+    Get.lazyPut<ChatController>(() => ChatController());
+
+    // Đăng ký ChatTenantController
+    Get.lazyPut<ChatTenantController>(
+      () => ChatTenantController(),
+    );
   }
 }

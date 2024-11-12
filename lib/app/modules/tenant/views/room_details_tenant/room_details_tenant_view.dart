@@ -7,12 +7,12 @@ import 'package:carousel_slider/carousel_slider.dart';
 import '../../controllers/room_details_tenant_controller.dart';
 import '../../controllers/room_search_tenant_controller.dart';
 
-class RoomDetailsTenantView extends StatelessWidget {
+class RoomDetailsTenantView extends GetView<RoomDetailsTenantController> {
   const RoomDetailsTenantView({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final PhongModel room = Get.arguments;
+    final room = Get.arguments as PhongModel;
     final formatter = NumberFormat.currency(locale: 'vi_VN', symbol: 'đ');
 
     return Scaffold(
@@ -94,17 +94,11 @@ class RoomDetailsTenantView extends StatelessWidget {
 
                   // Price
                   Text(
-                    formatter.format(room.giaThue),
-                    style: TextStyle(
+                    "${formatter.format(room.giaThue)} /Tháng",
+                    style: const TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
                       color: AppColors.primary,
-                    ),
-                  ),
-                  Text(
-                    '/tháng',
-                    style: TextStyle(
-                      color: Colors.grey[600],
                     ),
                   ),
                   const SizedBox(height: 16),
@@ -160,14 +154,13 @@ class RoomDetailsTenantView extends StatelessWidget {
                     title: 'Dịch vụ có sẵn',
                     children: [
                       Obx(() {
-                        if (Get.find<RoomDetailsTenantController>().isLoading.value) {
+                        if (controller.isLoading.value) {
                           return const Center(
                             child: CircularProgressIndicator(),
                           );
                         }
 
-                        final services =
-                            Get.find<RoomDetailsTenantController>().services;
+                        final services = controller.services;
 
                         if (services.isEmpty) {
                           return const Center(
@@ -213,8 +206,8 @@ class RoomDetailsTenantView extends StatelessWidget {
                     title: 'Thông tin chủ trọ',
                     children: [
                       Obx(() {
-                        final landlord = Get.find<RoomDetailsTenantController>().landlordInfo.value;
-                        
+                        final landlord = controller.landlordInfo.value;
+
                         if (landlord == null) {
                           return const Center(
                             child: Text(
@@ -254,7 +247,8 @@ class RoomDetailsTenantView extends StatelessWidget {
                                 const SizedBox(width: 16),
                                 Expanded(
                                   child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       Text(
                                         landlord.ten,
@@ -270,7 +264,8 @@ class RoomDetailsTenantView extends StatelessWidget {
                                           color: AppColors.textLight,
                                         ),
                                       ),
-                                      if (landlord.diaChi.diaChiDayDu.isNotEmpty) ...[
+                                      if (landlord
+                                          .diaChi.diaChiDayDu.isNotEmpty) ...[
                                         const SizedBox(height: 4),
                                         Text(
                                           landlord.diaChi.diaChiDayDu,
@@ -290,24 +285,24 @@ class RoomDetailsTenantView extends StatelessWidget {
                               children: [
                                 Expanded(
                                   child: OutlinedButton.icon(
-                                    onPressed: () =>
-                                        Get.find<RoomDetailsTenantController>().callLandlord(),
+                                    onPressed: () => controller.callLandlord(),
                                     icon: const Icon(Icons.phone),
                                     label: const Text('Gọi điện'),
                                     style: OutlinedButton.styleFrom(
-                                      padding: const EdgeInsets.symmetric(vertical: 12),
+                                      padding: const EdgeInsets.symmetric(
+                                          vertical: 12),
                                     ),
                                   ),
                                 ),
                                 const SizedBox(width: 16),
                                 Expanded(
                                   child: OutlinedButton.icon(
-                                    onPressed: () =>
-                                        Get.find<RoomDetailsTenantController>().messageLandlord(),
-                                    icon: const Icon(Icons.message),
+                                    onPressed: () => controller.openChat(),
+                                    icon: const Icon(Icons.chat),
                                     label: const Text('Nhắn tin'),
                                     style: OutlinedButton.styleFrom(
-                                      padding: const EdgeInsets.symmetric(vertical: 12),
+                                      padding: const EdgeInsets.symmetric(
+                                          vertical: 12),
                                     ),
                                   ),
                                 ),

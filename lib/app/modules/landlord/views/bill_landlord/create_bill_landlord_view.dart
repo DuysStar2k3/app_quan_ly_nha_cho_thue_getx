@@ -63,13 +63,21 @@ class CreateBillLandlordView extends GetView<BillLandlordController> {
                           },
                         )),
                     const SizedBox(height: 16),
-                    TextField(
-                      controller: thangController,
+                    DropdownButtonFormField<String>(
                       decoration: const InputDecoration(
-                        labelText: 'Tháng (MM/yyyy)',
-                        hintText: 'VD: 03/2024',
+                        labelText: 'Tháng',
                         border: OutlineInputBorder(),
                       ),
+                      value: thangController.text.isNotEmpty ? thangController.text : _getNextMonth(),
+                      items: _generateNextMonths().map((month) {
+                        return DropdownMenuItem(
+                          value: month,
+                          child: Text(month),
+                        );
+                      }).toList(),
+                      onChanged: (value) {
+                        thangController.text = value ?? '';
+                      },
                     ),
                   ],
                 ),
@@ -179,18 +187,13 @@ class CreateBillLandlordView extends GetView<BillLandlordController> {
                 final newValue =
                     double.tryParse(newValues[service.id]?.text ?? '0') ?? 0;
                 if (newValue > oldValue) {
-                  final soLuong = newValue - oldValue;
-                  final thanhTien = soLuong * service.gia;
+                  final thanhTien = (newValue - oldValue) * service.gia;
                   dichVu.add(ChiTietDichVu(
                     dichVuId: service.id,
                     chiSoCu: oldValue,
                     chiSoMoi: newValue,
                     thanhTien: thanhTien,
                   ));
-                  chiSoCongTo[service.id] = {
-                    'cu': oldValue,
-                    'moi': newValue,
-                  };
                 }
               } else {
                 // Dịch vụ tính theo người hoặc tháng
@@ -348,5 +351,23 @@ class CreateBillLandlordView extends GetView<BillLandlordController> {
         ),
       ),
     );
+  }
+
+  List<String> _generateNextMonths() {
+    final now = DateTime.now();
+    final months = <String>[];
+    
+    // Bắt đầu từ tháng tiếp theo
+    for (int i = 1; i <= 12; i++) {
+      final month = DateTime(now.year, now.month + i, 1);
+      months.add(DateFormat('MM/yyyy').format(month));
+    }
+    return months;
+  }
+
+  String _getNextMonth() {
+    final now = DateTime.now();
+    final nextMonth = DateTime(now.year, now.month + 1, 1);
+    return DateFormat('MM/yyyy').format(nextMonth);
   }
 }

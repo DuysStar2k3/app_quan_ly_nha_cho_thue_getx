@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../controllers/landlord_controller.dart';
+import 'chat_landlord/chat_landlord_view.dart';
 import 'home_landlord_view/home_landlord_view.dart';
 import 'rooms_landlord_view/rooms_landlord_view.dart';
 import 'tenant_landlord_view/tenant_landlord_view.dart';
@@ -28,6 +29,8 @@ class LandlordPage extends GetView<LandlordController> {
             return const TenantLandlordView();
           case 3:
             return const SettingsLandlordView();
+          case 4:
+            return const ChatLandlordView();
           default:
             return HomeLandlordView();
         }
@@ -71,6 +74,12 @@ class LandlordPage extends GetView<LandlordController> {
                       label: 'Người thuê',
                     ),
                     _buildNavItem(
+                      index: 4,
+                      icon: Icons.chat_outlined,
+                      selectedIcon: Icons.chat_rounded,
+                      label: 'Chat',
+                    ),
+                    _buildNavItem(
                       index: 3,
                       icon: Icons.settings_outlined,
                       selectedIcon: Icons.settings_rounded,
@@ -100,7 +109,9 @@ class LandlordPage extends GetView<LandlordController> {
           vertical: 8,
         ),
         decoration: BoxDecoration(
-          color: isSelected ? AppColors.primary.withOpacity(0.1) : Colors.transparent,
+          color: isSelected
+              ? AppColors.primary.withOpacity(0.1)
+              : Colors.transparent,
           borderRadius: BorderRadius.circular(16),
         ),
         child: Column(

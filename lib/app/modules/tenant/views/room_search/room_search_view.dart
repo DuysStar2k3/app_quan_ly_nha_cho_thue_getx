@@ -5,7 +5,6 @@ import '../../controllers/room_search_tenant_controller.dart';
 import '../../../../core/theme/app_colors.dart';
 import 'package:intl/intl.dart';
 
-
 class RoomSearchView extends GetView<RoomSearchTenantController> {
   const RoomSearchView({super.key});
 
@@ -322,7 +321,7 @@ class RoomSearchView extends GetView<RoomSearchTenantController> {
                                 fit: BoxFit.cover,
                               ),
                             )
-                          : Icon(
+                          : const Icon(
                               Icons.person,
                               color: AppColors.primary,
                               size: 24,
@@ -343,7 +342,7 @@ class RoomSearchView extends GetView<RoomSearchTenantController> {
                             const SizedBox(height: 2),
                             Row(
                               children: [
-                                Icon(
+                                const Icon(
                                   Icons.phone,
                                   size: 14,
                                   color: AppColors.textLight,
@@ -351,7 +350,7 @@ class RoomSearchView extends GetView<RoomSearchTenantController> {
                                 const SizedBox(width: 4),
                                 Text(
                                   landlord.soDienThoai,
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                     color: AppColors.textLight,
                                     fontSize: 13,
                                   ),

@@ -102,7 +102,8 @@ class HomeTenantView extends GetView<HomeTenantController> {
                 Stack(
                   children: [
                     IconButton(
-                      onPressed: () => Get.to(() => const NotificationsTenantView()),
+                      onPressed: () =>
+                          Get.to(() => const NotificationsTenantView()),
                       icon: const Icon(
                         Icons.notifications_outlined,
                         color: Colors.white,
@@ -343,7 +344,7 @@ class HomeTenantView extends GetView<HomeTenantController> {
                       _buildRoomStat(
                         icon: Icons.calendar_today,
                         label: 'Ngày thuê',
-                        value: '15/03',
+                        value: DateFormat('dd/MM').format(room.ngayCapNhat),
                       ),
                     ],
                   ),

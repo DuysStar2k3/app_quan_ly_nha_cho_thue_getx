@@ -5,6 +5,8 @@ import '../../../data/models/phong_model.dart';
 import '../../../data/models/dich_vu_model.dart';
 import 'package:quan_ly_nha_thue/app/modules/tenant/controllers/tenant_page_controller.dart';
 
+import '../../../data/models/user_model.dart';
+
 class BillTenantController extends GetxController {
   final _firestore = FirebaseFirestore.instance;
   final TenantPageController tenantPageController;
@@ -179,6 +181,38 @@ class BillTenantController extends GetxController {
     } catch (e) {
       print('Error getting meter readings: $e');
       return {'chiSoCu': 0, 'chiSoMoi': 0};
+    }
+  }
+
+  Future<TaiKhoanNganHang> getLandlordBankInfo() async {
+    try {
+      final room = rooms.values.firstOrNull;
+      if (room == null) throw 'Không tìm thấy thông tin phòng';
+
+      final landlordDoc =
+          await _firestore.collection('nguoiDung').doc(room.chuTroId).get();
+
+      if (!landlordDoc.exists) {
+        throw 'Không tìm thấy thông tin chủ trọ';
+      }
+
+      final data = landlordDoc.data()!;
+
+      // Truy cập vào object taiKhoanNganHang
+      final bankInfo = data['taiKhoanNganHang'] as Map<String, dynamic>;
+
+      return TaiKhoanNganHang(
+        tenNganHang: bankInfo['tenNganHang'] ?? '',
+        soTaiKhoan: bankInfo['soTaiKhoan'] ?? '',
+        tenChuTaiKhoan: bankInfo['tenChuTaiKhoan'] ?? '',
+      );
+    } catch (e) {
+      print('Error getting landlord bank info: $e');
+      return TaiKhoanNganHang(
+        tenNganHang: '',
+        soTaiKhoan: '',
+        tenChuTaiKhoan: '',
+      );
     }
   }
 }

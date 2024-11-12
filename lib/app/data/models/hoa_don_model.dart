@@ -74,20 +74,28 @@ class ChiTietDichVu {
   factory ChiTietDichVu.fromJson(Map<String, dynamic> json) {
     return ChiTietDichVu(
       dichVuId: json['dichVuId'] ?? '',
-      chiSoCu: (json['chiSoCu'] ?? 0).toDouble(),
-      chiSoMoi: (json['chiSoMoi'] ?? 0).toDouble(),
-      soLuong: (json['soLuong'] ?? 0).toDouble(),
+      chiSoCu: (json['chiSoCu'] as num?)?.toDouble(),
+      chiSoMoi: (json['chiSoMoi'] as num?)?.toDouble(),
+      soLuong: (json['soLuong'] as num?)?.toDouble(),
       thanhTien: (json['thanhTien'] ?? 0).toDouble(),
     );
   }
 
   Map<String, dynamic> toJson() {
-    return {
+    final data = <String, dynamic>{
       'dichVuId': dichVuId,
-      'chiSoCu': chiSoCu,
-      'chiSoMoi': chiSoMoi,
-      'soLuong': soLuong,
       'thanhTien': thanhTien,
     };
+
+    if (chiSoCu != null && chiSoMoi != null) {
+      data['chiSoCu'] = chiSoCu;
+      data['chiSoMoi'] = chiSoMoi;
+    }
+
+    if (soLuong != null) {
+      data['soLuong'] = soLuong;
+    }
+
+    return data;
   }
-} 
+}

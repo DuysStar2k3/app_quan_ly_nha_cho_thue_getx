@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:quan_ly_nha_thue/app/modules/tenant/views/home_tenant_view/home-tenant_view.dart';
 import '../controllers/tenant_page_controller.dart';
+import 'chat_tenant/chat_tenant_view.dart';
 import 'services_tenant_view/services_tenant_view.dart';
 import 'settings_tenant_view/settings_tenant_view.dart';
 import '../../../core/theme/app_colors.dart';
@@ -28,6 +29,8 @@ class TenantPage extends GetView<TenantPageController> {
             return const ServicesTenantView();
           case 3:
             return const SettingsTenantView();
+          case 4:
+            return const ChatTenantView();
           default:
             return const HomeTenantView();
         }
@@ -69,6 +72,12 @@ class TenantPage extends GetView<TenantPageController> {
                       icon: Icons.home_repair_service_outlined,
                       selectedIcon: Icons.home_repair_service_rounded,
                       label: 'Dịch vụ',
+                    ),
+                    _buildNavItem(
+                      index: 4,
+                      icon: Icons.chat_outlined,
+                      selectedIcon: Icons.chat_rounded,
+                      label: 'Chat',
                     ),
                     _buildNavItem(
                       index: 3,

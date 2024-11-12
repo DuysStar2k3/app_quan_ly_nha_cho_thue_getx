@@ -27,7 +27,7 @@ class AppTheme {
           elevation: 0,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),
-            side: BorderSide(color: AppColors.border),
+            side: const BorderSide(color: AppColors.border),
           ),
           color: AppColors.surface,
         ),
@@ -84,7 +84,8 @@ class AppTheme {
             borderRadius: BorderRadius.circular(12),
             borderSide: BorderSide(color: AppColors.error),
           ),
-          contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+          contentPadding:
+              const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
         ),
 
         // Chip Theme
@@ -119,4 +120,4 @@ class AppTheme {
           type: BottomNavigationBarType.fixed,
         ),
       );
-} 
+}
