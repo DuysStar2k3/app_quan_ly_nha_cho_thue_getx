@@ -1,37 +1,39 @@
 import 'package:get/get.dart';
 import '../controllers/landlord_controller.dart';
-import '../controllers/rooms_controller.dart';
-import '../controllers/services_controller.dart';
-import '../controllers/room_requests_controller.dart';
-import '../controllers/tenants_controller.dart';
-import '../controllers/contract_controller.dart';
+import '../controllers/rooms_landlord_controller.dart';
+import '../controllers/services_landlord_controller.dart';
+import '../controllers/room_requests_landlord_controller.dart';
+import '../controllers/tenants_landlord_controller.dart';
+import '../controllers/contract_landlord_controller.dart';
 import '../../../data/repositories/auth_repository.dart';
-import '../controllers/bill_controller.dart';
+import '../controllers/bill_landlord_controller.dart';
 
 class LandlordBindingPage extends Bindings {
   @override
   void dependencies() {
     // Đăng ký LandlordController
-    Get.lazyPut(() => LandlordController(
-          Get.find<AuthRepository>(),
-        ));
+    Get.lazyPut(() => LandlordController(Get.find<AuthRepository>()));
 
     // Đăng ký RoomsController
-    Get.lazyPut(() => RoomsController(Get.find<LandlordController>()));
+    Get.lazyPut(() => RoomsLandlordController(Get.find<LandlordController>()));
 
     // Đăng ký ServicesController
-    Get.lazyPut(() => ServicesController(Get.find<LandlordController>()));
+    Get.lazyPut(
+        () => ServicesLandlordController(Get.find<LandlordController>()));
 
     // Đăng ký RoomRequestsController
-    Get.lazyPut(() => RoomRequestsController(Get.find<LandlordController>()));
+    Get.lazyPut(
+        () => RoomRequestsLandlordController(Get.find<LandlordController>()));
 
     // Đăng ký TenantsController
-    Get.lazyPut(() => TenantsController(Get.find<LandlordController>()));
+    Get.lazyPut(
+        () => TenantsLandlordController(Get.find<LandlordController>()));
 
     // Đăng ký ContractController
-    Get.lazyPut(() => ContractController(Get.find<LandlordController>()));
+    Get.lazyPut(
+        () => ContractLandlordController(Get.find<LandlordController>()));
 
     // Thêm vào dependencies
-    Get.lazyPut(() => BillController(Get.find<LandlordController>()));
+    Get.lazyPut(() => BillLandlordController(Get.find<LandlordController>()));
   }
 }

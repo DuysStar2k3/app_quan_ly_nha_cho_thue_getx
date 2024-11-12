@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../controllers/landlord_controller.dart';
-import 'home_view/home_view.dart';
-import 'rooms_view/rooms_view.dart';
-import 'tenant_view/tenant_view.dart';
-import 'settings_view/settings_view.dart';
+import 'home_landlord_view/home_landlord_view.dart';
+import 'rooms_landlord_view/rooms_landlord_view.dart';
+import 'tenant_landlord_view/tenant_landlord_view.dart';
+import 'settings_landlord_view/settings_landlord_view.dart';
 import '../../../core/theme/app_colors.dart';
 
 class LandlordPage extends GetView<LandlordController> {
@@ -21,15 +21,15 @@ class LandlordPage extends GetView<LandlordController> {
         }
         switch (controller.selectedIndex.value) {
           case 0:
-            return HomeView();
+            return HomeLandlordView();
           case 1:
-            return const RoomsView();
+            return const RoomsLandlordView();
           case 2:
-            return const TenantView();
+            return const TenantLandlordView();
           case 3:
-            return const SettingsView();
+            return const SettingsLandlordView();
           default:
-            return HomeView();
+            return HomeLandlordView();
         }
       }),
       bottomNavigationBar: Obx(() => Container(

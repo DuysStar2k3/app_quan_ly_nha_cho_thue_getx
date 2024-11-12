@@ -17,6 +17,7 @@ class EditProfileController extends GetxController {
     required String ten,
     required String soDienThoai,
     required Map<String, String> diaChi,
+    String? cmnd,
   }) async {
     try {
       isLoading.value = true;
@@ -28,6 +29,7 @@ class EditProfileController extends GetxController {
         ten: ten,
         soDienThoai: soDienThoai,
         diaChi: diaChi,
+        cmnd: cmnd,
       );
 
       Get.back(); // Quay lại trang settings

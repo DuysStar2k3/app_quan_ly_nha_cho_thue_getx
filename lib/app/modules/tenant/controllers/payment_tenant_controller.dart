@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:quan_ly_nha_thue/app/modules/tenant/controllers/tenant_page_controller.dart';
@@ -26,21 +27,6 @@ class PaymentTenantController extends GetxController {
       final user = tenantPageController.currentUser;
       if (user == null) return;
 
-      // Lấy danh sách hóa đơn chưa thanh toán
-      final billsSnapshot = await _firestore
-          .collection('hoaDon')
-          .where('nguoiThueId', isEqualTo: user.uid)
-          .where('trangThai', isEqualTo: 'chuaThanhToan')
-          .orderBy('ngayTao', descending: true)
-          .get();
-
-      unpaidBills.value = billsSnapshot.docs
-          .map((doc) => HoaDonModel.fromJson({
-                'id': doc.id,
-                ...doc.data(),
-              }))
-          .toList();
-
       // Lấy lịch sử thanh toán
       final paymentsSnapshot = await _firestore
           .collection('thanhToan')
@@ -61,73 +47,42 @@ class PaymentTenantController extends GetxController {
     }
   }
 
-  Future<void> makePayment({
-    required String hoaDonId,
-    required double soTien,
-    required String phuongThuc,
-    String? ghiChu,
-  }) async {
+  Future<void> refreshData() => loadData();
+
+  Future<void> huyThanhToan(ThanhToanModel thanhToan) async {
     try {
-      final user = tenantPageController.currentUser;
-      if (user == null) return;
-
-      // Lấy thông tin hóa đơn
-      final hoaDonDoc = await _firestore.collection('hoaDon').doc(hoaDonId).get();
-      if (!hoaDonDoc.exists) throw 'Không tìm thấy hóa đơn';
-
-      final hoaDon = HoaDonModel.fromJson({
-        'id': hoaDonDoc.id,
-        ...hoaDonDoc.data()!,
-      });
-
-      // Tạo thanh toán mới
-      final docRef = await _firestore.collection('thanhToan').add({
-        'hoaDonId': hoaDonId,
-        'nguoiThueId': user.uid,
-        'phongId': hoaDon.phongId,
-        'soTien': soTien,
-        'phuongThuc': phuongThuc,
-        'trangThai': 'daThanhToan',
-        'ghiChu': ghiChu,
-        'ngayTao': FieldValue.serverTimestamp(),
+      // Cập nhật trạng thái hóa đơn về choThanhToan
+      await FirebaseFirestore.instance
+          .collection('hoaDon')
+          .doc(thanhToan.hoaDonId)
+          .update({
+        'trangThai': 'chuaThanhToan',
         'ngayCapNhat': FieldValue.serverTimestamp(),
       });
 
-      // Cập nhật ID
-      await docRef.update({'id': docRef.id});
+      // Xóa record thanh toán
+      await FirebaseFirestore.instance
+          .collection('thanhToan')
+          .doc(thanhToan.id)
+          .delete();
 
-      // Cập nhật trạng thái hóa đơn
-      await _firestore.collection('hoaDon').doc(hoaDonId).update({
-        'trangThai': 'daThanhToan',
-        'ngayCapNhat': FieldValue.serverTimestamp(),
-      });
-
-      // Thêm hoạt động
-      await _firestore.collection('hoatDong').add({
-        'nguoiThueId': user.uid,
-        'loai': 'thanhToan',
-        'hoaDonId': hoaDonId,
-        'phongId': hoaDon.phongId,
-        'soTien': soTien,
-        'thang': hoaDon.thang,
-        'ngayTao': FieldValue.serverTimestamp(),
-      });
+      // Refresh lại danh sách thanh toán
+      await loadData();
 
       Get.snackbar(
         'Thành công',
-        'Đã thanh toán hóa đơn',
-        snackPosition: SnackPosition.BOTTOM,
+        'Đã hủy thanh toán',
+        backgroundColor: Colors.green,
+        colorText: Colors.white,
       );
-
-      await loadData();
     } catch (e) {
+      print('Lỗi khi hủy thanh toán: $e'); // Thêm log để debug
       Get.snackbar(
         'Lỗi',
-        'Không thể thanh toán: $e',
-        snackPosition: SnackPosition.BOTTOM,
+        'Không thể hủy thanh toán. Vui lòng thử lại',
+        backgroundColor: Colors.red,
+        colorText: Colors.white,
       );
     }
   }
-
-  Future<void> refreshData() => loadData();
-} 
+}

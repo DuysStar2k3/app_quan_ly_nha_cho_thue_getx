@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:quan_ly_nha_thue/app/modules/tenant/views/home_tenant_view/home-tenant_view.dart';
 import '../controllers/tenant_page_controller.dart';
-import 'home_view/home_view.dart';
-import 'services_view/services_view.dart';
-import 'settings_view/settings_view.dart';
+import 'services_tenant_view/services_tenant_view.dart';
+import 'settings_tenant_view/settings_tenant_view.dart';
 import '../../../core/theme/app_colors.dart';
-import 'bill/bill_view.dart';
+import 'bill_tenant/bill_tenant_view.dart';
 
 class TenantPage extends GetView<TenantPageController> {
   const TenantPage({super.key});
@@ -21,15 +21,15 @@ class TenantPage extends GetView<TenantPageController> {
         }
         switch (controller.selectedIndex.value) {
           case 0:
-            return const HomeView();
+            return const HomeTenantView();
           case 1:
-            return const BillView();
+            return const BillTenantView();
           case 2:
-            return const ServicesView();
+            return const ServicesTenantView();
           case 3:
-            return const SettingsView();
+            return const SettingsTenantView();
           default:
-            return const HomeView();
+            return const HomeTenantView();
         }
       }),
       bottomNavigationBar: Obx(() => Container(
@@ -100,7 +100,9 @@ class TenantPage extends GetView<TenantPageController> {
           vertical: 8,
         ),
         decoration: BoxDecoration(
-          color: isSelected ? AppColors.primary.withOpacity(0.1) : Colors.transparent,
+          color: isSelected
+              ? AppColors.primary.withOpacity(0.1)
+              : Colors.transparent,
           borderRadius: BorderRadius.circular(16),
         ),
         child: Column(

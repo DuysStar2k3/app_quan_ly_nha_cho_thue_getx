@@ -25,7 +25,7 @@ class SplashController extends GetxController {
       final user = _authRepository.currentUser.value;
       if (user != null) {
         Get.offAllNamed(
-          user.vaiTro == 'chuTro' ? Routes.LANDLORD : Routes.TENANT,
+          user.vaiTro == 'chuTro' ? Routes.LANDLORD_PAGE : Routes.TENANT_PAGE,
         );
       } else {
         Get.offAllNamed(Routes.LOGIN);

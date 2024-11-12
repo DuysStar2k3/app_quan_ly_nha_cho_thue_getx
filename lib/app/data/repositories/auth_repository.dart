@@ -34,9 +34,9 @@ class AuthRepository extends GetxController {
             
             if (!_pauseRedirect) {
               if (currentUser.value!.vaiTro == 'chuTro') {
-                Get.offAllNamed(Routes.LANDLORD);
+                Get.offAllNamed(Routes.LANDLORD_PAGE);
               } else if (currentUser.value!.vaiTro == 'nguoiThue') {
-                Get.offAllNamed(Routes.TENANT);
+                Get.offAllNamed(Routes.TENANT_PAGE);
               } else {
                 await signOut();
                 Get.snackbar(
@@ -169,12 +169,14 @@ class AuthRepository extends GetxController {
     required String ten,
     required String soDienThoai,
     required Map<String, String> diaChi,
+    String? cmnd,
   }) async {
     try {
       await _firestore.collection('nguoiDung').doc(uid).update({
         'ten': ten,
         'soDienThoai': soDienThoai,
         'diaChi': diaChi,
+        'cmnd': cmnd,
         'ngayCapNhat': FieldValue.serverTimestamp(),
       });
 

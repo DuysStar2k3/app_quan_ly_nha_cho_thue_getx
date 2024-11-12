@@ -32,9 +32,9 @@ class RegisterController extends GetxController {
 
       // Kiểm tra vai trò và chuyển hướng
       if (user.vaiTro == 'chuTro') {
-        Get.offAllNamed(Routes.LANDLORD);
+        Get.offAllNamed(Routes.LANDLORD_PAGE);
       } else {
-        Get.offAllNamed(Routes.TENANT);
+        Get.offAllNamed(Routes.TENANT_PAGE);
       }
       
       Get.snackbar(
