@@ -11,6 +11,7 @@ class UserModel {
   final String? cmnd;
   final DateTime ngayTao;
   final DateTime ngayCapNhat;
+  final TaiKhoanNganHang? taiKhoanNganHang;
 
   UserModel({
     required this.uid,
@@ -23,6 +24,7 @@ class UserModel {
     this.cmnd,
     required this.ngayTao,
     required this.ngayCapNhat,
+    this.taiKhoanNganHang,
   });
 
   factory UserModel.fromJson(Map<String, dynamic> json) {
@@ -37,6 +39,7 @@ class UserModel {
       cmnd: json['cmnd'],
       ngayTao: (json['ngayTao'] as Timestamp).toDate(),
       ngayCapNhat: (json['ngayCapNhat'] as Timestamp).toDate(),
+      taiKhoanNganHang: TaiKhoanNganHang.fromJson(json['taiKhoanNganHang'] ?? {}),
     );
   }
 
@@ -52,6 +55,35 @@ class UserModel {
       'cmnd': cmnd,
       'ngayTao': Timestamp.fromDate(ngayTao),
       'ngayCapNhat': Timestamp.fromDate(ngayCapNhat),
+      'taiKhoanNganHang': taiKhoanNganHang,
+    };
+  }
+}
+
+class TaiKhoanNganHang {
+  final String tenNganHang;
+  final String soTaiKhoan;
+  final String tenChuTaiKhoan;
+
+  TaiKhoanNganHang({
+    required this.tenNganHang,
+    required this.soTaiKhoan,
+    required this.tenChuTaiKhoan,
+  });
+
+  factory TaiKhoanNganHang.fromJson(Map<String, dynamic> json) {
+    return TaiKhoanNganHang(
+      tenNganHang: json['tenNganHang'] ?? '',
+      soTaiKhoan: json['soTaiKhoan'] ?? '',
+      tenChuTaiKhoan: json['tenChuTaiKhoan'] ?? '',
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'tenNganHang': tenNganHang,
+      'soTaiKhoan': soTaiKhoan,
+      'tenChuTaiKhoan': tenChuTaiKhoan,
     };
   }
 }

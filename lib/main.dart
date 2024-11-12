@@ -8,8 +8,15 @@ import 'app/modules/auth/bindings/auth_binding.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  runApp(
-    GetMaterialApp(
+  runApp(const MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return GetMaterialApp(
       title: 'Quản Lý Nhà Trọ',
       theme: AppTheme.light,
       debugShowCheckedModeBanner: false,
@@ -17,6 +24,6 @@ void main() async {
       initialRoute: AppPages.INITIAL,
       getPages: AppPages.routes,
       defaultTransition: Transition.fade,
-    ),
-  );
+    );
+  }
 }

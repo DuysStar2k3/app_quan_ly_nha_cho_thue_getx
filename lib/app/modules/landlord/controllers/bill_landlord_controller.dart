@@ -77,6 +77,7 @@ class BillLandlordController extends GetxController {
     }
   }
 
+
   Future<void> createBill({
     required String phongId,
     required String thang,
@@ -289,7 +290,8 @@ class BillLandlordController extends GetxController {
   Future<Map<String, double>> getRoomMeterReadings(String roomId) async {
     try {
       // Lấy tài liệu của phòng từ Firestore
-      final roomSnapshot = await _firestore.collection('phong').doc(roomId).get();
+      final roomSnapshot =
+          await _firestore.collection('phong').doc(roomId).get();
 
       if (!roomSnapshot.exists) return {};
 

@@ -16,6 +16,9 @@ class EditProfileLandlordView extends GetView<EditProfileController> {
   final _phuongController = TextEditingController();
   final _quanController = TextEditingController();
   final _thanhPhoController = TextEditingController();
+  final _tenNganHangController = TextEditingController();
+  final _soTaiKhoanController = TextEditingController();
+  final _tenChuTaiKhoanController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -32,6 +35,13 @@ class EditProfileLandlordView extends GetView<EditProfileController> {
       _phuongController.text = controller.currentUser?.diaChi.phuong ?? '';
       _quanController.text = controller.currentUser?.diaChi.quan ?? '';
       _thanhPhoController.text = controller.currentUser?.diaChi.thanhPho ?? '';
+
+      _tenNganHangController.text =
+          controller.currentUser?.taiKhoanNganHang?.tenNganHang ?? '';
+      _soTaiKhoanController.text =
+          controller.currentUser?.taiKhoanNganHang?.soTaiKhoan ?? '';
+      _tenChuTaiKhoanController.text =
+          controller.currentUser?.taiKhoanNganHang?.tenChuTaiKhoan ?? '';
     }
 
     return Scaffold(
@@ -234,7 +244,57 @@ class EditProfileLandlordView extends GetView<EditProfileController> {
                   ),
                 ),
                 const SizedBox(height: 24),
-
+                Card(
+                  child: Padding(
+                    padding: const EdgeInsets.all(16),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text(
+                          'Thông tin tài khoản ngân hàng',
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        const SizedBox(height: 16),
+                        Row(
+                          children: [
+                            Expanded(
+                              child: TextFormField(
+                                controller: _tenNganHangController,
+                                decoration: const InputDecoration(
+                                  labelText: 'Tên ngân hàng',
+                                  border: OutlineInputBorder(),
+                                ),
+                              ),
+                            ),
+                            const SizedBox(width: 16),
+                            Expanded(
+                              child: TextFormField(
+                                controller: _tenChuTaiKhoanController,
+                                decoration: const InputDecoration(
+                                  labelText: 'Tên chủ tài khoản',
+                                  border: OutlineInputBorder(),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 16),
+                        TextFormField(
+                          controller: _soTaiKhoanController,
+                          decoration: const InputDecoration(
+                            labelText: 'Số tài khoản',
+                            border: OutlineInputBorder(),
+                            prefixIcon: Icon(Icons.home_outlined),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 24),
                 // Nút lưu thay đổi
                 SizedBox(
                   width: double.infinity,
@@ -251,6 +311,11 @@ class EditProfileLandlordView extends GetView<EditProfileController> {
                             'thanhPho': _thanhPhoController.text,
                           },
                           cmnd: _cmndController.text.trim(),
+                          taiKhoanNganHang: {
+                            'tenNganHang': _tenNganHangController.text,
+                            'soTaiKhoan': _soTaiKhoanController.text,
+                            'tenChuTaiKhoan': _tenChuTaiKhoanController.text,
+                          },
                         );
                       }
                     },

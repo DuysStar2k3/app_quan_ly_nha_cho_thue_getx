@@ -170,6 +170,7 @@ class AuthRepository extends GetxController {
     required String soDienThoai,
     required Map<String, String> diaChi,
     String? cmnd,
+    Map<String, String>? taiKhoanNganHang,
   }) async {
     try {
       await _firestore.collection('nguoiDung').doc(uid).update({
@@ -178,6 +179,7 @@ class AuthRepository extends GetxController {
         'diaChi': diaChi,
         'cmnd': cmnd,
         'ngayCapNhat': FieldValue.serverTimestamp(),
+        'taiKhoanNganHang': taiKhoanNganHang,
       });
 
       // Cập nhật lại currentUser
