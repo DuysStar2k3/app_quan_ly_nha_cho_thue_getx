@@ -380,7 +380,8 @@ class ServicesLandlordView extends GetView<ServicesLandlordController> {
                                 await controller.addService(
                                   tenDichVu: nameController.text.trim(),
                                   moTa: descController.text.trim(),
-                                  gia: double.parse(priceController.text.trim()),
+                                  gia:
+                                      double.parse(priceController.text.trim()),
                                   donVi: selectedUnit,
                                 );
                                 Get.back();
@@ -409,25 +410,54 @@ class ServicesLandlordView extends GetView<ServicesLandlordController> {
     );
   }
 
-  Future<void> _showEditServiceDialog(BuildContext context, dynamic service) async {
+  Future<void> _showEditServiceDialog(
+      BuildContext context, dynamic service) async {
     // TODO: Implement edit service dialog
   }
 
-  Future<void> _showDeleteConfirmDialog(BuildContext context, dynamic service) async {
+  Future<void> _showDeleteConfirmDialog(
+      BuildContext context, dynamic service) async {
     await showDialog(
       context: context,
       builder: (context) => AlertDialog(
         title: const Text('Xác nhận xóa'),
-        content: Text('Bạn có chắc muốn xóa dịch vụ "${service.tenDichVu}"?'),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text('Bạn có chắc muốn xóa dịch vụ "${service.tenDichVu}"?'),
+            const SizedBox(height: 12),
+            Text(
+              'Lưu ý: Dịch vụ này sẽ bị vô hiệu hóa và tự động gỡ bỏ khỏi tất cả các phòng đang sử dụng.',
+              style: TextStyle(
+                color: Colors.red.shade700,
+                fontSize: 13,
+              ),
+            ),
+          ],
+        ),
         actions: [
           TextButton(
             onPressed: () => Get.back(),
             child: const Text('Hủy'),
           ),
           ElevatedButton(
-            onPressed: () {
-              // TODO: Handle delete service
-              Get.back();
+            onPressed: () async {
+              showDialog(
+                context: context,
+                barrierDismissible: false,
+                builder: (context) => const Center(
+                  child: CircularProgressIndicator(),
+                ),
+              );
+
+              try {
+                await controller.deleteService(service.id);
+                Navigator.of(context).pop(); // Đóng loading dialog
+                Get.back(); // Đóng dialog xác nhận
+              } catch (e) {
+                Navigator.of(context).pop(); // Đóng loading dialog nếu có lỗi
+              }
             },
             style: ElevatedButton.styleFrom(
               backgroundColor: Colors.red,
@@ -438,4 +468,4 @@ class ServicesLandlordView extends GetView<ServicesLandlordController> {
       ),
     );
   }
-} 
+}

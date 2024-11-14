@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../controllers/bill_tenant_controller.dart';
+import 'controller/bill_tenant_controller.dart';
 import '../../../../core/theme/app_colors.dart';
 import 'package:intl/intl.dart';
 import 'bill_tenant_details_view.dart';

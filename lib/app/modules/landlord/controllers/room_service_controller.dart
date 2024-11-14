@@ -27,6 +27,7 @@ class RoomServiceController extends GetxController {
       final snapshot = await _firestore
           .collection('dichVu')
           .where('chuTroId', isEqualTo: room.chuTroId)
+          .where('trangThaiHoatDong', isEqualTo: true)
           .get();
 
       services.value = snapshot.docs
@@ -104,4 +105,4 @@ class RoomServiceController extends GetxController {
     final service = services.firstWhereOrNull((s) => s.id == serviceId);
     return service?.donVi ?? '';
   }
-} 
+}

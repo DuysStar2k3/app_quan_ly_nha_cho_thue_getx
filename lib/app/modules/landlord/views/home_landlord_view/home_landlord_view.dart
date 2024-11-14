@@ -4,6 +4,7 @@ import 'package:quan_ly_nha_thue/app/modules/landlord/controllers/rooms_landlord
 import 'package:quan_ly_nha_thue/app/modules/landlord/views/notifications_landlord/notifications_landlord_view.dart';
 import '../../../../routes/app_pages.dart';
 import '../../controllers/landlord_controller.dart';
+
 class HomeLandlordView extends GetView<LandlordController> {
   HomeLandlordView({super.key});
   final roomsController = Get.find<RoomsLandlordController>();
@@ -91,35 +92,11 @@ class HomeLandlordView extends GetView<LandlordController> {
                                 onPressed: () => Get.to(
                                     () => const NotificationsLandlordView()),
                                 icon: const Icon(
-                                  Icons.notifications_outlined,
+                                  Icons.history,
                                   color: Colors.white,
                                   size: 40,
                                 ),
                               ),
-                              Obx(() {
-                                if (controller.recentActivities.isEmpty) {
-                                  return const SizedBox.shrink();
-                                }
-                                return Positioned(
-                                  right: 8,
-                                  top: 8,
-                                  child: Container(
-                                    padding: const EdgeInsets.all(4),
-                                    decoration: const BoxDecoration(
-                                      color: Colors.red,
-                                      shape: BoxShape.circle,
-                                    ),
-                                    child: Text(
-                                      '${controller.recentActivities.length}',
-                                      style: const TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                  ),
-                                );
-                              }),
                             ],
                           ),
                         ],

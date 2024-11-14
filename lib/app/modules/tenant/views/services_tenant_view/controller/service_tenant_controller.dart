@@ -1,7 +1,7 @@
 import 'package:get/get.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import '../../../data/models/dich_vu_model.dart';
-import '../../../data/models/phong_model.dart';
+import '../../../../../data/models/dich_vu_model.dart';
+import '../../../../../data/models/phong_model.dart';
 import 'package:quan_ly_nha_thue/app/modules/tenant/controllers/tenant_page_controller.dart';
 
 class ServiceTenantController extends GetxController {

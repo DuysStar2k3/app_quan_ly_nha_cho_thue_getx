@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:quan_ly_nha_thue/app/modules/tenant/views/services_tenant_view/services_tenant_view.dart';
-import '../../controllers/home_tenant_controller.dart';
+import 'controller/home_tenant_controller.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../routes/app_pages.dart';
 import 'package:intl/intl.dart';
@@ -105,35 +105,11 @@ class HomeTenantView extends GetView<HomeTenantController> {
                       onPressed: () =>
                           Get.to(() => const NotificationsTenantView()),
                       icon: const Icon(
-                        Icons.notifications_outlined,
+                        Icons.history,
                         color: Colors.white,
                         size: 40,
                       ),
                     ),
-                    Obx(() {
-                      if (controller.recentActivities.isEmpty) {
-                        return const SizedBox.shrink();
-                      }
-                      return Positioned(
-                        right: 8,
-                        top: 8,
-                        child: Container(
-                          padding: const EdgeInsets.all(4),
-                          decoration: const BoxDecoration(
-                            color: Colors.red,
-                            shape: BoxShape.circle,
-                          ),
-                          child: Text(
-                            '${controller.recentActivities.length}',
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontSize: 12,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
-                      );
-                    }),
                   ],
                 ),
               ],
@@ -161,45 +137,47 @@ class HomeTenantView extends GetView<HomeTenantController> {
           Obx(() {
             final room = controller.currentRoom.value;
             if (room == null) {
-              return Container(
-                padding: const EdgeInsets.all(24),
-                decoration: BoxDecoration(
-                  color: Colors.grey.shade100,
-                  borderRadius: BorderRadius.circular(16),
-                  border: Border.all(color: Colors.grey.shade300),
-                ),
-                child: Column(
-                  children: [
-                    Icon(
-                      Icons.home_outlined,
-                      size: 48,
-                      color: Colors.grey.shade400,
-                    ),
-                    const SizedBox(height: 16),
-                    Text(
-                      'Bạn chưa thuê phòng nào',
-                      style: TextStyle(
-                        fontSize: 16,
-                        color: Colors.grey.shade600,
-                        fontWeight: FontWeight.w500,
+              return Center(
+                child: Container(
+                  padding: const EdgeInsets.all(24),
+                  decoration: BoxDecoration(
+                    color: Colors.grey.shade100,
+                    borderRadius: BorderRadius.circular(16),
+                    border: Border.all(color: Colors.grey.shade300),
+                  ),
+                  child: Column(
+                    children: [
+                      Icon(
+                        Icons.home_outlined,
+                        size: 48,
+                        color: Colors.grey.shade400,
                       ),
-                    ),
-                    const SizedBox(height: 8),
-                    ElevatedButton(
-                      onPressed: () => Get.toNamed(Routes.TENANT_ROOM_SEARCH),
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: AppColors.primary,
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 20,
-                          vertical: 11,
-                        ),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
+                      const SizedBox(height: 16),
+                      Text(
+                        'Bạn chưa thuê phòng nào',
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: Colors.grey.shade600,
+                          fontWeight: FontWeight.w500,
                         ),
                       ),
-                      child: const Text('Tìm phòng ngay'),
-                    ),
-                  ],
+                      const SizedBox(height: 8),
+                      ElevatedButton(
+                        onPressed: () => Get.toNamed(Routes.TENANT_ROOM_SEARCH),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: AppColors.primary,
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 20,
+                            vertical: 11,
+                          ),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                        ),
+                        child: const Text('Tìm phòng ngay'),
+                      ),
+                    ],
+                  ),
                 ),
               );
             }

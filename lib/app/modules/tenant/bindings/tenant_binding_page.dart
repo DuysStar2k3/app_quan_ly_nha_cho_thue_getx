@@ -1,55 +1,40 @@
 import 'package:get/get.dart';
-import '../../chat/controllers/chat_controller.dart';
 import '../controllers/tenant_page_controller.dart';
-import '../controllers/home_tenant_controller.dart';
-import '../controllers/room_search_tenant_controller.dart';
-import '../controllers/room_details_tenant_controller.dart';
-import '../controllers/tenant_requests_controller.dart';
+import '../views/chat_tenant/controller/chat_tenant_controller.dart';
+import '../views/home_tenant_view/controller/home_tenant_controller.dart';
+import '../views/bill_tenant/controller/bill_tenant_controller.dart';
+import '../views/services_tenant_view/controller/service_tenant_controller.dart';
+import '../views/requests_tenant/controller/tenant_requests_controller.dart';
 import '../../../data/repositories/auth_repository.dart';
-import '../controllers/service_tenant_controller.dart';
-import '../controllers/payment_tenant_controller.dart';
-import '../controllers/bill_tenant_controller.dart';
-import '../controllers/chat_tenant_controller.dart';
 
 class TenantBindingPage extends Bindings {
   @override
   void dependencies() {
-    // Đăng ký TenantPageController
-    Get.lazyPut(() => TenantPageController(Get.find<AuthRepository>()));
+    // Controller chính - permanent
+    if (!Get.isRegistered<TenantPageController>()) {
+      Get.put<TenantPageController>(
+          TenantPageController(Get.find<AuthRepository>()),
+          permanent: true);
+    }
 
-    // Đăng ký HomeTenantController
-    Get.lazyPut(() => HomeTenantController(Get.find<TenantPageController>()));
+    // Các controller con - được tạo lại khi cần
+    Get.lazyPut<HomeTenantController>(
+        () => HomeTenantController(Get.find<TenantPageController>()),
+        fenix: true);
 
-    // Đăng ký RoomSearchTenantController
-    Get.lazyPut(
-        () => RoomSearchTenantController(Get.find<TenantPageController>()));
+    Get.lazyPut<BillTenantController>(
+        () => BillTenantController(Get.find<TenantPageController>()),
+        fenix: true);
 
-    // Đăng ký RoomDetailsTenantController
-    Get.lazyPut<RoomDetailsTenantController>(
-      () => RoomDetailsTenantController(),
-    );
+    Get.lazyPut<ServiceTenantController>(
+        () => ServiceTenantController(Get.find<TenantPageController>()),
+        fenix: true);
 
-    // Đăng ký TenantRequestsController
-    Get.lazyPut(
-        () => TenantRequestsController(Get.find<TenantPageController>()));
-
-    // Đăng ký ServiceTenantController
-    Get.lazyPut(
-        () => ServiceTenantController(Get.find<TenantPageController>()));
-
-    // Đăng ký PaymentTenantController
-    Get.lazyPut(
-        () => PaymentTenantController(Get.find<TenantPageController>()));
-
-    // Đăng ký BillTenantController
-    Get.lazyPut(() => BillTenantController(Get.find<TenantPageController>()));
-
-    // Đăng ký ChatController
-    Get.lazyPut<ChatController>(() => ChatController());
-
-    // Đăng ký ChatTenantController
-    Get.lazyPut<ChatTenantController>(
-      () => ChatTenantController(),
-    );
+    Get.lazyPut<TenantRequestsController>(
+        () => TenantRequestsController(Get.find<TenantPageController>()),
+        fenix: true);
+    Get.lazyPut<ChatTenantController>(() => ChatTenantController(),
+        fenix: true // Cho phép tái sử dụng controller khi quay lại
+        );
   }
 }

@@ -5,6 +5,7 @@ class DichVuModel {
   final String chuTroId;
   final String tenDichVu;
   final String moTa;
+  final bool trangThaiHoatDong;
   final double gia;
   final String donVi;
   final DateTime ngayTao;
@@ -15,6 +16,7 @@ class DichVuModel {
     required this.chuTroId,
     required this.tenDichVu,
     required this.moTa,
+    required this.trangThaiHoatDong,
     required this.gia,
     required this.donVi,
     required this.ngayTao,
@@ -27,6 +29,7 @@ class DichVuModel {
       chuTroId: json['chuTroId'] ?? '',
       tenDichVu: json['tenDichVu'] ?? '',
       moTa: json['moTa'] ?? '',
+      trangThaiHoatDong: json['trangThaiHoatDong'] ?? true,
       gia: (json['gia'] ?? 0).toDouble(),
       donVi: json['donVi'] ?? '',
       ngayTao: (json['ngayTao'] as Timestamp).toDate(),
@@ -40,6 +43,7 @@ class DichVuModel {
       'chuTroId': chuTroId,
       'tenDichVu': tenDichVu,
       'moTa': moTa,
+      'trangThaiHoatDong': trangThaiHoatDong,
       'gia': gia,
       'donVi': donVi,
       'ngayTao': Timestamp.fromDate(ngayTao),
@@ -62,6 +66,7 @@ class DichVuModel {
       chuTroId: chuTroId ?? this.chuTroId,
       tenDichVu: tenDichVu ?? this.tenDichVu,
       moTa: moTa ?? this.moTa,
+      trangThaiHoatDong: trangThaiHoatDong,
       gia: gia ?? this.gia,
       donVi: donVi ?? this.donVi,
       ngayTao: ngayTao ?? this.ngayTao,

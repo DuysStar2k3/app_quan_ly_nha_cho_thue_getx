@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:quan_ly_nha_thue/app/modules/tenant/controllers/tenant_page_controller.dart';
-import '../../../data/models/thanh_toan_model.dart';
-import '../../../data/models/hoa_don_model.dart';
+import '../../../../../data/models/thanh_toan_model.dart';
+import '../../../../../data/models/hoa_don_model.dart';
 
 class PaymentTenantController extends GetxController {
   final TenantPageController tenantPageController;

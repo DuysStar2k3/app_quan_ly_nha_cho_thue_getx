@@ -5,23 +5,23 @@ class MessageModel {
   final String senderId;
   final String content;
   final DateTime timestamp;
+  final String chatRoomId;
 
   MessageModel({
     required this.id,
     required this.senderId,
     required this.content,
     required this.timestamp,
+    required this.chatRoomId,
   });
 
   factory MessageModel.fromJson(Map<String, dynamic> json) {
-    final timestamp = json['timestamp'];
     return MessageModel(
-      id: json['id'] ?? '',
-      senderId: json['senderId'] ?? '',
-      content: json['content'] ?? '',
-      timestamp: timestamp != null 
-          ? (timestamp as Timestamp).toDate()
-          : DateTime.now(),
+      id: json['id'],
+      senderId: json['senderId'],
+      content: json['content'],
+      timestamp: (json['timestamp'] as Timestamp).toDate(),
+      chatRoomId: json['chatRoomId'],
     );
   }
 
@@ -31,6 +31,7 @@ class MessageModel {
       'senderId': senderId,
       'content': content,
       'timestamp': Timestamp.fromDate(timestamp),
+      'chatRoomId': chatRoomId,
     };
   }
 } 

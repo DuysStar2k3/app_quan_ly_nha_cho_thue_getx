@@ -4,8 +4,8 @@ import '../../../../core/theme/app_colors.dart';
 import 'package:intl/intl.dart';
 import '../../../../data/models/phong_model.dart';
 import 'package:carousel_slider/carousel_slider.dart';
-import '../../controllers/room_details_tenant_controller.dart';
-import '../../controllers/room_search_tenant_controller.dart';
+import 'controller/room_details_tenant_controller.dart';
+import '../room_search/controller/room_search_tenant_controller.dart';
 
 class RoomDetailsTenantView extends GetView<RoomDetailsTenantController> {
   const RoomDetailsTenantView({super.key});

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../../data/models/phong_model.dart';
 import '../../../../data/models/yeu_cau_thue_model.dart';
-import '../../controllers/tenant_requests_controller.dart';
+import 'controller/tenant_requests_controller.dart';
 import '../../../../core/theme/app_colors.dart';
 import 'package:intl/intl.dart';
 

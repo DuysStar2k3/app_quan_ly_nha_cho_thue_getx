@@ -1,11 +1,11 @@
 import 'package:get/get.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import '../../../data/models/hoa_don_model.dart';
-import '../../../data/models/phong_model.dart';
-import '../../../data/models/dich_vu_model.dart';
+import '../../../../../data/models/hoa_don_model.dart';
+import '../../../../../data/models/phong_model.dart';
+import '../../../../../data/models/dich_vu_model.dart';
 import 'package:quan_ly_nha_thue/app/modules/tenant/controllers/tenant_page_controller.dart';
 
-import '../../../data/models/user_model.dart';
+import '../../../../../data/models/user_model.dart';
 
 class BillTenantController extends GetxController {
   final _firestore = FirebaseFirestore.instance;
@@ -37,24 +37,14 @@ class BillTenantController extends GetxController {
           .get();
 
       rooms.clear();
+      services.clear();
+      
       if (roomSnapshot.docs.isNotEmpty) {
         final room = PhongModel.fromJson({
           'id': roomSnapshot.docs.first.id,
           ...roomSnapshot.docs.first.data(),
         });
         rooms[room.id] = room;
-
-        // Lấy danh sách dịch vụ của phòng
-        for (var serviceId in room.dichVu) {
-          final serviceDoc =
-              await _firestore.collection('dichVu').doc(serviceId).get();
-          if (serviceDoc.exists) {
-            services[serviceId] = DichVuModel.fromJson({
-              'id': serviceDoc.id,
-              ...serviceDoc.data()!,
-            });
-          }
-        }
 
         // Lấy danh sách hóa đơn
         final billsSnapshot = await _firestore
@@ -69,6 +59,25 @@ class BillTenantController extends GetxController {
                   ...doc.data(),
                 }))
             .toList();
+
+        // Lấy thông tin dịch vụ từ các hóa đơn
+        final serviceIds = bills
+            .expand((bill) => bill.dichVu.map((d) => d.dichVuId))
+            .toSet()
+            .toList();
+
+        // Lấy thông tin các dịch vụ một lần duy nhất
+        for (var serviceId in serviceIds) {
+          if (!services.containsKey(serviceId)) {
+            final serviceDoc = await _firestore.collection('dichVu').doc(serviceId).get();
+            if (serviceDoc.exists) {
+              services[serviceId] = DichVuModel.fromJson({
+                'id': serviceDoc.id,
+                ...serviceDoc.data()!,
+              });
+            }
+          }
+        }
       }
     } catch (e) {
       print('Error loading bills: $e');

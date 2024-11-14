@@ -4,6 +4,7 @@ import '../controllers/chat_controller.dart';
 import '../../../core/theme/app_colors.dart';
 import 'package:intl/intl.dart';
 import '../../auth/controllers/auth_controller.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ChatRoomView extends GetView<ChatController> {
   const ChatRoomView({super.key});
@@ -73,119 +74,141 @@ class ChatRoomView extends GetView<ChatController> {
                   return const Center(child: CircularProgressIndicator());
                 }
 
-                if (controller.messages.isEmpty) {
-                  return Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(
-                          Icons.chat_bubble_outline,
-                          size: 64,
-                          color: Colors.grey[300],
-                        ),
-                        const SizedBox(height: 16),
-                        Text(
-                          'Chưa có tin nhắn nào',
-                          style: TextStyle(
-                            fontSize: 16,
-                            color: Colors.grey[600],
-                          ),
-                        ),
-                      ],
-                    ),
-                  );
-                }
+                return StreamBuilder<QuerySnapshot>(
+                  // Lắng nghe thay đổi từ collection messages
+                  stream: FirebaseFirestore.instance
+                      .collection('messages')
+                      .where('chatRoomId', isEqualTo: controller.chatRoomId)
+                      .orderBy('timestamp', descending: true)
+                      .snapshots(),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasError) {
+                      return Center(
+                        child: Text('Đã có lỗi xảy ra: ${snapshot.error}'),
+                      );
+                    }
 
-                return ListView.builder(
-                  reverse: true,
-                  padding: const EdgeInsets.all(16),
-                  itemCount: controller.messages.length,
-                  itemBuilder: (context, index) {
-                    final message = controller.messages[index];
-                    final isMe = message.senderId ==
-                        Get.find<AuthController>().currentUser.value?.uid;
+                    if (!snapshot.hasData) {
+                      return const Center(child: CircularProgressIndicator());
+                    }
 
-                    return Padding(
-                      padding: const EdgeInsets.only(bottom: 8),
-                      child: Row(
-                        mainAxisAlignment: isMe
-                            ? MainAxisAlignment.end
-                            : MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: [
-                          if (!isMe) ...[
-                            CircleAvatar(
-                              radius: 16,
-                              backgroundColor: AppColors.primary.withOpacity(0.1),
-                              child: controller.otherUser.hinhAnh != null
-                                  ? ClipOval(
-                                      child: Image.network(
-                                        controller.otherUser.hinhAnh!,
-                                        fit: BoxFit.cover,
-                                      ),
-                                    )
-                                  : const Icon(
-                                      Icons.person,
-                                      size: 16,
-                                      color: AppColors.primary,
-                                    ),
+                    final messages = snapshot.data!.docs;
+                    
+                    if (messages.isEmpty) {
+                      return Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(
+                              Icons.chat_bubble_outline,
+                              size: 64,
+                              color: Colors.grey[300],
                             ),
-                            const SizedBox(width: 8),
-                          ],
-                          Container(
-                            constraints: BoxConstraints(
-                              maxWidth: MediaQuery.of(context).size.width * 0.7,
-                            ),
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 16,
-                              vertical: 10,
-                            ),
-                            decoration: BoxDecoration(
-                              color: isMe
-                                  ? AppColors.primary
-                                  : Colors.white,
-                              borderRadius: BorderRadius.only(
-                                topLeft: const Radius.circular(20),
-                                topRight: const Radius.circular(20),
-                                bottomLeft: Radius.circular(isMe ? 20 : 0),
-                                bottomRight: Radius.circular(isMe ? 0 : 20),
+                            const SizedBox(height: 16),
+                            Text(
+                              'Chưa có tin nhắn nào',
+                              style: TextStyle(
+                                fontSize: 16,
+                                color: Colors.grey[600],
                               ),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.black.withOpacity(0.05),
-                                  blurRadius: 5,
-                                  offset: const Offset(0, 2),
-                                ),
-                              ],
                             ),
-                            child: Column(
-                              crossAxisAlignment: isMe
-                                  ? CrossAxisAlignment.end
-                                  : CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  message.content,
-                                  style: TextStyle(
-                                    color: isMe ? Colors.white : Colors.black,
-                                    fontSize: 15,
-                                  ),
+                          ],
+                        ),
+                      );
+                    }
+
+                    return ListView.builder(
+                      reverse: true,
+                      padding: const EdgeInsets.all(16),
+                      itemCount: messages.length,
+                      itemBuilder: (context, index) {
+                        final messageData = messages[index].data() as Map<String, dynamic>;
+                        final isMe = messageData['senderId'] ==
+                            Get.find<AuthController>().currentUser.value?.uid;
+
+                        return Padding(
+                          padding: const EdgeInsets.only(bottom: 8),
+                          child: Row(
+                            mainAxisAlignment: isMe
+                                ? MainAxisAlignment.end
+                                : MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: [
+                              if (!isMe) ...[
+                                CircleAvatar(
+                                  radius: 16,
+                                  backgroundColor: AppColors.primary.withOpacity(0.1),
+                                  child: controller.otherUser.hinhAnh != null
+                                      ? ClipOval(
+                                          child: Image.network(
+                                            controller.otherUser.hinhAnh!,
+                                            fit: BoxFit.cover,
+                                          ),
+                                        )
+                                      : const Icon(
+                                          Icons.person,
+                                          size: 16,
+                                          color: AppColors.primary,
+                                        ),
                                 ),
-                                const SizedBox(height: 4),
-                                Text(
-                                  DateFormat('HH:mm').format(message.timestamp),
-                                  style: TextStyle(
-                                    fontSize: 11,
-                                    color: isMe 
-                                        ? Colors.white.withOpacity(0.7)
-                                        : Colors.grey[500],
-                                  ),
-                                ),
+                                const SizedBox(width: 8),
                               ],
-                            ),
+                              Container(
+                                constraints: BoxConstraints(
+                                  maxWidth: MediaQuery.of(context).size.width * 0.7,
+                                ),
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 16,
+                                  vertical: 10,
+                                ),
+                                decoration: BoxDecoration(
+                                  color: isMe
+                                      ? AppColors.primary
+                                      : Colors.white,
+                                  borderRadius: BorderRadius.only(
+                                    topLeft: const Radius.circular(20),
+                                    topRight: const Radius.circular(20),
+                                    bottomLeft: Radius.circular(isMe ? 20 : 0),
+                                    bottomRight: Radius.circular(isMe ? 0 : 20),
+                                  ),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.black.withOpacity(0.05),
+                                      blurRadius: 5,
+                                      offset: const Offset(0, 2),
+                                    ),
+                                  ],
+                                ),
+                                child: Column(
+                                  crossAxisAlignment: isMe
+                                      ? CrossAxisAlignment.end
+                                      : CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      messageData['content'],
+                                      style: TextStyle(
+                                        color: isMe ? Colors.white : Colors.black,
+                                        fontSize: 15,
+                                      ),
+                                    ),
+                                    const SizedBox(height: 4),
+                                    Text(
+                                      DateFormat('HH:mm').format(messageData['timestamp'].toDate()),
+                                      style: TextStyle(
+                                        fontSize: 11,
+                                        color: isMe 
+                                            ? Colors.white.withOpacity(0.7)
+                                            : Colors.grey[500],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              if (isMe) const SizedBox(width: 24),
+                            ],
                           ),
-                          if (isMe) const SizedBox(width: 24),
-                        ],
-                      ),
+                        );
+                      },
                     );
                   },
                 );

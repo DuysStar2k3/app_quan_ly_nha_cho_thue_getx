@@ -103,7 +103,7 @@ class LandlordController extends GetxController {
   String getActivityDescription(Map<String, dynamic> activity) {
     final type = activity['loai'] ?? '';
     final soPhong = activity['soPhong']?.toString() ?? '';
-    
+
     switch (type) {
       case 'thanhToan':
         return 'Đã thanh toán ${activity['soTien']}đ cho tháng ${activity['thang']}';
@@ -167,6 +167,14 @@ class LandlordController extends GetxController {
         return Colors.green;
       case 'traPhong':
         return Colors.red;
+      case 'choXacNhan':
+        return Colors.yellow;
+      case 'daXacNhan':
+        return Colors.green;
+      case 'tuChoi':
+        return Colors.red;
+      case 'themPhong':
+        return Colors.green;
       default:
         return Colors.grey;
     }

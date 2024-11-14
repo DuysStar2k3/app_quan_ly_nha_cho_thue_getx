@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../../data/models/phong_model.dart';
-import '../../controllers/room_search_tenant_controller.dart';
+import 'controller/room_search_tenant_controller.dart';
 import '../../../../core/theme/app_colors.dart';
 import 'package:intl/intl.dart';
 

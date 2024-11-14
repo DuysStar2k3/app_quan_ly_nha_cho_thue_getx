@@ -142,7 +142,8 @@ class TenantLandlordView extends GetView<TenantsLandlordController> {
                                 ),
                                 child: CircleAvatar(
                                   radius: 28,
-                                  backgroundColor: AppColors.primary.withOpacity(0.1),
+                                  backgroundColor:
+                                      AppColors.primary.withOpacity(0.1),
                                   child: tenant.hinhAnh != null
                                       ? ClipOval(
                                           child: Image.network(
@@ -152,7 +153,7 @@ class TenantLandlordView extends GetView<TenantsLandlordController> {
                                             fit: BoxFit.cover,
                                           ),
                                         )
-                                      : Icon(
+                                      : const Icon(
                                           Icons.person,
                                           color: AppColors.primary,
                                           size: 32,
@@ -183,12 +184,14 @@ class TenantLandlordView extends GetView<TenantsLandlordController> {
                                             vertical: 4,
                                           ),
                                           decoration: BoxDecoration(
-                                            color: AppColors.primary.withOpacity(0.1),
-                                            borderRadius: BorderRadius.circular(12),
+                                            color: AppColors.primary
+                                                .withOpacity(0.1),
+                                            borderRadius:
+                                                BorderRadius.circular(12),
                                           ),
                                           child: Text(
                                             'Phòng $roomNumber',
-                                            style: TextStyle(
+                                            style: const TextStyle(
                                               color: AppColors.primary,
                                               fontWeight: FontWeight.w500,
                                               fontSize: 12,
@@ -222,25 +225,26 @@ class TenantLandlordView extends GetView<TenantsLandlordController> {
                                 ),
                                 itemBuilder: (context) => [
                                   PopupMenuItem(
-                                    child: ListTile(
-                                      leading: const Icon(
+                                    child: const ListTile(
+                                      leading: Icon(
                                         Icons.info_outline,
                                         size: 20,
                                       ),
-                                      title: const Text('Chi tiết'),
+                                      title: Text('Chi tiết'),
                                       contentPadding: EdgeInsets.zero,
                                       visualDensity: VisualDensity.compact,
                                     ),
-                                    onTap: () => controller.showTenantDetails(tenant),
+                                    onTap: () =>
+                                        controller.showTenantDetails(tenant),
                                   ),
                                   PopupMenuItem(
-                                    child: ListTile(
-                                      leading: const Icon(
+                                    child: const ListTile(
+                                      leading: Icon(
                                         Icons.delete_outline,
                                         size: 20,
                                         color: Colors.red,
                                       ),
-                                      title: const Text(
+                                      title: Text(
                                         'Xóa khỏi phòng',
                                         style: TextStyle(color: Colors.red),
                                       ),
@@ -326,4 +330,4 @@ class TenantLandlordView extends GetView<TenantsLandlordController> {
       ),
     );
   }
-} 
+}

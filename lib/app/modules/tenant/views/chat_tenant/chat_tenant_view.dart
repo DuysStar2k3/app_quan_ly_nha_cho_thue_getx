@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../controllers/chat_tenant_controller.dart';
 import '../../../../core/theme/app_colors.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'controller/chat_tenant_controller.dart';
 
 class ChatTenantView extends GetView<ChatTenantController> {
   const ChatTenantView({super.key});
@@ -156,7 +156,8 @@ class ChatTenantView extends GetView<ChatTenantController> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text(
                                     otherUser.ten,
@@ -213,7 +214,9 @@ class ChatTenantView extends GetView<ChatTenantController> {
                                       borderRadius: BorderRadius.circular(10),
                                     ),
                                     child: Text(
-                                      isCurrentLandlord ? 'Chủ trọ hiện tại' : 'Chủ trọ khác',
+                                      isCurrentLandlord
+                                          ? 'Chủ trọ hiện tại'
+                                          : 'Chủ trọ khác',
                                       style: TextStyle(
                                         color: isCurrentLandlord
                                             ? AppColors.success
@@ -239,4 +242,4 @@ class ChatTenantView extends GetView<ChatTenantController> {
       }),
     );
   }
-} 
+}

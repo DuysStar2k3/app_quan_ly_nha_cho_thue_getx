@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../../data/models/hoa_don_model.dart';
-import '../../controllers/bill_tenant_controller.dart';
+import 'controller/bill_tenant_controller.dart';
 import '../../../../core/theme/app_colors.dart';
 import 'package:intl/intl.dart';
 

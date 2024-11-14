@@ -46,7 +46,6 @@ class SettingsTenantView extends GetView<TenantPageController> {
     // Thực hiện đăng xuất
     await Get.find<AuthRepository>().signOut();
   }
-  
 
   @override
   Widget build(BuildContext context) {
@@ -162,6 +161,14 @@ class SettingsTenantView extends GetView<TenantPageController> {
             title: 'Lịch sử thanh toán',
             onTap: () {
               Get.toNamed(Routes.TENANT_PAYMENT_VIEW);
+            },
+          ),
+          _buildDivider(),
+          _buildSettingTile(
+            icon: Icons.assignment,
+            title: 'Hợp đồng của tôi',
+            onTap: () {
+              Get.toNamed(Routes.TENANT_CONTRACTS);
             },
           ),
           _buildDivider(),

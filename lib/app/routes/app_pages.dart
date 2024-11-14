@@ -23,6 +23,7 @@ import '../modules/landlord/views/statistics_landlord/statistics_landlord_view.d
 import '../modules/splash/splash_page.dart';
 import '../modules/landlord/views/landlord_page.dart';
 import '../modules/tenant/bindings/tenant_binding_page.dart';
+import '../modules/tenant/views/contract_list_tenant_view/contract_details_tenant_view.dart';
 import '../modules/tenant/views/tenant_page.dart';
 import '../modules/tenant/views/room_search/room_search_view.dart';
 import '../modules/tenant/views/room_details_tenant/room_details_tenant_view.dart';
@@ -37,6 +38,15 @@ import '../modules/chat/bindings/chat_binding.dart';
 import '../modules/chat/views/chat_room_view.dart';
 import '../modules/landlord/views/chat_landlord/chat_landlord_view.dart';
 import '../modules/tenant/views/chat_tenant/chat_tenant_view.dart';
+import '../modules/tenant/views/contract_list_tenant_view/contract_list_tenant_view.dart';
+import '../modules/tenant/views/contract_list_tenant_view/bindings/contract_binding.dart';
+import '../modules/tenant/views/services_tenant_view/bindings/service_tenant_binding.dart';
+import '../modules/tenant/views/services_tenant_view/services_tenant_view.dart';
+import '../modules/tenant/views/requests_tenant/bindings/tenant_requests_binding.dart';
+import '../modules/tenant/views/home_tenant_view/bindings/home_tenant_binding.dart';
+import '../modules/tenant/views/bill_tenant/bindings/bill_tenant_binding.dart';
+import '../modules/tenant/views/room_search/bindings/room_search_tenant_binding.dart';
+import '../modules/tenant/views/chat_tenant/bindings/chat_tenant_binding.dart';
 
 // Định nghĩa các routes
 abstract class Routes {
@@ -84,6 +94,9 @@ abstract class Routes {
   static const ROOM_DETAILS_TENANT = '/room-details-tenant';
   static const CHAT_ROOM = '/chat-room';
   static const TENANT_CHAT = '/tenant/chat';
+  static const TENANT_CONTRACTS = '/tenant/contracts';
+  static const TENANT_CONTRACT_DETAILS = '/tenant/contract-details';
+  static const SERVICES_TENANT = '/tenant/services-tenant';
 }
 
 // Định nghĩa các pages
@@ -93,7 +106,7 @@ class AppPages {
   static const INITIAL = Routes.SPLASH;
 
   static final routes = [
-    //đường dẫn của auth
+    //đường dn của auth
 
     GetPage(
       name: Routes.LOGIN,
@@ -223,12 +236,12 @@ class AppPages {
     GetPage(
       name: Routes.TENANT_BILL_VIEW,
       page: () => const BillTenantView(),
-      binding: TenantBindingPage(),
+      binding: BillTenantBinding(),
     ),
     GetPage(
       name: Routes.TENANT_HOME_VIEW,
       page: () => const HomeTenantView(),
-      binding: TenantBindingPage(),
+      binding: HomeTenantBinding(),
     ),
     GetPage(
       name: Routes.TENANT_NOTIFICATIONS_VIEW,
@@ -243,7 +256,7 @@ class AppPages {
     GetPage(
       name: Routes.TENANT_REQUESTS_VIEW,
       page: () => const RequestsTenantView(),
-      binding: TenantBindingPage(),
+      binding: TenantRequestsBinding(),
     ),
     GetPage(
       name: Routes.TENANT_ROOM_DETAILS_VIEW,
@@ -253,7 +266,7 @@ class AppPages {
     GetPage(
       name: Routes.TENANT_ROOM_SEARCH,
       page: () => const RoomSearchView(),
-      binding: TenantBindingPage(),
+      binding: RoomSearchTenantBinding(),
     ),
     GetPage(
       name: Routes.TENANT_EDIT_PROFILE_VIEW,
@@ -282,7 +295,24 @@ class AppPages {
     GetPage(
       name: Routes.TENANT_CHAT,
       page: () => const ChatTenantView(),
-      binding: TenantBindingPage(),
+      binding: ChatTenantBinding(),
+    ),
+    GetPage(
+      name: Routes.TENANT_CONTRACTS,
+      page: () => const ContractListTenantView(),
+      binding: ContractBinding(),
+    ),
+    GetPage(
+      name: Routes.TENANT_CONTRACT_DETAILS,
+      page: () => ContractDetailsTenantView(
+        contract: Get.arguments,
+      ),
+      binding: ContractBinding(),
+    ),
+    GetPage(
+      name: Routes.SERVICES_TENANT,
+      page: () => const ServicesTenantView(),
+      binding: ServiceTenantBinding(),
     ),
   ];
 }

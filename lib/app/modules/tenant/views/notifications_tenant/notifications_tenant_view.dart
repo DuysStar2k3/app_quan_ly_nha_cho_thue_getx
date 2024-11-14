@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../controllers/home_tenant_controller.dart';
+import '../home_tenant_view/controller/home_tenant_controller.dart';
 import 'package:intl/intl.dart';
 
 class NotificationsTenantView extends GetView<HomeTenantController> {

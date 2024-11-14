@@ -15,4 +15,6 @@ class TenantPageController extends GetxController {
   void changeTab(int index) {
     selectedIndex.value = index;
   }
-} 
+
+  final sharedData = <String, dynamic>{}.obs;
+}

@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:fuzzy/fuzzy.dart';
 import 'package:get/get.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../../../data/models/dich_vu_model.dart';
@@ -33,19 +34,20 @@ class ServicesLandlordController extends GetxController {
       _servicesSubscription = _firestore
           .collection('dichVu')
           .where('chuTroId', isEqualTo: user.uid)
+          .where('trangThaiHoatDong', isEqualTo: true)
           .orderBy('ngayCapNhat', descending: true)
           .snapshots()
           .listen(
-            (snapshot) {
-              services.value = snapshot.docs
-                  .map((doc) => DichVuModel.fromJson({
-                        'id': doc.id,
-                        ...doc.data(),
-                      }))
-                  .toList();
-            },
-            onError: (error) => print('Error loading services: $error'),
-          );
+        (snapshot) {
+          services.value = snapshot.docs
+              .map((doc) => DichVuModel.fromJson({
+                    'id': doc.id,
+                    ...doc.data(),
+                  }))
+              .toList();
+        },
+        onError: (error) => print('Error loading services: $error'),
+      );
     }
   }
 
@@ -63,6 +65,7 @@ class ServicesLandlordController extends GetxController {
         id: '',
         chuTroId: user.uid,
         tenDichVu: tenDichVu,
+        trangThaiHoatDong: true,
         gia: gia,
         donVi: donVi,
         moTa: moTa,
@@ -111,6 +114,7 @@ class ServicesLandlordController extends GetxController {
         'donVi': service.donVi,
         'ngayCapNhat': FieldValue.serverTimestamp(),
       });
+      
 
       Get.back();
       Get.snackbar(
@@ -130,11 +134,34 @@ class ServicesLandlordController extends GetxController {
 
   Future<void> deleteService(String serviceId) async {
     try {
-      await _firestore.collection('dichVu').doc(serviceId).delete();
+      // Lấy danh sách tất cả các phòng đang sử dụng dịch vụ này
+      final roomsSnapshot = await _firestore.collection('phong').where('dichVu', arrayContains: serviceId).get();
+      
+      // Bắt đầu batch write
+      final batch = _firestore.batch();
+      
+      // Cập nhật trạng thái dịch vụ
+      batch.update(_firestore.collection('dichVu').doc(serviceId), {
+        'trangThaiHoatDong': false,
+      });
+      
+      // Xóa dịch vụ khỏi tất cả các phòng
+      for (var doc in roomsSnapshot.docs) {
+        final List<dynamic> currentServices = List.from(doc.data()['dichVu'] ?? []);
+        currentServices.remove(serviceId);
+        
+        batch.update(doc.reference, {
+          'dichVu': currentServices,
+        });
+      }
+      
+      // Thực hiện tất cả các thay đổi
+      await batch.commit();
+      
       Get.back();
       Get.snackbar(
         'Thành công',
-        'Đã xóa dịch vụ',
+        'Đã xóa dịch vụ và cập nhật các phòng liên quan',
         snackPosition: SnackPosition.BOTTOM,
       );
     } catch (e) {
@@ -149,15 +176,53 @@ class ServicesLandlordController extends GetxController {
 
   // Helper methods
   IconData getServiceIcon(String serviceName) {
-    final name = serviceName.toLowerCase();
-    if (name.contains('điện')) return Icons.electric_bolt;
-    if (name.contains('nước')) return Icons.water_drop;
-    if (name.contains('internet')) return Icons.wifi;
-    if (name.contains('rác')) return Icons.delete_outline;
-    if (name.contains('giữ xe')) return Icons.local_parking;
-    if (name.contains('dọn')) return Icons.cleaning_services;
-    if (name.contains('bảo vệ')) return Icons.security;
-    if (name.contains('giặt')) return Icons.local_laundry_service;
-    return Icons.home_repair_service;
+  final name = serviceName.toLowerCase(); // Chuyển thành chữ thường để không phân biệt hoa/thường
+
+  // Danh sách các từ khóa
+  final options = [
+    'điện', // Chữ có dấu
+    'nước',
+    'internet',
+    'rác',
+    'giữ xe',
+    'dọn',
+    'bảo vệ',
+    'giặt',
+  ];
+
+  // Khởi tạo đối tượng Fuzzy để tìm kiếm gần đúng
+  final fuzzy = Fuzzy(options);
+
+  // Tìm kiếm tên dịch vụ gần đúng
+  final result = fuzzy.search(name);
+
+  if (result.isNotEmpty) {
+    final bestMatch = result.first.item;
+
+    // Dựa vào từ khóa gần đúng nhất, trả về biểu tượng tương ứng
+    switch (bestMatch) {
+      case 'điện':
+        return Icons.electric_bolt;
+      case 'nước':
+        return Icons.water_drop;
+      case 'internet':
+        return Icons.wifi;
+      case 'rác':
+        return Icons.delete_outline;
+      case 'giữ xe':
+        return Icons.local_parking;
+      case 'dọn':
+        return Icons.cleaning_services;
+      case 'bảo vệ':
+        return Icons.security;
+      case 'giặt':
+        return Icons.local_laundry_service;
+      default:
+        return Icons.home_repair_service;
+    }
   }
-} 
+
+  // Nếu không tìm thấy kết quả phù hợp, trả về biểu tượng mặc định
+  return Icons.home_repair_service;
+}
+}
