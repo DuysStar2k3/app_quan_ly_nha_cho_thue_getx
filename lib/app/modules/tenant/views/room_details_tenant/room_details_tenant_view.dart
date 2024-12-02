@@ -188,7 +188,7 @@ class RoomDetailsTenantView extends GetView<RoomDetailsTenantController> {
                               title: Text(service.tenDichVu),
                               subtitle: Text(
                                 '${NumberFormat.currency(locale: 'vi_VN', symbol: 'đ').format(service.gia)}/${service.donVi}',
-                                style: TextStyle(
+                                style: const TextStyle(
                                   color: AppColors.textLight,
                                 ),
                               ),
@@ -238,7 +238,7 @@ class RoomDetailsTenantView extends GetView<RoomDetailsTenantController> {
                                             fit: BoxFit.cover,
                                           ),
                                         )
-                                      : Icon(
+                                      : const Icon(
                                           Icons.person,
                                           size: 30,
                                           color: AppColors.primary,
@@ -260,7 +260,7 @@ class RoomDetailsTenantView extends GetView<RoomDetailsTenantController> {
                                       const SizedBox(height: 4),
                                       Text(
                                         landlord.soDienThoai,
-                                        style: TextStyle(
+                                        style: const TextStyle(
                                           color: AppColors.textLight,
                                         ),
                                       ),
@@ -269,7 +269,7 @@ class RoomDetailsTenantView extends GetView<RoomDetailsTenantController> {
                                         const SizedBox(height: 4),
                                         Text(
                                           landlord.diaChi.diaChiDayDu,
-                                          style: TextStyle(
+                                          style: const TextStyle(
                                             color: AppColors.textLight,
                                             fontSize: 13,
                                           ),

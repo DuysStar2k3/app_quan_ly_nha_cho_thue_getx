@@ -1,14 +1,14 @@
 import 'package:get/get.dart';
 import '../controllers/landlord_controller.dart';
-import '../controllers/rooms_landlord_controller.dart';
-import '../controllers/services_landlord_controller.dart';
-import '../controllers/room_requests_landlord_controller.dart';
-import '../controllers/tenants_landlord_controller.dart';
-import '../controllers/contract_landlord_controller.dart';
+import '../views/rooms_landlord_view/controller/rooms_landlord_controller.dart';
+import '../views/services_landlord_view/controller/services_landlord_controller.dart';
+import '../views/room_requests_landlord/controller/room_requests_landlord_controller.dart';
+import '../views/tenant_landlord_view/controller/tenants_landlord_controller.dart';
+import '../views/contract_landlord/controller/contract_landlord_controller.dart';
 import '../../../data/repositories/auth_repository.dart';
-import '../controllers/bill_landlord_controller.dart';
-import '../controllers/statistics_landlord_controller.dart';
-import '../controllers/chat_landlord_controller.dart';
+import '../views/bill_landlord/controller/bill_landlord_controller.dart';
+import '../views/statistics_landlord/controller/statistics_landlord_controller.dart';
+import '../views/chat_landlord/controller/chat_landlord_controller.dart';
 
 class LandlordBindingPage extends Bindings {
   @override

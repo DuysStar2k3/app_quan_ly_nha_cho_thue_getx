@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../controllers/edit_profile_controller.dart';
+import 'controller/edit_profile_controller.dart';
 
 class EditProfileLandlordView extends GetView<EditProfileController> {
   EditProfileLandlordView({super.key});

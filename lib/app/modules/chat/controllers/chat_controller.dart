@@ -4,12 +4,17 @@ import '../../../data/models/user_model.dart';
 import '../../../data/models/message_model.dart';
 import '../../auth/controllers/auth_controller.dart';
 
+/// Controller quản lý chức năng chat
 class ChatController extends GetxController {
   final _firestore = FirebaseFirestore.instance;
-  final messages = <MessageModel>[].obs;
-  final isLoading = true.obs;
-  late final UserModel otherUser;
-  late final String chatRoomId;
+  
+  // Các biến observable
+  final messages = <MessageModel>[].obs; // Danh sách tin nhắn
+  final isLoading = true.obs; // Trạng thái loading
+  
+  // Thông tin người dùng và phòng chat
+  late final UserModel otherUser; // Người dùng đang chat cùng
+  late final String chatRoomId; // ID của phòng chat
 
   @override
   void onInit() {
@@ -18,11 +23,11 @@ class ChatController extends GetxController {
     chatRoomId = args['chatRoomId'];
     otherUser = args['otherUser'];
     
-    // Kiểm tra và tạo chatRoom nếu chưa tồn tại
+    // Khởi tạo phòng chat và load tin nhắn
     _initializeChatRoom();
-    loadMessages();
   }
 
+  /// Khởi tạo phòng chat nếu chưa tồn tại
   Future<void> _initializeChatRoom() async {
     try {
       final currentUser = Get.find<AuthController>().currentUser.value;
@@ -40,49 +45,13 @@ class ChatController extends GetxController {
         });
       }
     } catch (e) {
-      print('Error initializing chat room: $e');
-    }
-  }
-
-  void loadMessages() {
-    try {
-      isLoading.value = true;
-      _firestore
-          .collection('messages')
-          .where('chatRoomId', isEqualTo: chatRoomId)
-          .orderBy('timestamp', descending: true)
-          .snapshots()
-          .listen(
-        (snapshot) {
-          try {
-            messages.value = snapshot.docs.map((doc) {
-              final data = doc.data();
-              return MessageModel.fromJson({
-                'id': doc.id,
-                'senderId': data['senderId'] ?? '',
-                'content': data['content'] ?? '',
-                'timestamp': data['timestamp'] ?? Timestamp.now(),
-                'chatRoomId': data['chatRoomId'] ?? '',
-              });
-            }).toList();
-          } catch (e) {
-            print('Error parsing messages: $e');
-            messages.value = [];
-          }
-        },
-        onError: (error) {
-          print('Error listening to messages: $error');
-          messages.value = [];
-        },
-      );
-    } catch (e) {
-      print('Error loading messages: $e');
-      messages.value = [];
+      print('Lỗi khởi tạo phòng chat: $e');
     } finally {
       isLoading.value = false;
     }
   }
 
+  /// Gửi tin nhắn mới
   Future<void> sendMessage(String content) async {
     try {
       if (content.trim().isEmpty) return;
@@ -100,13 +69,13 @@ class ChatController extends GetxController {
       // Tạo tin nhắn mới
       await _firestore.collection('messages').add(messageData);
 
-      // Cập nhật thông tin chat cuối cùng
+      // Cập nhật thông tin tin nhắn cuối cùng trong phòng chat
       await _firestore.collection('chatRooms').doc(chatRoomId).update({
         'lastMessage': content.trim(),
         'lastMessageTime': FieldValue.serverTimestamp(),
       });
     } catch (e) {
-      print('Error sending message: $e');
+      print('Lỗi gửi tin nhắn: $e');
       Get.snackbar(
         'Lỗi',
         'Không thể gửi tin nhắn',
@@ -117,7 +86,7 @@ class ChatController extends GetxController {
 
   @override
   void onClose() {
-    // Cleanup if needed
+    // Dọn dẹp tài nguyên nếu cần
     super.onClose();
   }
 } 

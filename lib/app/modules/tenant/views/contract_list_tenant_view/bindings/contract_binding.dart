@@ -8,4 +8,4 @@ class ContractBinding extends Bindings {
       () => ContractController(),
     );
   }
-} 
+}

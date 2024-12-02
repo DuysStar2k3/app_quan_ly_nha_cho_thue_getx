@@ -125,6 +125,8 @@ class ChatRoomView extends GetView<ChatController> {
                         final messageData = messages[index].data() as Map<String, dynamic>;
                         final isMe = messageData['senderId'] ==
                             Get.find<AuthController>().currentUser.value?.uid;
+                        final timestamp = messageData['timestamp'] as Timestamp?;
+                        final messageTime = timestamp?.toDate() ?? DateTime.now();
 
                         return Padding(
                           padding: const EdgeInsets.only(bottom: 8),
@@ -193,7 +195,7 @@ class ChatRoomView extends GetView<ChatController> {
                                     ),
                                     const SizedBox(height: 4),
                                     Text(
-                                      DateFormat('HH:mm').format(messageData['timestamp'].toDate()),
+                                      DateFormat('HH:mm').format(messageTime),
                                       style: TextStyle(
                                         fontSize: 11,
                                         color: isMe 

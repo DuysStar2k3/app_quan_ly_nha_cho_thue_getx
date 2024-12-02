@@ -11,4 +11,4 @@ class AuthController extends GetxController {
   Future<void> signOut() async {
     await _authRepository.signOut();
   }
-} 
+}

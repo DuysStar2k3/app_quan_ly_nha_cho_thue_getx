@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../controllers/chat_landlord_controller.dart';
+import 'controller/chat_landlord_controller.dart';
 import '../../../../core/theme/app_colors.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 

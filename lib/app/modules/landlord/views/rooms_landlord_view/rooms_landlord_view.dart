@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../controllers/rooms_landlord_controller.dart';
+import 'controller/rooms_landlord_controller.dart';
 import '../../bindings/room_service_binding.dart';
 import 'add_room_landlord_view.dart';
 import 'update_service_landlord_view.dart';
@@ -19,7 +19,7 @@ class RoomsLandlordView extends GetView<RoomsLandlordController> {
           children: [
             const Text('Quản Lý Phòng'),
             Obx(() => Text(
-                  '${controller.rooms.length} phòng',
+                  '${controller.filteredRooms.length} ${controller.filterText.toLowerCase()}',
                   style: TextStyle(
                     fontSize: 14,
                     color: Colors.grey.shade600,
@@ -40,24 +40,46 @@ class RoomsLandlordView extends GetView<RoomsLandlordController> {
             itemBuilder: (context) => [
               const PopupMenuItem(
                 value: 'all',
-                child: Text('Tất cả phòng'),
+                child: Row(
+                  children: [
+                    Icon(Icons.all_inclusive),
+                    SizedBox(width: 8),
+                    Text('Tất cả phòng'),
+                  ],
+                ),
               ),
               const PopupMenuItem(
                 value: 'empty',
-                child: Text('Phòng trống'),
+                child: Row(
+                  children: [
+                    Icon(Icons.check_circle_outline),
+                    SizedBox(width: 8),
+                    Text('Phòng trống'),
+                  ],
+                ),
               ),
               const PopupMenuItem(
                 value: 'rented',
-                child: Text('Đang cho thuê'),
+                child: Row(
+                  children: [
+                    Icon(Icons.people_outline),
+                    SizedBox(width: 8),
+                    Text('Đang cho thuê'),
+                  ],
+                ),
               ),
               const PopupMenuItem(
                 value: 'maintenance',
-                child: Text('Đang sửa chữa'),
+                child: Row(
+                  children: [
+                    Icon(Icons.build_circle_outlined),
+                    SizedBox(width: 8),
+                    Text('Đang sửa chữa'),
+                  ],
+                ),
               ),
             ],
-            onSelected: (value) {
-              // TODO: Handle filter selection
-            },
+            onSelected: controller.updateFilter,
           ),
         ],
       ),
@@ -66,7 +88,7 @@ class RoomsLandlordView extends GetView<RoomsLandlordController> {
           return const Center(child: CircularProgressIndicator());
         }
 
-        if (controller.rooms.isEmpty) {
+        if (controller.filteredRooms.isEmpty) {
           return Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -78,7 +100,9 @@ class RoomsLandlordView extends GetView<RoomsLandlordController> {
                 ),
                 const SizedBox(height: 16),
                 Text(
-                  'Chưa có phòng nào',
+                  controller.rooms.isEmpty 
+                      ? 'Chưa có phòng nào'
+                      : 'Không tìm thấy phòng nào',
                   style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
@@ -87,23 +111,27 @@ class RoomsLandlordView extends GetView<RoomsLandlordController> {
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  'Bắt đầu bằng việc thêm phòng mới',
+                  controller.rooms.isEmpty
+                      ? 'Bắt đầu bằng việc thêm phòng mới'
+                      : 'Thử chọn bộ lọc khác',
                   style: TextStyle(
                     color: Colors.grey.shade600,
                   ),
                 ),
-                const SizedBox(height: 24),
-                ElevatedButton.icon(
-                  onPressed: () => Get.to(() => AddRoomLandlordView()),
-                  icon: const Icon(Icons.add),
-                  label: const Text('Thêm Phòng'),
-                  style: ElevatedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 24,
-                      vertical: 12,
+                if (controller.rooms.isEmpty) ...[
+                  const SizedBox(height: 24),
+                  ElevatedButton.icon(
+                    onPressed: () => Get.to(() => AddRoomLandlordView()),
+                    icon: const Icon(Icons.add),
+                    label: const Text('Thêm Phòng'),
+                    style: ElevatedButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 24,
+                        vertical: 12,
+                      ),
                     ),
                   ),
-                ),
+                ],
               ],
             ),
           );
@@ -111,9 +139,9 @@ class RoomsLandlordView extends GetView<RoomsLandlordController> {
 
         return ListView.builder(
           padding: const EdgeInsets.all(16),
-          itemCount: controller.rooms.length,
+          itemCount: controller.filteredRooms.length,
           itemBuilder: (context, index) {
-            final room = controller.rooms[index];
+            final room = controller.filteredRooms[index];
             return Card(
               margin: const EdgeInsets.only(bottom: 16),
               shape: RoundedRectangleBorder(

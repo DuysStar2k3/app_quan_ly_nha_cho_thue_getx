@@ -1,52 +1,51 @@
 import 'package:get/get.dart';
+import 'package:quan_ly_nha_thue/app/modules/auth/bindings/auth_binding.dart';
+import 'package:quan_ly_nha_thue/app/modules/auth/views/login_page.dart';
+import 'package:quan_ly_nha_thue/app/modules/auth/views/register_page.dart';
+import 'package:quan_ly_nha_thue/app/modules/chat/bindings/chat_binding.dart';
+import 'package:quan_ly_nha_thue/app/modules/chat/views/chat_room_view.dart';
 import 'package:quan_ly_nha_thue/app/modules/landlord/bindings/edit_profile_binding.dart';
+import 'package:quan_ly_nha_thue/app/modules/landlord/bindings/landlord_binding_page.dart';
+import 'package:quan_ly_nha_thue/app/modules/landlord/views/bill_landlord/bill_details_landlord_view.dart';
+import 'package:quan_ly_nha_thue/app/modules/landlord/views/bill_landlord/bill_landlord_view.dart';
+import 'package:quan_ly_nha_thue/app/modules/landlord/views/chat_landlord/chat_landlord_view.dart';
+import 'package:quan_ly_nha_thue/app/modules/landlord/views/contract_landlord/contract_landlord_view.dart';
 import 'package:quan_ly_nha_thue/app/modules/landlord/views/home_landlord_view/home_landlord_view.dart';
+import 'package:quan_ly_nha_thue/app/modules/landlord/views/landlord_page.dart';
 import 'package:quan_ly_nha_thue/app/modules/landlord/views/notifications_landlord/notifications_landlord_view.dart';
+import 'package:quan_ly_nha_thue/app/modules/landlord/views/room_requests_landlord/room_requests_landlord_view.dart';
+import 'package:quan_ly_nha_thue/app/modules/landlord/views/rooms_landlord_view/add_room_landlord_view.dart';
 import 'package:quan_ly_nha_thue/app/modules/landlord/views/rooms_landlord_view/rooms_landlord_view.dart';
 import 'package:quan_ly_nha_thue/app/modules/landlord/views/rooms_landlord_view/update_service_landlord_view.dart';
 import 'package:quan_ly_nha_thue/app/modules/landlord/views/rooms_landlord_view/update_tenant_view__landlord.dart';
+import 'package:quan_ly_nha_thue/app/modules/landlord/views/services_landlord_view/services_landlord_view.dart';
 import 'package:quan_ly_nha_thue/app/modules/landlord/views/settings_landlord_view/edit_profile_landlord_view.dart';
 import 'package:quan_ly_nha_thue/app/modules/landlord/views/settings_landlord_view/settings_landlord_view.dart';
+import 'package:quan_ly_nha_thue/app/modules/landlord/views/statistics_landlord/statistics_landlord_view.dart';
 import 'package:quan_ly_nha_thue/app/modules/landlord/views/tenant_landlord_view/tenant_landlord_view.dart';
+import 'package:quan_ly_nha_thue/app/modules/splash/splash_page.dart';
+import 'package:quan_ly_nha_thue/app/modules/tenant/bindings/tenant_binding_page.dart';
 import 'package:quan_ly_nha_thue/app/modules/tenant/views/bill_tenant/bill_tenant_view.dart';
+import 'package:quan_ly_nha_thue/app/modules/tenant/views/bill_tenant/bindings/bill_tenant_binding.dart';
+import 'package:quan_ly_nha_thue/app/modules/tenant/views/chat_tenant/bindings/chat_tenant_binding.dart';
+import 'package:quan_ly_nha_thue/app/modules/tenant/views/chat_tenant/chat_tenant_view.dart';
+import 'package:quan_ly_nha_thue/app/modules/tenant/views/contract_list_tenant_view/bindings/contract_binding.dart';
+import 'package:quan_ly_nha_thue/app/modules/tenant/views/contract_list_tenant_view/contract_details_tenant_view.dart';
+import 'package:quan_ly_nha_thue/app/modules/tenant/views/contract_list_tenant_view/contract_list_tenant_view.dart';
 import 'package:quan_ly_nha_thue/app/modules/tenant/views/home_tenant_view/home-tenant_view.dart';
 import 'package:quan_ly_nha_thue/app/modules/tenant/views/notifications_tenant/notifications_tenant_view.dart';
+import 'package:quan_ly_nha_thue/app/modules/tenant/views/payment_tenant_view/payment_tenant_view.dart';
+import 'package:quan_ly_nha_thue/app/modules/tenant/views/profile_tenant_view/profile_tenant_view.dart';
+import 'package:quan_ly_nha_thue/app/modules/tenant/views/requests_tenant/bindings/tenant_requests_binding.dart';
+import 'package:quan_ly_nha_thue/app/modules/tenant/views/requests_tenant/requests_tenant_view.dart';
+import 'package:quan_ly_nha_thue/app/modules/tenant/views/room_details_tenant/room_details_tenant_view.dart';
+import 'package:quan_ly_nha_thue/app/modules/tenant/views/room_search/bindings/room_search_tenant_binding.dart';
+import 'package:quan_ly_nha_thue/app/modules/tenant/views/room_search/room_search_view.dart';
+import 'package:quan_ly_nha_thue/app/modules/tenant/views/services_tenant_view/bindings/service_tenant_binding.dart';
+import 'package:quan_ly_nha_thue/app/modules/tenant/views/services_tenant_view/services_tenant_view.dart';
 import 'package:quan_ly_nha_thue/app/modules/tenant/views/settings_tenant_view/edit_profile_tenant_view.dart';
 import 'package:quan_ly_nha_thue/app/modules/tenant/views/settings_tenant_view/settings_tenant_view.dart';
-import '../modules/auth/bindings/auth_binding.dart';
-import '../modules/auth/views/login_page.dart';
-import '../modules/auth/views/register_page.dart';
-import '../modules/landlord/bindings/landlord_binding_page.dart';
-import '../modules/landlord/views/rooms_landlord_view/add_room_landlord_view.dart';
-import '../modules/landlord/views/services_landlord_view/services_landlord_view.dart';
-import '../modules/landlord/views/statistics_landlord/statistics_landlord_view.dart';
-import '../modules/splash/splash_page.dart';
-import '../modules/landlord/views/landlord_page.dart';
-import '../modules/tenant/bindings/tenant_binding_page.dart';
-import '../modules/tenant/views/contract_list_tenant_view/contract_details_tenant_view.dart';
-import '../modules/tenant/views/tenant_page.dart';
-import '../modules/tenant/views/room_search/room_search_view.dart';
-import '../modules/tenant/views/room_details_tenant/room_details_tenant_view.dart';
-import '../modules/landlord/views/room_requests_landlord/room_requests_landlord_view.dart';
-import '../modules/tenant/views/requests_tenant/requests_tenant_view.dart';
-import '../modules/tenant/views/payment_tenant_view/payment_tenant_view.dart';
-import '../modules/landlord/views/contract_landlord/contract_landlord_view.dart';
-import '../modules/landlord/views/bill_landlord/bill_landlord_view.dart';
-import '../modules/landlord/views/bill_landlord/bill_details_landlord_view.dart';
-import '../modules/tenant/views/profile_tenant_view/profile_tenant_view.dart';
-import '../modules/chat/bindings/chat_binding.dart';
-import '../modules/chat/views/chat_room_view.dart';
-import '../modules/landlord/views/chat_landlord/chat_landlord_view.dart';
-import '../modules/tenant/views/chat_tenant/chat_tenant_view.dart';
-import '../modules/tenant/views/contract_list_tenant_view/contract_list_tenant_view.dart';
-import '../modules/tenant/views/contract_list_tenant_view/bindings/contract_binding.dart';
-import '../modules/tenant/views/services_tenant_view/bindings/service_tenant_binding.dart';
-import '../modules/tenant/views/services_tenant_view/services_tenant_view.dart';
-import '../modules/tenant/views/requests_tenant/bindings/tenant_requests_binding.dart';
-import '../modules/tenant/views/home_tenant_view/bindings/home_tenant_binding.dart';
-import '../modules/tenant/views/bill_tenant/bindings/bill_tenant_binding.dart';
-import '../modules/tenant/views/room_search/bindings/room_search_tenant_binding.dart';
-import '../modules/tenant/views/chat_tenant/bindings/chat_tenant_binding.dart';
+import 'package:quan_ly_nha_thue/app/modules/tenant/views/tenant_page.dart';
 
 // Định nghĩa các routes
 abstract class Routes {
@@ -91,7 +90,6 @@ abstract class Routes {
   static const TENANT_SETTINGS_VIEW = '/tenant/settings-view';
   static const TENANT_STATISTICS_VIEW = '/tenant/statistics-view';
   static const TENANT_PROFILE_VIEW = '/tenant/profile-view';
-  static const ROOM_DETAILS_TENANT = '/room-details-tenant';
   static const CHAT_ROOM = '/chat-room';
   static const TENANT_CHAT = '/tenant/chat';
   static const TENANT_CONTRACTS = '/tenant/contracts';
@@ -241,7 +239,6 @@ class AppPages {
     GetPage(
       name: Routes.TENANT_HOME_VIEW,
       page: () => const HomeTenantView(),
-      binding: HomeTenantBinding(),
     ),
     GetPage(
       name: Routes.TENANT_NOTIFICATIONS_VIEW,
@@ -281,11 +278,6 @@ class AppPages {
     GetPage(
       name: Routes.TENANT_PROFILE_VIEW,
       page: () => const ProfileTenantView(),
-    ),
-    GetPage(
-      name: Routes.ROOM_DETAILS_TENANT,
-      page: () => const RoomDetailsTenantView(),
-      binding: TenantBindingPage(),
     ),
     GetPage(
       name: Routes.CHAT_ROOM,

@@ -3,10 +3,8 @@ import 'package:get/get.dart';
 import 'package:quan_ly_nha_thue/app/modules/tenant/views/home_tenant_view/home-tenant_view.dart';
 import '../controllers/tenant_page_controller.dart';
 import 'chat_tenant/chat_tenant_view.dart';
-import 'services_tenant_view/services_tenant_view.dart';
 import 'settings_tenant_view/settings_tenant_view.dart';
 import '../../../core/theme/app_colors.dart';
-import 'bill_tenant/bill_tenant_view.dart';
 
 class TenantPage extends GetView<TenantPageController> {
   const TenantPage({super.key});
@@ -24,13 +22,9 @@ class TenantPage extends GetView<TenantPageController> {
           case 0:
             return const HomeTenantView();
           case 1:
-            return const BillTenantView();
-          case 2:
-            return const ServicesTenantView();
-          case 3:
-            return const SettingsTenantView();
-          case 4:
             return const ChatTenantView();
+          case 2:
+            return const SettingsTenantView();
           default:
             return const HomeTenantView();
         }
@@ -63,24 +57,12 @@ class TenantPage extends GetView<TenantPageController> {
                     ),
                     _buildNavItem(
                       index: 1,
-                      icon: Icons.receipt_long_outlined,
-                      selectedIcon: Icons.receipt_long_rounded,
-                      label: 'Hóa đơn',
-                    ),
-                    _buildNavItem(
-                      index: 2,
-                      icon: Icons.home_repair_service_outlined,
-                      selectedIcon: Icons.home_repair_service_rounded,
-                      label: 'Dịch vụ',
-                    ),
-                    _buildNavItem(
-                      index: 4,
                       icon: Icons.chat_outlined,
                       selectedIcon: Icons.chat_rounded,
                       label: 'Chat',
                     ),
                     _buildNavItem(
-                      index: 3,
+                      index: 2,
                       icon: Icons.settings_outlined,
                       selectedIcon: Icons.settings_rounded,
                       label: 'Cài đặt',

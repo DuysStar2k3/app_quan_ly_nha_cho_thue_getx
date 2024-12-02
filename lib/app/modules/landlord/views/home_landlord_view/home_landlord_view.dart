@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:quan_ly_nha_thue/app/modules/landlord/controllers/rooms_landlord_controller.dart';
+import 'package:quan_ly_nha_thue/app/modules/landlord/views/rooms_landlord_view/controller/rooms_landlord_controller.dart';
 import 'package:quan_ly_nha_thue/app/modules/landlord/views/notifications_landlord/notifications_landlord_view.dart';
 import '../../../../routes/app_pages.dart';
 import '../../controllers/landlord_controller.dart';

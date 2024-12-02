@@ -14,6 +14,9 @@ class LandlordController extends GetxController {
   // Navigation
   final selectedIndex = 0.obs;
   final isLoading = false.obs;
+  void changeTab(int index) {
+    selectedIndex.value = index;
+  }
 
   // User info
   UserModel? get currentUser => _authRepository.currentUser.value;
@@ -70,10 +73,6 @@ class LandlordController extends GetxController {
 
   Future<void> refreshData() async {
     await _initData();
-  }
-
-  void changeTab(int index) {
-    selectedIndex.value = index;
   }
 
   // Activity helpers

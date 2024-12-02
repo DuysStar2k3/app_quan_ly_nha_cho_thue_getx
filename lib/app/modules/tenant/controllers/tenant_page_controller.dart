@@ -12,9 +12,10 @@ class TenantPageController extends GetxController {
 
   UserModel? get currentUser => _authRepository.currentUser.value;
 
+
   void changeTab(int index) {
     selectedIndex.value = index;
   }
 
-  final sharedData = <String, dynamic>{}.obs;
+  // final sharedData = <String, dynamic>{}.obs;
 }

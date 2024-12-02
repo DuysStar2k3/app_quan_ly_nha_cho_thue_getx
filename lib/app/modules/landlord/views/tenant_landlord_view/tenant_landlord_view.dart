@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../controllers/tenants_landlord_controller.dart';
+import 'controller/tenants_landlord_controller.dart';
 import '../../../../core/theme/app_colors.dart';
 
 class TenantLandlordView extends GetView<TenantsLandlordController> {

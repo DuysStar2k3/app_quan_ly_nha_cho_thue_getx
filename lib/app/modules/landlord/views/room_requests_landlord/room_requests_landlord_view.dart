@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../controllers/room_requests_landlord_controller.dart';
+import 'controller/room_requests_landlord_controller.dart';
 import '../../../../core/theme/app_colors.dart';
 import 'package:intl/intl.dart';
 
@@ -175,7 +175,7 @@ class RoomRequestsLandlordView extends GetView<RoomRequestsLandlordController> {
                                             fit: BoxFit.cover,
                                           ),
                                         )
-                                      : Icon(
+                                      : const Icon(
                                           Icons.person,
                                           color: AppColors.primary,
                                           size: 24,
@@ -210,7 +210,7 @@ class RoomRequestsLandlordView extends GetView<RoomRequestsLandlordController> {
                                           child: Row(
                                             mainAxisSize: MainAxisSize.min,
                                             children: [
-                                              Icon(
+                                              const Icon(
                                                 Icons.meeting_room,
                                                 size: 16,
                                                 color: AppColors.primary,
@@ -218,7 +218,7 @@ class RoomRequestsLandlordView extends GetView<RoomRequestsLandlordController> {
                                               const SizedBox(width: 4),
                                               Text(
                                                 'Phòng ${room.soPhong}',
-                                                style: TextStyle(
+                                                style: const TextStyle(
                                                   color: AppColors.primary,
                                                   fontWeight: FontWeight.w500,
                                                 ),
@@ -239,7 +239,7 @@ class RoomRequestsLandlordView extends GetView<RoomRequestsLandlordController> {
                                       locale: 'vi_VN',
                                       symbol: 'đ',
                                     ).format(room.giaThue),
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                       color: AppColors.primary,
                                       fontWeight: FontWeight.bold,
                                     ),

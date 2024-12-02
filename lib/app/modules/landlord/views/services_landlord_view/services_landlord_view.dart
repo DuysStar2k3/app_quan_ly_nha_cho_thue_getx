@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../controllers/services_landlord_controller.dart';
+import 'controller/services_landlord_controller.dart';
 
 class ServicesLandlordView extends GetView<ServicesLandlordController> {
   const ServicesLandlordView({super.key});

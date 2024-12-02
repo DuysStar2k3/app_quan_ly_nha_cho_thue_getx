@@ -4,7 +4,7 @@ import '../../../../../data/models/user_model.dart';
 import '../../../../auth/controllers/auth_controller.dart';
 import '../../../../../routes/app_pages.dart';
 
-class ChatTenantController extends GetxController {
+class ChatLandlordController extends GetxController {
   final _firestore = FirebaseFirestore.instance;
   final isLoading = true.obs;
   final chats = <String, Map<String, dynamic>>{}.obs;
@@ -52,24 +52,22 @@ class ChatTenantController extends GetxController {
             ...otherUserDoc.data()!,
           });
 
-          // Kiểm tra xem có phải chủ trọ hiện tại không
-          bool isCurrentLandlord = false;
+          // Chỉ hiển thị chat với người thuê
+          if (otherUser.vaiTro != 'nguoiThue') continue;
+
+          // Kiểm tra xem người này có đang thuê phòng của mình không
           Map<String, dynamic>? roomInfo;
+          final roomQuery = await _firestore
+              .collection('phong')
+              .where('chuTroId', isEqualTo: currentUser.uid)
+              .where('nguoiThueHienTai', arrayContains: otherUser.uid)
+              .get();
 
-          if (otherUser.vaiTro == 'chuTro') {
-            final roomQuery = await _firestore
-                .collection('phong')
-                .where('chuTroId', isEqualTo: otherUser.uid)
-                .where('nguoiThueHienTai', arrayContains: currentUser.uid)
-                .get();
-
-            if (roomQuery.docs.isNotEmpty) {
-              isCurrentLandlord = true;
-              roomInfo = {
-                'id': roomQuery.docs.first.id,
-                'soPhong': roomQuery.docs.first.data()['soPhong'],
-              };
-            }
+          if (roomQuery.docs.isNotEmpty) {
+            roomInfo = {
+              'id': roomQuery.docs.first.id,
+              'soPhong': roomQuery.docs.first.data()['soPhong'],
+            };
           }
 
           // Cập nhật danh sách chat
@@ -78,10 +76,10 @@ class ChatTenantController extends GetxController {
             'otherUser': otherUser,
             'lastMessage': chatData['lastMessage'],
             'lastMessageTime': chatData['lastMessageTime'],
-            'isCurrentLandlord': isCurrentLandlord,
             'roomInfo': roomInfo,
           };
         }
+        chats.refresh(); // Cập nhật UI
       });
     } catch (e) {
       print('Lỗi tải danh sách chat: $e');

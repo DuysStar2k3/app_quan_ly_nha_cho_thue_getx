@@ -74,55 +74,33 @@ class RoomDetailsTenantController extends GetxController {
     }
   }
 
-  // Thêm phương thức để mở chat
-  void openChat() async {
+  Future<void> openChat() async {
     try {
-      final landlord = landlordInfo.value;
-      if (landlord == null) return;
+      if (landlordInfo.value == null) return;
 
-      // Tạo hoặc lấy ID cuộc trò chuyện
-      final chatId = await _createOrGetChatId(landlord.uid);
-      
-      // Chuyển đến trang chat
-      Get.toNamed(
+      final currentUser = Get.find<AuthController>().currentUser.value;
+      if (currentUser == null) return;
+
+      // Tạo chatRoomId từ ID của 2 người dùng
+      final users = [currentUser.uid, landlordInfo.value!.uid];
+      users.sort(); // Sắp xếp để đảm bảo thứ tự nhất quán
+      final chatRoomId = users.join('_');
+
+      // Chuyển đến màn hình chat với đầy đủ tham số
+      await Get.toNamed(
         Routes.CHAT_ROOM,
         arguments: {
-          'chatId': chatId,
-          'otherUser': landlord,
+          'chatRoomId': chatRoomId,
+          'otherUser': landlordInfo.value,
         },
       );
     } catch (e) {
-      print('Error opening chat: $e');
+      print('Lỗi mở chat: $e');
       Get.snackbar(
         'Lỗi',
-        'Không thể mở cuộc trò chuyện',
+        'Không thể mở chat. Vui lòng thử lại sau.',
         snackPosition: SnackPosition.BOTTOM,
       );
     }
-  }
-
-  Future<String> _createOrGetChatId(String landlordId) async {
-    // Lấy ID người dùng hiện tại
-    final currentUserId = Get.find<AuthController>().currentUser.value?.uid;
-    if (currentUserId == null) throw 'Chưa đăng nhập';
-
-    // Sắp xếp ID để tạo chatId nhất quán
-    final sortedIds = [currentUserId, landlordId]..sort();
-    final chatId = sortedIds.join('_');
-
-    // Kiểm tra xem cuộc trò chuyện đã tồn tại chưa
-    final chatDoc = await _firestore.collection('chats').doc(chatId).get();
-
-    if (!chatDoc.exists) {
-      // Tạo cuộc trò chuyện mới
-      await _firestore.collection('chats').doc(chatId).set({
-        'participants': [currentUserId, landlordId],
-        'lastMessage': null,
-        'lastMessageTime': null,
-        'createdAt': FieldValue.serverTimestamp(),
-      });
-    }
-
-    return chatId;
   }
 } 

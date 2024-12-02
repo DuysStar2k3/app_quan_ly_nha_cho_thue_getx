@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../controllers/rooms_landlord_controller.dart';
+import 'controller/rooms_landlord_controller.dart';
 import '../../../../data/models/phong_model.dart';
 
 class AddRoomLandlordView extends GetView<RoomsLandlordController> {

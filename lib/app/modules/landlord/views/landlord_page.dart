@@ -28,9 +28,9 @@ class LandlordPage extends GetView<LandlordController> {
           case 2:
             return const TenantLandlordView();
           case 3:
-            return const SettingsLandlordView();
-          case 4:
             return const ChatLandlordView();
+          case 4:
+            return const SettingsLandlordView();
           default:
             return HomeLandlordView();
         }
@@ -74,13 +74,13 @@ class LandlordPage extends GetView<LandlordController> {
                       label: 'Người thuê',
                     ),
                     _buildNavItem(
-                      index: 4,
+                      index: 3,
                       icon: Icons.chat_outlined,
                       selectedIcon: Icons.chat_rounded,
                       label: 'Chat',
                     ),
                     _buildNavItem(
-                      index: 3,
+                      index: 4,
                       icon: Icons.settings_outlined,
                       selectedIcon: Icons.settings_rounded,
                       label: 'Cài đặt',

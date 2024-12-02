@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../controllers/room_tenant_controller.dart';
+import 'controller/room_tenant_controller.dart';
 import '../../../../core/theme/app_colors.dart';
 
 class UpdateTenantLandlordView extends GetView<RoomTenantController> {
@@ -256,7 +256,7 @@ class UpdateTenantLandlordView extends GetView<RoomTenantController> {
                           fit: BoxFit.cover,
                         ),
                       )
-                    : Icon(
+                    : const Icon(
                         Icons.person,
                         color: AppColors.primary,
                       ),
@@ -329,8 +329,22 @@ class UpdateTenantLandlordView extends GetView<RoomTenantController> {
                 onPressed: () => Get.dialog(
                   AlertDialog(
                     title: const Text('Xác nhận'),
-                    content:
+                    content: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
                         Text('Bạn có chắc muốn xóa ${user.ten} khỏi phòng?'),
+                        const SizedBox(height: 8),
+                        const Text(
+                          'Lưu ý: Không thể xóa người thuê đang có hợp đồng hiệu lực',
+                          style: TextStyle(
+                            fontSize: 12,
+                            color: Colors.red,
+                            fontStyle: FontStyle.italic,
+                          ),
+                        ),
+                      ],
+                    ),
                     actions: [
                       TextButton(
                         onPressed: () => Get.back(),
