@@ -20,7 +20,8 @@ class ContractLandlordController extends GetxController {
   final contracts = <HopDongModel>[].obs; // Danh sách hợp đồng
   final rooms = <String, PhongModel>{}.obs; // Map lưu thông tin phòng
   final tenants = <String, UserModel>{}.obs; // Map lưu thông tin người thuê
-  final allTenants = <String, UserModel>{}.obs; // Map lưu thông tin tất cả người thuê (cả cũ và mới)
+  final allTenants = <String, UserModel>{}
+      .obs; // Map lưu thông tin tất cả người thuê (cả cũ và mới)
 
   /// Lấy danh sách phòng đã có người thuê nhưng chưa có hợp đồng hiệu lực
   List<PhongModel> get rentedRooms {
@@ -57,7 +58,7 @@ class ContractLandlordController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    loadData();
+    loadData().then((_) => checkAndUpdateContractStatus());
   }
 
   /// Tải dữ liệu ban đầu: phòng, người thuê và hợp đồng
@@ -111,7 +112,6 @@ class ContractLandlordController extends GetxController {
           allTenants[tenantId] = tenant; // For all tenants including past ones
         }
       }
-
     } catch (e) {
       print('Lỗi tải dữ liệu: $e');
     } finally {
@@ -252,10 +252,34 @@ class ContractLandlordController extends GetxController {
     }
   }
 
+  Future<void> checkAndUpdateContractStatus() async {
+    try {
+      final now = DateTime.now();
+
+      for (var contract in contracts) {
+        // Kiểm tra nếu trạng thái hiện tại là "hieuLuc" và ngày còn lại <= 0
+        if (contract.trangThai == 'hieuLuc' &&
+            contract.ngayKetThuc.isBefore(now)) {
+          // Cập nhật trạng thái trên Firestore
+          await _firestore.collection('hopDong').doc(contract.id).update({
+            'trangThai': 'daKetThuc',
+            'ngayCapNhat': FieldValue.serverTimestamp(),
+          });
+          print('Cập nhật hợp đồng".');
+        }
+      }
+
+      // Tải lại dữ liệu sau khi cập nhật
+      await loadData();
+    } catch (e) {
+      print('Lỗi khi cập nhật trạng thái hợp đồng: $e');
+    }
+  }
+
   /// Lấy thông tin phòng theo ID
   PhongModel? getRoomInfo(String roomId) => rooms[roomId];
-  
-  /// Lấy thông tin người thuê theo ID 
+
+  /// Lấy thông tin người thuê theo ID
   UserModel? getTenantInfo(String tenantId) => tenants[tenantId];
 
   /// Làm mới dữ liệu

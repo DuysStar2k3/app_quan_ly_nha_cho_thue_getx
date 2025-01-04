@@ -61,7 +61,10 @@ class HopDongModel {
   }
 
   int get soNgayConLai {
+    if (trangThai == 'daKetThuc') {
+      return 0; // Mặc định trả về 0 nếu hợp đồng đã kết thúc
+    }
     final now = DateTime.now();
     return ngayKetThuc.difference(now).inDays;
   }
-} 
+}
